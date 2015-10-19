@@ -4,6 +4,7 @@ from models import User, Friend
 
 from interface.exception import RemoteException
 from interface.user import LoginUser
+from interface.user import User as RemoteUser
 
 import random
 import string

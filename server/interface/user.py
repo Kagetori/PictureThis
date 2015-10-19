@@ -1,6 +1,17 @@
 from remote_object import RemoteObject
 
-class LoginUser(RemoteObject):
+class User(RemoteObject):
+    def __init__(self, username, user_id):
+        """
+        username
+            username of user
+        user_id
+            user's id
+        """
+        self.username =  username
+        self.user_id = user_id
+
+class LoginUser(User):
     def __init__(self, username, user_id, auth_token, friends):
         """
         username
@@ -12,8 +23,6 @@ class LoginUser(RemoteObject):
         friends
             list of user's friends
         """
-        self.username =  username
-        self.user_id = user_id
+        User.__init__(self, username=username, user_id=user_id)
         self.auth_token = auth_token
         self.friends = friends
-
