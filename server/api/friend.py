@@ -1,6 +1,7 @@
 from models import User, Friend
 
 from interface.exception import RemoteException
+from interface.success import SuccessPacket
 from interface.user import User as RemoteUser
 
 import config
@@ -24,14 +25,11 @@ def set_friendship(user_id, auth_token, target_id, relation):
         return RemoteException('Invalid user id.')
 
     if not user1.authenticate(auth_token=auth_token):
-        # ERROR
-        print user1.auth_token
-        print auth_token
         return RemoteException('User not authenticated.')
 
     # TODO NEED TO ACTUALLY ADD THE FRIENDSHIP
 
-    return 0
+    return SuccessPacket()
 
 def is_friend(user_id1, user_id2):
     try:
