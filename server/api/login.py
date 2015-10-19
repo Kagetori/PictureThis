@@ -5,13 +5,15 @@ from models import User, Friend
 from interface.exception import RemoteException
 from interface.user import LoginUser
 
+import random
+import string
 import utility
 import uuid
 
 # Login api
 
-def encrypt_password(password):
-    return make_password(password=password, salt=None, hasher='unsalted_sha1')
+def encrypt_password(password, salt):
+    return make_password(password=password, salt=salt, hasher='sha1')
 
 def login(username, password, client_version=1, device_id=None):
     """
@@ -25,7 +27,7 @@ def login(username, password, client_version=1, device_id=None):
         # TODO make json exception
         return RemoteException('Username password combination not valid.')
 
-    if user.password != encrypt_password(password):
+    if user.password != encrypt_password(password=password, salt=user.salt):
         # TODO make json exception
         return RemoteException('Username password combination not valid.')
 
@@ -47,7 +49,9 @@ def create_user(username, password, client_version=1, device_id=None):
     except User.DoesNotExist:
         pass
 
-    user = User.objects.create(name=username, password=encrypt_password(password), auth_token=uuid.uuid4())
+    salt = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(16))
+
+    user = User.objects.create(name=username, password=encrypt_password(password=password, salt=salt), salt=salt, auth_token=uuid.uuid4())
     user.obfuscated_id = utility.obfuscate_id(user.id)
     user.save()
 

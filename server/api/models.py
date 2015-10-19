@@ -9,6 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=256, db_index=True)
     create_date = models.DateTimeField(auto_now_add=True)
     password = models.CharField(max_length=512)
+    salt = models.CharField(max_length=32)
     obfuscated_id = models.PositiveIntegerField(null=True)
     auth_token = models.UUIDField()
 

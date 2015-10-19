@@ -31,7 +31,6 @@ def set_friendship(user_id, auth_token, target_id, relation):
 
     return 0
 
-
 def is_friend(user_id1, user_id2):
     try:
         return Friend.objects.get(id1=user_id1, id2=user_id2).relation
