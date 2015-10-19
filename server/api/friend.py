@@ -1,6 +1,7 @@
 from models import User, Friend
 
 from interface.exception import RemoteException
+from interface.user import User as RemoteUser
 
 import config
 
@@ -37,3 +38,9 @@ def is_friend(user_id1, user_id2):
         return Friend.objects.get(id1=user_id1, id2=user_id2).relation
     except User.DoesNotExist:
         return config.FRIEND_STATUS_REMOVED
+
+def get_user_friends(user_id):
+
+    # TODO
+
+    return []

@@ -4,7 +4,8 @@ from models import User, Friend
 
 from interface.exception import RemoteException
 from interface.user import LoginUser
-from interface.user import User as RemoteUser
+
+import friend
 
 import random
 import string
@@ -33,8 +34,7 @@ def login(username, password, client_version=1, device_id=None):
     if user.password != encrypt_password(password=password, salt=user.salt):
         return RemoteException('Username password combination not valid.')
 
-    # TODO GET FRIEND LISTS
-    friends = []
+    friends = friend.get_user_friends(user_id=user.obfuscated_id)
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends)
 
