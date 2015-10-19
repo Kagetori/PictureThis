@@ -9,12 +9,24 @@ import config
 # Friend api
 
 def add_friend(user_id, auth_token, target_id):
-    return set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_FRIEND)
+    return _set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_FRIEND)
 
 def remove_friend(user_id, auth_token, target_id):
-    return set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_REMOVED)
+    return _set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_REMOVED)
 
-def set_friendship(user_id, auth_token, target_id, relation):
+def is_friend(user_id1, user_id2):
+    try:
+        return Friend.objects.get(id1=user_id1, id2=user_id2).relation
+    except User.DoesNotExist:
+        return config.FRIEND_STATUS_REMOVED
+
+def get_user_friends(user_id):
+
+    # TODO
+
+    return []
+
+def _set_friendship(user_id, auth_token, target_id, relation):
     user1 = None
     user2 = None
 
@@ -30,15 +42,3 @@ def set_friendship(user_id, auth_token, target_id, relation):
     # TODO NEED TO ACTUALLY ADD THE FRIENDSHIP
 
     return SuccessPacket()
-
-def is_friend(user_id1, user_id2):
-    try:
-        return Friend.objects.get(id1=user_id1, id2=user_id2).relation
-    except User.DoesNotExist:
-        return config.FRIEND_STATUS_REMOVED
-
-def get_user_friends(user_id):
-
-    # TODO
-
-    return []
