@@ -1,4 +1,4 @@
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 
 from models import User, Friend
 
@@ -31,7 +31,7 @@ def login(username, password, client_version=1, device_id=None):
     if user is None:
         return RemoteException('Username password combination not valid.')
 
-    if user.password != encrypt_password(password=password, salt=user.salt):
+    if not check_password(password=password, encoded=user.password):
         return RemoteException('Username password combination not valid.')
 
     friends = friend.get_user_friends(user_id=user.obfuscated_id)
@@ -52,7 +52,7 @@ def create_user(username, password, client_version=1, device_id=None):
 
     salt = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(16))
 
-    user = User.objects.create(name=username, password=encrypt_password(password=password, salt=salt), salt=salt, auth_token=uuid.uuid4())
+    user = User.objects.create(name=username, password=encrypt_password(password=password, salt=salt), auth_token=uuid.uuid4())
     user.obfuscated_id = utility.obfuscate_id(user.id)
     user.save()
 
