@@ -18,6 +18,9 @@ class User(models.Model):
     def authenticate(self, auth_token):
         return str(self.auth_token) == auth_token
 
+    def get_auth_token(self):
+        return str(self.auth_token)
+
 class Friend(models.Model):
     """
     Defines relationships between users

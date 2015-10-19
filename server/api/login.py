@@ -2,6 +2,8 @@ from django.contrib.auth.hashers import make_password
 
 from models import User, Friend
 
+from interface.user import LoginUser
+
 import utility
 import uuid
 
@@ -29,7 +31,7 @@ def login(username, password, client_version=1):
     # TODO GET FRIEND LISTS
 
     # TODO return stuff in JSON format
-    return user
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=[])
 
 def create_user(username, password, client_version=1):
     """
