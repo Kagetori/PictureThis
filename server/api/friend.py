@@ -1,5 +1,7 @@
 from models import User, Friend
 
+from interface.exception import RemoteException
+
 import config
 
 # Friend api
@@ -18,14 +20,13 @@ def set_friendship(user_id, auth_token, target_id, relation):
         user1 = User.objects.get(obfuscated_id=user_id)
         user2 = User.objects.get(obfuscated_id=target_id)
     except User.DoesNotExist:
-        # TODO error
-        return -1
+        return RemoteException('Invalid user id.')
 
     if not user1.authenticate(auth_token=auth_token):
         # ERROR
         print user1.auth_token
         print auth_token
-        return -2
+        return RemoteException('User not authenticated.')
 
     # TODO NEED TO ACTUALLY ADD THE FRIENDSHIP
 

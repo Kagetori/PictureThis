@@ -24,17 +24,18 @@ def login(username, password, client_version=1, device_id=None):
     try:
         user = User.objects.get(name=username)
     except User.DoesNotExist:
-        # TODO make json exception
+        return RemoteException('Username password combination not valid.')
+
+    if user is None:
         return RemoteException('Username password combination not valid.')
 
     if user.password != encrypt_password(password=password, salt=user.salt):
-        # TODO make json exception
         return RemoteException('Username password combination not valid.')
 
     # TODO GET FRIEND LISTS
+    friends = []
 
-    # TODO return stuff in JSON format
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=[])
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends)
 
 def create_user(username, password, client_version=1, device_id=None):
     """
@@ -44,7 +45,6 @@ def create_user(username, password, client_version=1, device_id=None):
 
     try:
         user = User.objects.get(name=username)
-        # TODO make json exception
         return RemoteException('Username already exists.')
     except User.DoesNotExist:
         pass
@@ -55,7 +55,7 @@ def create_user(username, password, client_version=1, device_id=None):
     user.obfuscated_id = utility.obfuscate_id(user.id)
     user.save()
 
-    # TODO GET FRIEND LISTS
+    # New user should not have friends
+    friends = []
 
-    # TODO return stuff in JSON format
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=[])
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends)
