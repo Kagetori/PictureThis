@@ -2,6 +2,7 @@ from django.contrib.auth.hashers import make_password
 
 from models import User, Friend
 
+from interface.exception import RemoteException
 from interface.user import LoginUser
 
 import utility
@@ -12,7 +13,7 @@ import uuid
 def encrypt_password(password):
     return make_password(password=password, salt=None, hasher='unsalted_sha1')
 
-def login(username, password, client_version=1):
+def login(username, password, client_version=1, device_id=None):
     """
     API Function to login a user
     """
@@ -22,18 +23,18 @@ def login(username, password, client_version=1):
         user = User.objects.get(name=username)
     except User.DoesNotExist:
         # TODO make json exception
-        return -1
+        return RemoteException('Username password combination not valid.')
 
     if user.password != encrypt_password(password):
         # TODO make json exception
-        return -1
+        return RemoteException('Username password combination not valid.')
 
     # TODO GET FRIEND LISTS
 
     # TODO return stuff in JSON format
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=[])
 
-def create_user(username, password, client_version=1):
+def create_user(username, password, client_version=1, device_id=None):
     """
     API Function to create a user
     """
@@ -42,7 +43,7 @@ def create_user(username, password, client_version=1):
     try:
         user = User.objects.get(name=username)
         # TODO make json exception
-        return -1
+        return RemoteException('Username already exists.')
     except User.DoesNotExist:
         pass
 
@@ -53,4 +54,4 @@ def create_user(username, password, client_version=1):
     # TODO GET FRIEND LISTS
 
     # TODO return stuff in JSON format
-    return user
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=[])
