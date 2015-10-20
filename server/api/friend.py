@@ -8,11 +8,11 @@ import config
 
 # Friend api
 
-def add_friend(user_id, auth_token, target_id):
-    return _set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_FRIEND)
+def add_friend(user_id, target_id):
+    return _set_friendship(user_id=user_id, target_id=target_id, relation=config.FRIEND_STATUS_FRIEND)
 
-def remove_friend(user_id, auth_token, target_id):
-    return _set_friendship(user_id=user_id, auth_token=auth_token, target_id=target_id, relation=config.FRIEND_STATUS_REMOVED)
+def remove_friend(user_id, target_id):
+    return _set_friendship(user_id=user_id, target_id=target_id, relation=config.FRIEND_STATUS_REMOVED)
 
 def is_friend(user_id1, user_id2):
     try:
@@ -26,7 +26,7 @@ def get_user_friends(user_id):
 
     return []
 
-def _set_friendship(user_id, auth_token, target_id, relation):
+def _set_friendship(user_id, target_id, relation):
     user1 = None
     user2 = None
 
@@ -35,9 +35,6 @@ def _set_friendship(user_id, auth_token, target_id, relation):
         user2 = User.objects.get(obfuscated_id=target_id)
     except User.DoesNotExist:
         return RemoteException('Invalid user id.')
-
-    if not user1.authenticate(auth_token=auth_token):
-        return RemoteException('User not authenticated.')
 
     # TODO NEED TO ACTUALLY ADD THE FRIENDSHIP
 
