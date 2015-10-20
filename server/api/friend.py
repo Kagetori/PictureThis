@@ -22,9 +22,19 @@ def is_friend(user_id1, user_id2):
 
 def get_user_friends(user_id):
 
-    # TODO
+    friends = Friend.objects.filter(id1=user_id)
 
-    return []
+    result = []
+
+    for f in friends:
+        if f.relation == config.FRIEND_STATUS_FRIEND:
+            friend_user_id = f.id2
+
+            friend_user = User.objects.get(obfuscated_id=friend_user_id)
+
+            result.append(RemoteUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
+
+    return result
 
 def _set_friendship(user_id, target_id, relation):
     user1 = None
@@ -36,6 +46,12 @@ def _set_friendship(user_id, target_id, relation):
     except User.DoesNotExist:
         return RemoteException('Invalid user id.')
 
-    # TODO NEED TO ACTUALLY ADD THE FRIENDSHIP
+    friendship, _ = Friend.objects.get_or_create(id1=user_id, id2=target_id)
+    friendship.relation = relation
+    friendship.save()
+
+    friendship, _ = Friend.objects.get_or_create(id1=target_id, id2=user_id)
+    friendship.relation = relation
+    friendship.save()
 
     return SuccessPacket()

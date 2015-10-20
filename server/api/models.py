@@ -1,5 +1,6 @@
 from django.db import models
 
+import config
 # Create your models here.
 
 class User(models.Model):
@@ -27,7 +28,7 @@ class Friend(models.Model):
     """
     id1 = models.IntegerField()
     id2 = models.IntegerField()
-    relation = models.IntegerField()
+    relation = models.IntegerField(default=config.FRIEND_STATUS_REMOVED)
 
     class Meta:
         index_together = ('id1', 'id2')
