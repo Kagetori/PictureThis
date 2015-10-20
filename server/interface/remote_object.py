@@ -8,31 +8,31 @@ class RemoteObject():
     """
 
     def __str__(self):
-        return json.dumps(_get_dict(self))
+        return json.dumps(self._get_dict(self))
 
     __repr__ = __str__
 
-def _get_dict(obj):
-    d = obj.__dict__
+    def _get_dict(self, obj):
+        d = obj.__dict__
 
-    ret = {}
+        ret = {}
 
-    for key, value in d.iteritems():
-        ret[key] = _get_obj(value)
+        for key, value in d.iteritems():
+            ret[key] = self._get_obj(value)
 
-    return ret
+        return ret
 
-def _get_obj(obj):
-    if isinstance(obj, list):
-        arr = []
+    def _get_obj(self, obj):
+        if isinstance(obj, list):
+            arr = []
 
-        for v in obj:
-            arr.append(_get_obj(v))
+            for v in obj:
+                arr.append(self._get_obj(v))
 
-        return arr
+            return arr
 
-    elif isinstance(obj, RemoteObject):
-        return _get_dict(obj)
+        elif isinstance(obj, RemoteObject):
+            return self._get_dict(obj)
 
-    else:
-        return obj
+        else:
+            return obj
