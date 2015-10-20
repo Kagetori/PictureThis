@@ -3,9 +3,9 @@ from remote_object import RemoteObject
 # Exceptions
 
 class RemoteException(RemoteObject):
-    def __init__(self, text):
+    def __init__(self, exception):
         """
-        text
+        exception
             Description of exception
         """
-        self.text = text
+        self.exception = exception
