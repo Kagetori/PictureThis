@@ -49,8 +49,14 @@ def login__login(request):
 
     return HttpResponse(login.login(username=username, password=password, client_version=client_version, device_id=device_id))
 
+
+
+
+# SEARCH API
+
 def search__find_user(request):
     params = _params(request)
 
     username = params.get('username', None)
+
     return HttpResponse(search.find_user(username=username))
