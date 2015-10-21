@@ -18,7 +18,8 @@ class RemoteObject():
         ret = {}
 
         for key, value in d.iteritems():
-            ret[key] = self._get_obj(value)
+            if value is not None:
+                ret[key] = self._get_obj(value)
 
         return ret
 
