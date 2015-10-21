@@ -18,6 +18,10 @@ from django.conf.urls import include, url
 from api import views
 
 urlpatterns = [
+    # FRIEND API
+    url(r'^friend/add_friend', views.friend__add_friend, name='friend__add_friend'),
+
+    # LOGIN API
     url(r'^login/create_user', views.login__create_user, name='login__create_user'),
     url(r'^login/login', views.login__login, name='login__login'),
 ]
