@@ -17,6 +17,14 @@ def friend__add_friend(request):
 
     return HttpResponse(friend.add_friend(user_id=user_id, target_id=target_id))
 
+def friend__get_friends(request):
+    params = _params(request)
+    
+    user_id = params.get('user_id', None)
+
+    return HttpResponse(friend.get_user_friends(user_id=user_id))
+
+
 
 
 # LOGIN API

@@ -20,6 +20,7 @@ from api import views
 urlpatterns = [
     # FRIEND API
     url(r'^friend/add_friend', views.friend__add_friend, name='friend__add_friend'),
+    url(r'^friend/get_friends', views.friend__get_friends, name='friend__get_friends'),
 
     # LOGIN API
     url(r'^login/create_user', views.login__create_user, name='login__create_user'),
