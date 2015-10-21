@@ -60,7 +60,7 @@ def login(username, password, client_version=1, device_id=None):
     if not check_password(password=password, encoded=user.password):
         return RemoteException('Username password combination not valid.')
 
-    friends = friend.get_user_friends(user_id=user.obfuscated_id)
+    friends = friend.get_user_friends(user_id=user.obfuscated_id).friends
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends)
 

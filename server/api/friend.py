@@ -1,6 +1,7 @@
 from models import User, Friend
 
 from interface.exception import RemoteException
+from interface.packets import FriendPacket
 from interface.success import SuccessPacket
 from interface.user import User as RemoteUser
 
@@ -22,19 +23,18 @@ def is_friend(user_id1, user_id2):
 
 def get_user_friends(user_id):
 
-    friends = Friend.objects.filter(id1=user_id)
+    friends = Friend.objects.filter(id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
 
     result = []
 
     for f in friends:
-        if f.relation == config.FRIEND_STATUS_FRIEND:
-            friend_user_id = f.id2
+        friend_user_id = f.id2
 
-            friend_user = User.objects.get(obfuscated_id=friend_user_id)
+        friend_user = User.objects.get(obfuscated_id=friend_user_id)
 
-            result.append(RemoteUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
+        result.append(RemoteUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
 
-    return result
+    return FriendPacket(result)
 
 def _set_friendship(user_id, target_id, relation):
     user1 = None
@@ -54,4 +54,4 @@ def _set_friendship(user_id, target_id, relation):
     friendship.relation = relation
     friendship.save()
 
-    return SuccessPacket()
+    return get_user_friends(user_id)
