@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-from api import friend, login
+from api import friend, login, search
 
 from interface.success import SuccessPacket
 
@@ -27,3 +27,9 @@ def login__login(request):
     device_id =  params.get('device_id', None)
 
     return HttpResponse(login.login(username=username, password=password, client_version=client_version, device_id=device_id))
+
+def search__find_user(request):
+    params = _params(request)
+
+    username = params.get('username', None)
+    return HttpResponse(search.find_user(username=username))

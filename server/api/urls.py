@@ -20,4 +20,5 @@ from api import views
 urlpatterns = [
     url(r'^login/create_user', views.login__create_user, name='login__create_user'),
     url(r'^login/login', views.login__login, name='login__login'),
+    url(r'^search/find_user', views.search__find_user, name='search__find_user')
 ]
