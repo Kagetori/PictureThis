@@ -7,12 +7,12 @@
 	<link href="assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-<script id="loggin-tpl" type="text/template">
+<script id="login-tpl" type="text/template">
     <header class="bar bar-nav">
         <h1 class="title">Login</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
-        <form action="action_page.php">
+        <form action="login_action.php">
 		Username:<br>
 		<input type="text" name="username">
 		<br>
@@ -22,15 +22,49 @@
 		<input type="submit" value="Login">
 		</form>
     </div>
-    <div class="content"></div>
 	<br>
-	<button class="btn btn-link">Sign up for an account</button>
+	<a href="#sign up">Sign up for an account</a>
+    <div class="content"></div>
+</script>
+
+<script id="signup-tpl" type="text/template">
+    <header class="bar bar-nav">
+        <h1 class="title">Create your account</h1>
+    </header>
+    <div class="bar bar-standard bar-header-secondary">
+        <form action="sign_up.php">
+		Username:<br>
+		<input type="text" name="username">
+		<br>
+		Password:<br>
+		<input type="text" name="password">
+		<br><br>
+		<input type="submit" value="Create account">
+		</form>
+    </div>
+	<br>
+    <div class="content"></div>
+</script>
+
+<script id="friend-list-tpl" type="text/template">
+    <header class="bar bar-nav">
+        <h1 class="title">Friends</h1>
+    </header>
+</script>
+
+<script id="add-friend-tpl" type="text/template">
+    <header class="bar bar-nav">
+        <h1 class="title">Search friend</h1>
+    </header>
 </script>
 
 <script src="cordova.js"></script>
 <script src="lib/handlebars.js"></script>
 <script src="lib/jquery.js"></script>
+<script src="lib/router.js"></script>
 <script src="js/services/memory/PictureThisService.js"></script>
+<script src="js/LoginView.js"></script>
+<script src="js/SignUpView.js"></script>
 <script src="js/app.js"></script>
 
 </body>
