@@ -27,6 +27,7 @@ service.initialize().done(function () {
 });
 
     /* --------------------------------- Event Registration -------------------------------- */
+// note: it may be easier to make nagivator.notification a seperate function
 		document.addEventListener('deviceready', function () {
 			if (navigator.notification) { // Override default HTML alert with native dialog
 				window.alert = function (message) {
@@ -45,5 +46,6 @@ service.initialize().done(function () {
 //function renderLoginView() {
 //    $('body').html(loginTpl());
 //}
+
 
 }());

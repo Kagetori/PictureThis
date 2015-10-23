@@ -10,5 +10,10 @@ var LoginView = function (service) {
 		this.$el.html(this.template());
 		return this;
 	};
+
+	this.userLogin = function(username,password) {
+		showAlert("Name: " + username + " Pass: " + password, "Login");
+	};
+
 	this.initialize();
 }
