@@ -11,6 +11,16 @@ class User(RemoteObject):
         self.username =  username
         self.user_id = user_id
 
+class FriendUser(User):
+    def __init__(self, username, user_id):
+        """
+        username
+            username of friend
+        user_id
+            friend's user id
+        """
+        User.__init__(self, username, user_id)
+
 class LoginUser(User):
     def __init__(self, username, user_id, auth_token, friends):
         """

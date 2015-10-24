@@ -41,3 +41,10 @@ class Group(models.Model):
     """
     user_id1 = models.IntegerField()
     user_id2 = models.IntegerField()
+    active = models.BooleanField()
+    max_rounds = models.IntegerField(default=config.MAX_ROUNDS)
+    curr_round = models.IntegerField()
+    score = models.IntegerField(default=0)
+    create_date = models.DateTimeField(auto_now_add=True)
+    last_move_date = models.DateTimeField(auto_now=True)
+    game_type = models.IntegerField(default=config.GAME_TYPE_NORMAL)

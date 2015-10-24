@@ -3,7 +3,7 @@ from models import User, Friend
 from interface.exception import RemoteException
 from interface.packets import FriendPacket
 from interface.success import SuccessPacket
-from interface.user import User as RemoteUser
+from interface.user import FriendUser
 
 import config
 
@@ -32,7 +32,7 @@ def get_user_friends(user_id):
 
         friend_user = User.objects.get(obfuscated_id=friend_user_id)
 
-        result.append(RemoteUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
+        result.append(FriendUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
 
     return FriendPacket(result)
 
