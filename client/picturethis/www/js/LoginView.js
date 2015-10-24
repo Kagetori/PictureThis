@@ -15,6 +15,9 @@ var LoginView = function (service) {
         var xmlhttp;
         if (window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
+            if ( typeof xmlhttp.overrideMimeType != 'undefined') { 
+                xmlhttp.overrideMimeType('application/json'); 
+            }
         }
         else {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -22,12 +25,20 @@ var LoginView = function (service) {
 
         xmlhttp.open('GET', 'http://picturethis.brianchau.ca/api/login/login?username=' + username + '&password=' + password, true);
         xmlhttp.send();
-        console.log(xmlhttp);
-        console.log(xmlhttp.responseText);
-        if (xmlhttp.responseText != "undefined"){
-            var obj = JSON.parse(xmlhttp.responseText);
-            showAlert(obj);
-        }
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                // do something with the results
+                if (xmlhttp.responseText != "undefined"){
+                    showAlert(xmlhttp.responseText);
+
+                    // This is the parsed JSON object
+                    var obj = JSON.parse(xmlhttp.responseText);
+                }
+            } else {
+                // wait for the call to complete
+            }
+        };
 	};
 
 	this.initialize();
