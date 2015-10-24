@@ -26,9 +26,18 @@ class Friend(models.Model):
     """
     Defines relationships between users
     """
-    id1 = models.IntegerField()
-    id2 = models.IntegerField()
+    user_id1 = models.IntegerField()
+    user_id2 = models.IntegerField()
     relation = models.IntegerField(default=config.FRIEND_STATUS_REMOVED)
 
     class Meta:
-        index_together = ('id1', 'id2')
+        index_together = ('user_id1', 'user_id2')
+
+class Group(models.Model):
+    """
+    Defines an object for a game
+
+    game_id = id
+    """
+    user_id1 = models.IntegerField()
+    user_id2 = models.IntegerField()

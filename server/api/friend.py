@@ -17,18 +17,18 @@ def remove_friend(user_id, target_id):
 
 def is_friend(user_id1, user_id2):
     try:
-        return Friend.objects.get(id1=user_id1, id2=user_id2).relation
+        return Friend.objects.get(user_id1=user_id1, user_id2=user_id2).relation
     except User.DoesNotExist:
         return config.FRIEND_STATUS_REMOVED
 
 def get_user_friends(user_id):
 
-    friends = Friend.objects.filter(id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
+    friends = Friend.objects.filter(user_id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
 
     result = []
 
     for f in friends:
-        friend_user_id = f.id2
+        friend_user_id = f.user_id2
 
         friend_user = User.objects.get(obfuscated_id=friend_user_id)
 
@@ -46,11 +46,11 @@ def _set_friendship(user_id, target_id, relation):
     except User.DoesNotExist:
         return RemoteException('Invalid user id.')
 
-    friendship, _ = Friend.objects.get_or_create(id1=user_id, id2=target_id)
+    friendship, _ = Friend.objects.get_or_create(user_=user_id, user_id2=target_id)
     friendship.relation = relation
     friendship.save()
 
-    friendship, _ = Friend.objects.get_or_create(id1=target_id, id2=user_id)
+    friendship, _ = Friend.objects.get_or_create(user_=target_id, user_id2=user_id)
     friendship.relation = relation
     friendship.save()
 
