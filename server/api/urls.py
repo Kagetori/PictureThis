@@ -28,4 +28,7 @@ urlpatterns = [
 
     # SEARCH API
     url(r'^search/find_user', views.search__find_user, name='search__find_user'),
+
+    # GAME API
+    url(r'^game/start_new_game', views.game__start_new_game, name='game__start_new_game'),
 ]

@@ -33,7 +33,7 @@ class Friend(models.Model):
     class Meta:
         index_together = ('user_id1', 'user_id2')
 
-class Group(models.Model):
+class Game(models.Model):
     """
     Defines an object for a game
 

@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 
-from api import friend, login, search
+from api import friend, login, search, game
 
 from interface.success import SuccessPacket
 
@@ -20,7 +20,6 @@ def friend__get_friends(request):
     user_id = params.get('user_id', None)
 
     return _response(friend.get_user_friends(user_id=user_id))
-
 
 
 
@@ -48,7 +47,6 @@ def login__login(request):
 
 
 
-
 # SEARCH API
 
 def search__find_user(request):
@@ -59,6 +57,15 @@ def search__find_user(request):
     return _response(search.find_user(username=username))
 
 
+
+# GAME API
+def game__start_new_game(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+    friend_id = params.get('friend_id', None)
+
+    return _response(game.start_new_game(user_id=user_id, friend_id=friend_id))
 
 # HELPER FUNCTIONS
 
