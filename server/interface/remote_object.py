@@ -12,6 +12,9 @@ class RemoteObject():
 
     __repr__ = __str__
 
+    def ret_dict(self):
+        return self._get_dict(self)
+
     def _get_dict(self, obj):
         d = obj.__dict__
 
