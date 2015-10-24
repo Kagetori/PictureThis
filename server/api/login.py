@@ -60,9 +60,14 @@ def login(username, password, client_version=1, device_id=None):
     if not check_password(password=password, encoded=user.password):
         return RemoteException('Username password combination not valid.')
 
+    # Create new auth token
+    auth_token = uuid.uuid4()
+    user.auth_token = auth_token
+    user.save()
+
     friends = friend.get_user_friends(user_id=user.obfuscated_id).friends
 
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends)
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends)
 
 def _encrypt_password(password, salt):
     return make_password(password=password, salt=salt, hasher='sha1')
