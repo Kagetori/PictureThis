@@ -1,7 +1,7 @@
 from models import Game, User
 
 from interface.exception import RemoteException
-from interface.user import Game as CurrentGame
+from interface.user import Game as LocalGame
 
 import string
 import utility
@@ -33,5 +33,5 @@ def start_new_game(user_id, friend_id):
 	game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=1)
 	game.save()
 
-	return CurrentGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=1)
+	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=1)
 

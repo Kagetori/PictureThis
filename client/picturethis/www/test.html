@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>PhoneGap</title>
+
+          <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>      
+          <script type="text/javascript" charset="utf-8">
+
+             function onLoad()
+             {
+                  document.addEventListener("deviceready", onDeviceReady, true);
+             }
+
+             function onDeviceReady()
+             {
+                  // navigator.notification.alert("PhoneGap is working");
+             }
+
+             function callAnothePage()
+             {
+                window.location = "test.html";
+             }
+
+          </script>
+
+  </head>
+
+  <body onload="onLoad();">
+        <h1>Welcome to PhoneGap</h1>
+        <h2>Edit assets/www/index.html</h2>
+        <button name="buttonClick" onclick="callAnothePage()">Click Me!</button>
+  </body>
