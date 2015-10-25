@@ -6,7 +6,5 @@ var PictureThisService = function() {
         deferred.resolve();
         return deferred.promise();
     }
-
-    this.user = new User(null, null, null, null, null, null);
 	
 }

@@ -24,6 +24,7 @@ service.initialize().done(function () {
 	});
 	
 	router.start();
+
 });
 
     /* --------------------------------- Event Registration -------------------------------- */
