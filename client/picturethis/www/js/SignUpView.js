@@ -13,8 +13,9 @@ var SignUpView = function (service) {
 	};
 
 	this.createAccount = function(username, password) {
-		showAlert("Username: " + username + "  Password: " + password, "Create");
-	};
+		var url = 'http://picturethis.brianchau.ca/api/login/create_user?username=' + username + '&password=' + password;
+		var serverCaller = new ServerCaller(url,UserParser);
+		};
 
 	this.initialize();
 }
