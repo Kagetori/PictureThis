@@ -10,5 +10,34 @@ var AddFriendView = function (service) {
 		this.$el.html(this.template());
 		return this;
 	};
+
+	//queries server with friend username. Adds as friend if username found, throws exception otherwise
+	this.findFriend = function(username) {
+		var url = 'http://picturethis.brianchau.ca/api/search/find_user?username=' + username;
+		var searchParser = function(result) {
+			   var obj = JSON.parse(result);
+               if (typeof obj.exception === "undefined") {
+					var friendUsername = obj.username;
+					var friend_id = obj.user_id;
+					//call add friend - they currently don't have a choice
+					this.addFriend(friend_id);
+
+				} else {
+						//shows exception message
+						showAlert(obj.exception);
+						};
+
+		var serverCaller = new ServerCaller(url,searchParser);
+		};
+	};
+
+	//queries server with self id and friend id. Updates friends field for user(?)
+	this.addFriend = function(friend_id) {
+		var user = getUser();
+		var user_id = user.id;
+		var url = 'http://picturethis.brianchau.ca/api/friend/add_friend?user_id=' + user_id + '&target_id=' + friend_id;
+		//add friendParser that parses whatever comes back into friend objects and stores them in friends field in user?
+	}
+
 	this.initialize();
 }
