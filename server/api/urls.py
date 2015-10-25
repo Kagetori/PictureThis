@@ -31,4 +31,5 @@ urlpatterns = [
 
     # GAME API
     url(r'^game/start_new_game', views.game__start_new_game, name='game__start_new_game'),
+    url(r'^game/start_new_round', views.game__start_new_round, name='game__start_new_round'),
 ]
