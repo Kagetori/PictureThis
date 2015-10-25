@@ -46,11 +46,11 @@ def _set_friendship(user_id, target_id, relation):
     except User.DoesNotExist:
         return RemoteException('Invalid user id.')
 
-    friendship, _ = Friend.objects.get_or_create(user_=user_id, user_id2=target_id)
+    friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=target_id)
     friendship.relation = relation
     friendship.save()
 
-    friendship, _ = Friend.objects.get_or_create(user_=target_id, user_id2=user_id)
+    friendship, _ = Friend.objects.get_or_create(user_id1=target_id, user_id2=user_id)
     friendship.relation = relation
     friendship.save()
 
