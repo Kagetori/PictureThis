@@ -67,7 +67,8 @@
 		Your Friend's Username:<br>
 		<input type="text" name="username">
 		<br><br>
-		<input type="submit" value="Find">
+<!--		<input type="submit" value="Find"> -->
+            <button type="button" onclick="findFriend()">Find</button>
 		</form>
     </div>
 </script>
@@ -105,6 +106,15 @@
 
         var loginView = new LoginView();
         loginView.userLogin(username,password);
+    }
+</script>
+
+<script>
+    function findFriend() {
+        var username = $("[name='username']").val();
+
+        var addFriendView = new AddFriendView();
+        addFriendView.findFriend(username);
     }
 </script>
 

@@ -12,6 +12,7 @@ var LoginView = function (service) {
 		return this;
 	};
 
+    //logs user in
 	this.userLogin = function(username,password) {
 	    var url = 'http://picturethis.brianchau.ca/api/login/login?username=' + username + '&password=' + password;
         var serverCaller = new ServerCaller(url,UserParser);
