@@ -34,4 +34,7 @@ urlpatterns = [
 
     # GAME API
     url(r'^game/start_new_game', views.game__start_new_game, name='game__start_new_game'),
+    url(r'^game/start_new_round', views.game__start_new_round, name='game__start_new_round'),
+    url(r'^game/end_game', views.game__end_game, name='game__end_game'),
+    url(r'^game/validate_guess', views.game__validate_guess, name='game__validate_guess'),
 ]

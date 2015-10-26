@@ -33,11 +33,16 @@ class Friend(models.Model):
     class Meta:
         index_together = ('user_id1', 'user_id2')
 
+class WordPrompt(models.Model):
+    """
+    A word prompt given to the user
+    """
+    word = models.CharField(max_length=512)
+
+
 class Game(models.Model):
     """
     Defines an object for a game
-
-    game_id = id
     """
     user_id1 = models.IntegerField()
     user_id2 = models.IntegerField()
@@ -48,3 +53,14 @@ class Game(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     last_move_date = models.DateTimeField(auto_now=True)
     game_type = models.IntegerField(default=config.GAME_TYPE_NORMAL)
+    words_seen = models.ManyToManyField(WordPrompt, through='Turn')
+
+class Turn(models.Model):
+    """
+    Defines a turn in the game
+    """
+    turn_num = models.IntegerField()
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    word_prompt = models.ForeignKey(WordPrompt, on_delete=models.CASCADE)
+
+

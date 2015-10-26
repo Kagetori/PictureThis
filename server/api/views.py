@@ -78,6 +78,32 @@ def game__start_new_game(request):
 
     return _response(game.start_new_game(user_id=user_id, friend_id=friend_id))
 
+def game__start_new_round(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+    game_id = params.get('game_id', None)
+
+    return _response(game.start_new_round(user_id=user_id, game_id=game_id))
+
+def game__end_game(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+    game_id = params.get('game_id', None)
+
+    return _response(game.end_game(user_id=user_id, game_id=game_id))
+
+def game__validate_guess(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+    game_id = params.get('game_id', None)
+    guess = params.get('guess', None)
+
+    return _response(game.validate_guess(user_id=user_id, game_id=game_id, guess=guess))
+
+
 # HELPER FUNCTIONS
 
 def _params(request):
