@@ -64,13 +64,14 @@ def start_new_round(user_id, game_id):
 	while (new_word.word in words_seen):
 	 	new_word = WordPrompt.objects.order_by('?').first()
 
-	friend_id = None
-	if (user_id == game.user_id1):
+	if (int(user_id) == game.user_id1):
 		friend_id = game.user_id2
+	elif (int(user_id) == game.user_id2):
+		friend_id = game.user_id1
 	else:
-		friend_id = game.user_id1	
+		return RemoteException('User ID game ID combination not valid')	
 
-	round_num = int(game.curr_round) + 1
+	round_num = game.curr_round + 1
 
 	turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
 	turn.save()
@@ -90,3 +91,33 @@ def get_words_played(game_id):
 		word = t.word_prompt.word
 		words_played.append(word)
 	return words_played
+
+def end_game(user_id, game_id):
+	"""
+	Ends a pre-existing game by setting it to inactive
+	"""
+	if user_id is None or game_id is None:
+		return RemoteException('User ID and game ID cannot be blank.')
+	try:
+		user = User.objects.get(id=user_id)
+	except User.DoesNotExist:
+		return RemoteException("User does not exist")
+	try:
+		game = Game.objects.get(id=game_id)
+	except Game.DoesNotExist:
+		return RemoteException("Game does not exist")
+		
+	if (game.active == False):
+		return RemoteException("Game is already inactive")
+
+	if (int(user_id) == game.user_id1):
+		friend_id = game.user_id2
+	elif (int(user_id) == game.user_id2):
+		friend_id = game.user_id1
+	else:
+		return RemoteException('User ID game ID combination not valid')	
+
+	words_seen = get_words_played(game_id)
+	game.active = False
+	game.save()
+	return LocalGame(user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)

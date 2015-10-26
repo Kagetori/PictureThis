@@ -75,6 +75,14 @@ def game__start_new_round(request):
 
     return _response(game.start_new_round(user_id=user_id, game_id=game_id))
 
+def game__end_game(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+    game_id = params.get('game_id', None)
+
+    return _response(game.end_game(user_id=user_id, game_id=game_id))
+
 
 # HELPER FUNCTIONS
 
