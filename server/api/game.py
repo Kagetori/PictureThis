@@ -32,10 +32,10 @@ def start_new_game(user_id, friend_id):
 		return RemoteException("User 2 doesn't exist")
 	# TODO: check no active game already exists between user 1 and 2
 
-	game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=1)
+	game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0)
 	game.save()
 
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=1, words_seen=[], curr_word=None)
+	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
 
 def start_new_round(user_id, game_id):
 	"""
@@ -59,7 +59,7 @@ def start_new_round(user_id, game_id):
 	if (game.curr_round >= game.max_rounds):
 		return RemoteException("Max number of rounds reached")
 
-	words_seen = get_words_played(game_id)
+	words_seen = _get_words_played(game_id)
 	# TODO: find a more efficent method to grab random object
 	new_word = WordPrompt.objects.order_by('?').first() 
 	while (new_word.word in words_seen):
@@ -81,7 +81,7 @@ def start_new_round(user_id, game_id):
 	game.save()
 	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
 
-def get_words_played(game_id):
+def _get_words_played(game_id):
 
 	game = Game.objects.filter(id=game_id)
 	turns = Turn.objects.filter(game=game)
@@ -118,7 +118,7 @@ def end_game(user_id, game_id):
 	else:
 		return RemoteException('User ID game ID combination not valid')	
 
-	words_seen = get_words_played(game_id)
+	words_seen = _get_words_played(game_id)
 	game.active = False
 	game.save()
 	return LocalGame(user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
