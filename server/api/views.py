@@ -1,23 +1,24 @@
 from django.http import JsonResponse
 
-from api import friend, login, search, game
+from api import friend, game, login, poll, search
 
 from interface.success import SuccessPacket
+from interface.exception import RemoteException
 
 # FRIEND API
 
 def friend__add_friend(request):
     params = _params(request)
     
-    user_id = params.get('user_id', None)
-    target_id = params.get('target_id', None)
+    user_id = params.get('user_id', 0)
+    target_id = params.get('target_id', 0)
 
     return _response(friend.add_friend(user_id=user_id, target_id=target_id))
 
 def friend__get_friends(request):
     params = _params(request)
     
-    user_id = params.get('user_id', None)
+    user_id = params.get('user_id', 0)
 
     return _response(friend.get_user_friends(user_id=user_id))
 
@@ -46,6 +47,16 @@ def login__login(request):
     return _response(login.login(username=username, password=password, client_version=client_version, device_id=device_id))
 
 
+# POLL API
+
+def poll__update(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', 0)
+
+    return _response(poll.update(user_id=user_id))
+
+
 
 # SEARCH API
 
@@ -62,8 +73,8 @@ def search__find_user(request):
 def game__start_new_game(request):
     params = _params(request)
 
-    user_id = params.get('user_id', None)
-    friend_id = params.get('friend_id', None)
+    user_id = params.get('user_id', 0)
+    friend_id = params.get('friend_id', 0)
 
     return _response(game.start_new_game(user_id=user_id, friend_id=friend_id))
 
@@ -74,4 +85,3 @@ def _params(request):
 
 def _response(response):
     return JsonResponse(response.ret_dict())
-
