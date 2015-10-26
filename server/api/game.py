@@ -1,7 +1,7 @@
 from models import Game, User, Turn, WordPrompt
 
 from interface.exception import RemoteException
-from interface.game import Game as LocalGame
+from interface.game import Game as RemoteGame
 from interface.success import SuccessPacket
 
 import string
@@ -35,7 +35,7 @@ def start_new_game(user_id, friend_id):
 	game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0)
 	game.save()
 
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
+	return RemoteGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
 
 def start_new_round(user_id, game_id):
 	"""
@@ -79,7 +79,7 @@ def start_new_round(user_id, game_id):
 
 	game.curr_round = round_num
 	game.save()
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
+	return RemoteGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
 
 def _get_words_played(game_id):
 
@@ -121,7 +121,7 @@ def end_game(user_id, game_id):
 	words_seen = _get_words_played(game_id)
 	game.active = False
 	game.save()
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
+	return RemoteGame(user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
 
 def validate_guess(user_id, game_id, guess):
 	"""
