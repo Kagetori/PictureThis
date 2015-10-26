@@ -61,7 +61,7 @@ def start_new_round(user_id, game_id):
 	words_seen = get_words_played(game_id)
 
 	new_word = WordPrompt.objects.order_by('?').first() # can be slow
-	while (new_word in words_seen):
+	while (new_word.word in words_seen):
 	 	new_word = WordPrompt.objects.order_by('?').first()
 
 	friend_id = None
