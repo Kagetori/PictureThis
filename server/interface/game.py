@@ -1,7 +1,7 @@
 from remote_object import RemoteObject
 
 class Game(RemoteObject):
-    def __init__(self, user_id, friend_id, active, curr_round, words_seen):
+    def __init__(self, user_id, friend_id, active, curr_round, words_seen, curr_word):
         """
         user_id
             user's id
@@ -17,3 +17,4 @@ class Game(RemoteObject):
         self.active = active
         self.curr_round = curr_round
         self.words_seen = words_seen
+        self.curr_word = curr_word

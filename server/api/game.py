@@ -30,10 +30,11 @@ def start_new_game(user_id, friend_id):
 	except User.DoesNotExist:
 		return RemoteException("User 2 doesn't exist")
 	# should also check no active game between user 1 and user 2
+
 	game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=1)
 	game.save()
 
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=1, words_seen=[])
+	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=1, words_seen=[], curr_word=None)
 
 def start_new_round(user_id, game_id):
 	"""
@@ -54,6 +55,9 @@ def start_new_round(user_id, game_id):
 	if (game.active == False):
 		return RemoteException("Game is inactive")
 
+	if (game.curr_round >= game.max_rounds):
+		return RemoteException("Max number of rounds reached")
+
 	words_seen = get_words_played(game_id)
 
 	new_word = WordPrompt.objects.order_by('?').first() # can be slow
@@ -66,7 +70,6 @@ def start_new_round(user_id, game_id):
 	else:
 		friend_id = game.user_id1	
 
-	#round_num = 1
 	round_num = int(game.curr_round) + 1
 
 	turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
@@ -74,8 +77,7 @@ def start_new_round(user_id, game_id):
 
 	game.curr_round = round_num
 	game.save()
-	# TODO: check max round hasn't been reached 
-	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen)
+	return LocalGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
 
 def get_words_played(game_id):
 
