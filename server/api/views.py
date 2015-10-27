@@ -15,6 +15,14 @@ def friend__add_friend(request):
 
     return _response(friend.add_friend(user_id=user_id, target_id=target_id))
 
+def friend__remove_friend(request):
+    params = _params(request)
+    
+    user_id = params.get('user_id', 0)
+    target_id = params.get('target_id', 0)
+
+    return _response(friend.remove_friend(user_id=user_id, target_id=target_id))
+
 def friend__get_friends(request):
     params = _params(request)
     
