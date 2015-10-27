@@ -17,8 +17,10 @@ var LoginView = function (service) {
 	this.userLogin = function(username,password) {
 	    var url = 'http://picturethis.brianchau.ca/api/login/login?username=' + username + '&password=' + password;
         var serverCaller = new ServerCaller(url,UserParser);
-
-		setTimeout(this.LoginFriendView(username),100);
+        var retrievedUser =  window.localStorage.getItem('userObject');
+        var parsedUser = JSON.parse(retrievedUser);
+        while (parsedUser.username == "") {}
+		this.LoginFriendView(username);
 //		var retrievedUser =  window.localStorage.getItem('userObject');
 //        var parsedUser = JSON.parse(retrievedUser);
 //        if (parsedUser.username == username) {
@@ -28,8 +30,9 @@ var LoginView = function (service) {
        };
 
     this.LoginFriendView = function(username) {
-		var user = getUser();
-        if (user.username == username) {
+    	var retrievedUser =  window.localStorage.getItem('userObject');
+        var parsedUser = JSON.parse(retrievedUser);
+        if (parsedUser.username == username) {
         	window.location="index2.html";
             } else {
             showAlert("Login failed, username and/or password don't match.")}

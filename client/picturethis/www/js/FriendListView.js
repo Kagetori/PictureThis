@@ -12,5 +12,11 @@ var FriendListView = function (service) {
 		return this;
 	};
 
+	this.logout = function() {
+		var nullUser = new User("","","","","","");
+		window.localStorage.setItem('userObject', nullUser);
+		window.location="index.html";
+	}
+
 	this.initialize();
 }

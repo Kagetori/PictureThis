@@ -16,7 +16,18 @@ var SignUpView = function (service) {
 	this.createAccount = function(username, password) {
 		var url = 'http://picturethis.brianchau.ca/api/login/create_user?username=' + username + '&password=' + password;
 		var serverCaller = new ServerCaller(url,UserParser);
+		while (parsedUser.username == "") {}
+		this.LoginFriendView(username);
 		};
+
+	this.LoginFriendView = function(username) {
+       	var retrievedUser =  window.localStorage.getItem('userObject');
+        var parsedUser = JSON.parse(retrievedUser);
+        if (parsedUser.username == username) {
+            window.location="index2.html";
+            } else {
+            showAlert("Try again")}
+        }
 
 	this.initialize();
 }

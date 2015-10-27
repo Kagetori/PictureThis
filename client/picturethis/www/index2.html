@@ -3,34 +3,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
-	<link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
 </head>
 
 <body>
 
 <script id="friendlist-tpl" type="text/template">
     <header class="bar bar-nav">
-		<button onclick="location.href = '#add friend';" class="btn pull-right">
-			Add Friend
-		</button>
-		<h1 class="title">Friends</h1>
+        <button onclick="logout()" class="btn pull-left">Logout</button>
+        <button onclick="location.href = '#add friend';" class="btn pull-right">
+            Add Friend
+        </button>
+        <h1 class="title">Friends</h1>
     </header>
     <br><br>
 </script>
 
 <script id="add-friend-tpl" type="text/template">
     <header class="bar bar-nav">
+        <button onclick="backToMain()" class="btn pull-left">Back</button>
         <h1 class="title">Search friend</h1>
     </header>
-	    <div class="bar bar-standard bar-header-secondary">
+    <div class="bar bar-standard bar-header-secondary">
         <form action="add_friend.php">
-		Your Friend's Username:<br>
-		<input type="text" name="username">
-		<br><br>
-<!--		<input type="submit" value="Find"> -->
+            Your Friend's Username:<br>
+            <input type="text" name="username">
+            <br><br>
+            <!--		<input type="submit" value="Find"> -->
             <button type="button" onclick="findFriend()">Find</button>
-		</form>
+        </form>
     </div>
 </script>
 
@@ -40,6 +42,20 @@
 
         var addFriendView = new AddFriendView();
         addFriendView.findFriend(username);
+    }
+</script>
+
+<script>
+    function logout() {
+        var friendListView = new FriendListView();
+        friendListView.logout();
+    }
+</script>
+
+<script>
+    function backToMain() {
+        var addFriendView = new AddFriendView();
+        addFriendView.backToMain();
     }
 </script>
 

@@ -40,32 +40,41 @@ service.initialize().done(function () {
     /* ---------------------------------- Local Functions ---------------------------------- */
 
 function populateTable() {
-	var friends = getFriends();
-	var friendlist = document.getElementById("friendlist-tpl");
-		if (friends.lengt != 0) {
-		var tableul = document.createElement('ul');
-		tableul.className = "table-view";
-			for (i = 0; i < friends.length; i++) {
-				var tableli = document.createElement("LI");
-				tableli.className = "table-view-cell";
-				var tabletext = document.createTextNode(friends[i].username);
-				var tablebutton = document.createElement("BUTTON");
-				tablebutton.className = "btn btn-primary";
-				var buttontext = document.createTextNode("PLAY");
-				tablebutton.appendChild(buttontext);
-				tableli.appendChild(tabletext);
-				tableli.appendChild(tablebutton);
-				tableul.appendChild(tableli);
-			}
-		}
+var friends = getFriends();
+var friendlist = document.getElementById("friendlist-tpl");
+if (friends.lengt != 0) {
+var tableul = document.createElement('ul');
+tableul.className = "table-view";
+for (i = 0; i < friends.length; i++) {
+	var tableli = document.createElement("LI");
+    tableli.className = "table-view-cell";
+    var tabletext = document.createTextNode(friends[i].username);
+    var tablebutton = document.createElement("BUTTON");
+    tablebutton.className = "btn btn-primary";
+    tablebutton.onclick = startGame();
+    var buttontext = document.createTextNode("PLAY");
+    tablebutton.appendChild(buttontext);
+    tableli.appendChild(tabletext);
+    tableli.appendChild(tablebutton);
+    tableul.appendChild(tableli);
+}
+}
 
-	friendlist.appendChild(tableul);
-
-};
+friendlist.appendChild(tableul);
+}
 
 function getFriends(){
 	var user = getUser();
     return user.friends;
 }
+
+function startGame() {
+	getGame();
+	renderGameView();
+}
+
+function getGame(){};
+
+function renderGameView(){};
 
 }());
