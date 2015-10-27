@@ -13,8 +13,9 @@ var FriendListView = function (service) {
 	};
 
 	this.logout = function() {
-		var nullUser = new User("","","","","","");
-		window.localStorage.setItem('userObject', nullUser);
+//		var nullUser = new User("","","","","","");
+//		window.localStorage.setItem('userObject', nullUser);
+		window.localStorage.clear();
 		window.location="index.html";
 	}
 

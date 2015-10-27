@@ -14,10 +14,11 @@ var SignUpView = function (service) {
 	//creates new account with username and password
 	this.createAccount = function(username, password) {
 		var url = 'http://picturethis.brianchau.ca/api/login/create_user?username=' + username + '&password=' + password;
-		var serverCaller = new ServerCaller(url,UserParser);
-		var user = getUser();
-		while (user.username == "") {}
-		this.LoginFriendView(username);
+		var create = function() {
+			var signUpView = new SignUpView();
+			signUpView.LoginFriendView(username);
+		};
+		var serverCaller = new ServerCaller(url,UserParser,create);
 		};
 
 	this.LoginFriendView = function(username) {
