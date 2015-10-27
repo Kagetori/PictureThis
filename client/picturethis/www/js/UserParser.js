@@ -17,12 +17,6 @@ var UserParser = function(result) {
 
         window.localStorage.clear();
         window.localStorage.setItem('userObject', JSON.stringify(myUser));
-        showAlert("User is: " + myUser.username);
-        var retrievedUser =  window.localStorage.getItem('userObject');
-        var parsedUser = JSON.parse(retrievedUser);
-
-        showAlert("Retrieved username is: " + parsedUser.username);
-        showAlert("Retrieved id is: " + parsedUser.id);
 
         } else {
         //shows exception message
