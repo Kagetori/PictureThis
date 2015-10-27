@@ -16,10 +16,11 @@ var LoginView = function (service) {
     //logs user in
 	this.userLogin = function(username,password) {
 	    var url = 'http://picturethis.brianchau.ca/api/login/login?username=' + username + '&password=' + password;
-        var serverCaller = new ServerCaller(url,UserParser);
-        var user = getUser();
-        while (user.username == "") {}
-		this.LoginFriendView(username);
+	    var login = function() {
+	    	var loginView = new LoginView();
+	    	loginView.LoginFriendView(username);
+	    };
+        var serverCaller = new ServerCaller(url,UserParser,login);
        };
 
     this.LoginFriendView = function(username) {
