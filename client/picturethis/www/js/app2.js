@@ -41,8 +41,8 @@ service.initialize().done(function () {
 
 function populateTable() {
 var friends = getFriends();
-console.log(friends[0].username);
 var friendlist = document.getElementById("friendlist-tpl");
+if (friends.lengt != 0) {
 var tableul = document.createElement('ul');
 tableul.className = "table-view";
 for (i = 0; i < friends.length; i++) {
@@ -57,9 +57,9 @@ for (i = 0; i < friends.length; i++) {
     tableli.appendChild(tablebutton);
     tableul.appendChild(tableli);
 }
-friendlist.appendChild(tableul);
+}
 
-console.log(friendlist);
+friendlist.appendChild(tableul);
 }
 
 function getFriends(){
