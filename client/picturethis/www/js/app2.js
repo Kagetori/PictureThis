@@ -4,6 +4,8 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
 var service = new PictureThisService();
 
+populateTable();
+
 FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
 AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
 service.initialize().done(function () {
@@ -36,10 +38,33 @@ service.initialize().done(function () {
 		}, false);
 
     /* ---------------------------------- Local Functions ---------------------------------- */
-	
-//function renderLoginView() {
-//    $('body').html(loginTpl());
-//}
 
+function populateTable() {
+var friends = getFriends();
+console.log(friends[0].username);
+var friendlist = document.getElementById("friendlist-tpl");
+var tableul = document.createElement('ul');
+tableul.className = "table-view";
+for (i = 0; i < friends.length; i++) {
+	var tableli = document.createElement("LI");
+    tableli.className = "table-view-cell";
+    var tabletext = document.createTextNode(friends[i].username);
+    var tablebutton = document.createElement("BUTTON");
+    tablebutton.className = "btn btn-primary";
+    var buttontext = document.createTextNode("PLAY");
+    tablebutton.appendChild(buttontext);
+    tableli.appendChild(tabletext);
+    tableli.appendChild(tablebutton);
+    tableul.appendChild(tableli);
+}
+friendlist.appendChild(tableul);
+
+console.log(friendlist);
+}
+
+function getFriends(){
+	var user = getUser();
+    return user.friends;
+}
 
 }());
