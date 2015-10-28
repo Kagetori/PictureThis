@@ -196,15 +196,3 @@ class GameTests(TestCase):
         success = game.validate_guess(user2_id, game_id, 'apple')
         self.assertTrue(isinstance(success, SuccessPacket))
 
-
-
-
-
-
-
-
-
-
-
-
-

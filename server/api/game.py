@@ -30,12 +30,16 @@ def start_new_game(user_id, friend_id):
         friend = User.objects.get(obfuscated_id=friend_id)
     except User.DoesNotExist:
         return RemoteException("User 2 doesn't exist")
-    # TODO: check no active game already exists between user 1 and 2
+
+    if (_is_active_game(user_id1=user_id, user_id2=friend_id)):
+        return RemoteException("Game already exists")
 
     game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0)
     game.save()
 
-    return RemoteGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
+    game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True)
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
 
 def start_new_round(user_id, game_id):
     """
@@ -80,7 +84,7 @@ def start_new_round(user_id, game_id):
 
     game.curr_round = round_num
     game.save()
-    return RemoteGame(user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
 
 def end_game(user_id, game_id):
     """
@@ -107,7 +111,7 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
-    return RemoteGame(user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
 
 def validate_guess(user_id, game_id, guess):
     """
@@ -182,3 +186,11 @@ def _get_friend_id(user_model, game_model):
         return game_model.user_id1
     else:
         return None
+
+def _is_active_game(user_id1, user_id2):
+    games1=Game.objects.filter(user_id1=user_id1, user_id2=user_id2, active=True)
+    games2=Game.objects.filter(user_id1=user_id2, user_id2=user_id1, active=True)
+    if (games1.count() + games2.count() > 0):
+        return True
+    else:
+        return False
