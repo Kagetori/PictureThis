@@ -1,5 +1,10 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
 var ServerCaller = function(url,parser) {
+    var emptyFunction = function() {};
+    var serverCaller = new ServerCaller(url,parser,emptyFunction);
+};
+
+var ServerCaller = function(url,parser,callback) {
     showAlert("called ServerCaller!");
     var xmlhttp;
     if (window.XMLHttpRequest){
@@ -21,6 +26,7 @@ var ServerCaller = function(url,parser) {
             if (xmlhttp.responseText != "undefined"){
                 showAlert(xmlhttp.responseText);
                 parser(xmlhttp.responseText);
+                callback();
                 }
         } else {
             // wait for the call to complete

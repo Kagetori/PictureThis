@@ -16,14 +16,20 @@ var LoginView = function (service) {
     //logs user in
 	this.userLogin = function(username,password) {
 	    var url = 'http://picturethis.brianchau.ca/api/login/login?username=' + username + '&password=' + password;
-        var serverCaller = new ServerCaller(url,UserParser);
-		var retrievedUser =  window.localStorage.getItem('userObject');
-        var parsedUser = JSON.parse(retrievedUser);
-        if (parsedUser.username == username) {
-        	window.location="index2.html";
-        	} else {
-        	showAlert("Login failed, username and/or password don't match.")}
+	    var login = function() {
+	    	var loginView = new LoginView();
+	    	loginView.LoginFriendView(username);
+	    };
+        var serverCaller = new ServerCaller(url,UserParser,login);
        };
+
+    this.LoginFriendView = function(username) {
+    	var user = getUser();
+        if (user.username == username) {
+        	window.location="index2.html";
+            } else {
+            showAlert("Login failed, username and/or password don't match.")}
+    }
 
 	this.initialize();
 }

@@ -1,5 +1,4 @@
-var FriendListView = function (service) {
-
+var GuessView = function (service) {
 	this.initialize = function () {
 		// Define a div wrapper for the view (used to attach events)
 		this.$el = $('<div/>');
@@ -11,13 +10,5 @@ var FriendListView = function (service) {
 		this.$el.html(this.template());
 		return this;
 	};
-
-	this.logout = function() {
-//		var nullUser = new User("","","","","","");
-//		window.localStorage.setItem('userObject', nullUser);
-		window.localStorage.clear();
-		window.location="index.html";
-	}
-
 	this.initialize();
 }
