@@ -48,10 +48,13 @@ tableul.className = "table-view";
 for (i = 0; i < friends.length; i++) {
 	var tableli = document.createElement("LI");
     tableli.className = "table-view-cell";
-    var tabletext = document.createTextNode(friends[i].username);
+    friendUserName = friends[i].username;
+    var tabletext = document.createTextNode(friendUserName);
     var tablebutton = document.createElement("BUTTON");
     tablebutton.className = "btn btn-primary";
-    tablebutton.onclick = startGame();
+
+    //have to use username for now since id is undefined
+    tablebutton.setAttribute("onClick", "startGame(friendUserName)");
     var buttontext = document.createTextNode("PLAY");
     tablebutton.appendChild(buttontext);
     tableli.appendChild(tabletext);
@@ -59,7 +62,6 @@ for (i = 0; i < friends.length; i++) {
     tableul.appendChild(tableli);
 }
 }
-
 friendlist.appendChild(tableul);
 }
 
@@ -68,13 +70,8 @@ function getFriends(){
     return user.friends;
 }
 
-function startGame() {
-	getGame();
-	renderGameView();
-}
-
-function getGame(){};
-
-function renderGameView(){};
+//TODO: call the server, get targetid from friend
+//saves game as object in localmemory, do callback to renderGameView
+function getGame(friend){}
 
 }());
