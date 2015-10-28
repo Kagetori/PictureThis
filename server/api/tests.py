@@ -57,10 +57,8 @@ class SearchTests(TestCase):
 
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
-        try:
-            search.find_user(username='nonexistent')
-        except RemoteException:
-            pass # should check what the error message says too
+
+        self.assertRaises(RemoteException, search.find_user, username='nonexistent')
 
 class GameTests(TestCase):
     @classmethod
@@ -88,20 +86,11 @@ class GameTests(TestCase):
         self.assertEqual(game_remote.curr_round, 0)
         self.assertEqual(game_model.curr_round, 0)
 
-        try:
-            game.start_new_game(user_id=user1_id, friend_id=user1_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_game, user_id=user1_id, friend_id=user1_id)
 
-        try:
-            game.start_new_game(user_id=user1_id, friend_id=user2_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_game, user_id=user1_id, friend_id=user2_id)
 
-        try:
-            game.start_new_game(user_id=user2_id, friend_id=user1_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_game, user_id=user2_id, friend_id=user1_id)
 
     def testStartNewRound(self):
         # populate the word database with six words (=number of rounds)
@@ -143,10 +132,7 @@ class GameTests(TestCase):
         self.assertEqual(game_round2.user_id, user2_id)
         self.assertEqual(game_round2.friend_id, user1_id)
 
-        try:
-            game.start_new_round(user2_id, game_id=game_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_round, user_id=user2_id, game_id=game_id)
 
         game.start_new_round(user_id=user1_id, game_id=game_id)
         game.start_new_round(user_id=user2_id, game_id=game_id)
@@ -158,15 +144,9 @@ class GameTests(TestCase):
 
         self.assertEqual(len(words_used), len(set(words_used))) # check all words used are unqiue
 
-        try:
-            game.start_new_round(user0_id, game_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_round, user_id=user0_id, game_id=game_id)
 
-        try:
-            game.start_new_round(user2_id, game_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_round, user_id=user2_id, game_id=game_id)
 
     def testEndGame(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
@@ -174,19 +154,13 @@ class GameTests(TestCase):
         game.start_new_game(user_id=user1_id, friend_id=user2_id)
         game_id = Game.objects.get(user_id1=user1_id, user_id2=user2_id).id
 
-        game_remote = game.end_game(user1_id, game_id)
+        game_remote = game.end_game(user_id=user1_id, game_id=game_id)
         self.assertFalse(game_remote.active)
         self.assertFalse(Game.objects.get(id=game_id).active)
 
-        try:
-            game.start_new_round(user1_id, game_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.start_new_round, user_id=user1_id, game_id=game_id)
 
-        try:
-            game.end_game(user1_id, game_id)
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.end_game, user_id=user1_id, game_id=game_id)
 
 
     def testValidateGuess(self):
@@ -199,17 +173,11 @@ class GameTests(TestCase):
 
         game.start_new_round(user_id=user1_id, game_id=game_id)
 
-        try:
-            game.validate_guess(user2_id, game_id, 'pear')
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear')
 
-        try:
-            game.validate_guess(user1_id, game_id, 'apple')
-        except RemoteException:
-            pass
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess='apple')
 
-        success = game.validate_guess(user2_id, game_id, 'apple')
+        success = game.validate_guess(user_id=user2_id, game_id=game_id, guess='apple')
         self.assertTrue(isinstance(success, SuccessPacket))
 
     def testGetUserGames(self):
@@ -223,8 +191,8 @@ class GameTests(TestCase):
         game2 = game.start_new_game(user_id=user1_id, friend_id=user3_id)
         game3 = game.start_new_game(user_id=user4_id, friend_id=user1_id)
 
-        user1_games = game.get_user_games(user1_id)
-        user0_games = game.get_user_games(user0_id)
+        user1_games = game.get_user_games(user_id=user1_id)
+        user0_games = game.get_user_games(user_id=user0_id)
 
         self.assertEqual(len(user1_games.games), 3)
         self.assertEqual(len(user0_games.games), 0)
@@ -233,5 +201,5 @@ class GameTests(TestCase):
         game.end_game(user_id=user1_id, game_id=game2.game_id)
         game.end_game(user_id=user1_id, game_id=game3.game_id)
 
-        user1_games = game.get_user_games(user1_id)
+        user1_games = game.get_user_games(user_id=user1_id)
         self.assertEqual(len(user1_games.games), 0)
