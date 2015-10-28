@@ -214,11 +214,20 @@ class GameTests(TestCase):
         user4_id = User.objects.get(name='user4').obfuscated_id
         user0_id = User.objects.get(name='user0').obfuscated_id
 
-        game.start_new_game(user_id=user1_id, friend_id=user2_id)
-        game.start_new_game(user_id=user1_id, friend_id=user3_id)
-        game.start_new_game(user_id=user4_id, friend_id=user1_id)
+        game1 = game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        game2 = game.start_new_game(user_id=user1_id, friend_id=user3_id)
+        game3 = game.start_new_game(user_id=user4_id, friend_id=user1_id)
 
         user1_games = game.get_user_games(user1_id)
+        user0_games = game.get_user_games(user0_id)
 
         self.assertEqual(len(user1_games.games), 3)
+        self.assertEqual(len(user0_games.games), 0)
+
+        game.end_game(user_id=user1_id, game_id=game1.game_id)
+        game.end_game(user_id=user1_id, game_id=game2.game_id)
+        game.end_game(user_id=user1_id, game_id=game3.game_id)
+
+        user1_games = game.get_user_games(user1_id)
+        self.assertEqual(len(user1_games.games), 0)
 

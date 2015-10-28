@@ -165,36 +165,14 @@ def get_user_games(user_id):
     for g in games1:
         game_user_id = g.id
         game_friend_id = g.user_id2
-        game_curr_round = g.curr_round
 
-        game_words_seen = []
-        game_curr_word = None
-        game_words_played = _get_words_played(g)
-
-        if (len(game_words_played) > 0):
-            game_words_seen = game_words_played[:-1]
-            game_curr_word = game_words_played[-1]
-
-        game_my_round = (_get_curr_photographer == int(user_id))
-
-        result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
+        result.append(_get_remote_game(user_id=game_user_id, friend_id=game_friend_id, game_model=g))
 
     for g in games2:
         game_user_id = g.id
         game_friend_id = g.user_id1
-        game_curr_round = g.curr_round
 
-        game_words_seen = []
-        game_curr_word = None
-        game_words_played = _get_words_played(g)
-
-        if (len(game_words_played) > 0):
-            game_words_seen = game_words_played[:-1]
-            game_curr_word = game_words_played[-1]
-            
-        game_my_round = (_get_curr_photographer == int(user_id))
-
-        result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
+        result.append(_get_remote_game(user_id=game_user_id, friend_id=game_friend_id, game_model=g))
 
     return GamePacket(result)
 
@@ -247,3 +225,19 @@ def _is_active_game(user_id1, user_id2):
         return True
     else:
         return False
+
+def _get_remote_game(user_id, friend_id, game_model):
+    curr_round = game_model.curr_round
+    game_id = game_model.id
+    active = game_model.active
+    my_round = (_get_curr_photographer == int(user_id))
+
+    words_seen = []
+    curr_word = None
+    words_played = _get_words_played(game_model)
+
+    if (len(words_played) > 0):
+        words_seen = words_played[:-1]
+        curr_word = words_played[-1]
+        
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, words_seen=words_seen, curr_word=curr_word, my_round=my_round)
