@@ -3,6 +3,7 @@ from django.test import TestCase
 from models import User, Game, WordPrompt, Turn
 
 from interface.exception import RemoteException
+from interface.success import SuccessPacket
 
 import login, search, game
 
@@ -53,7 +54,7 @@ class SearchTests(TestCase):
         try:
             search.find_user(username='nonexistent')
         except RemoteException:
-            pass # TODO check error message too
+            pass # should check what the error message says too
 
 class GameTests(TestCase):
     @classmethod
@@ -61,15 +62,8 @@ class GameTests(TestCase):
         for i in range(3):
             username = 'user' + str(i)
             password = 'pw' + str(i)
-
             login.create_user(username=username, password=password)
-        # populate the word database with six words (=number of rounds)
-        WordPrompt.objects.create(word='apple')
-        WordPrompt.objects.create(word='banana')
-        WordPrompt.objects.create(word='orange')
-        WordPrompt.objects.create(word='avocado')
-        WordPrompt.objects.create(word='grapes')
-        WordPrompt.objects.create(word='watermelon')
+
         return
 
     def testStartNewGame(self):
@@ -94,6 +88,14 @@ class GameTests(TestCase):
             pass
 
     def testStartNewRound(self):
+        # populate the word database with six words (=number of rounds)
+        WordPrompt.objects.create(word='apple')
+        WordPrompt.objects.create(word='banana')
+        WordPrompt.objects.create(word='orange')
+        WordPrompt.objects.create(word='avocado')
+        WordPrompt.objects.create(word='grapes')
+        WordPrompt.objects.create(word='watermelon')
+
         user0_id = User.objects.get(name='user0').obfuscated_id
         user1_id = User.objects.get(name='user1').obfuscated_id
         user2_id = User.objects.get(name='user2').obfuscated_id
@@ -149,6 +151,39 @@ class GameTests(TestCase):
             game.start_new_round(user2_id, game_id)
         except RemoteException:
             pass
+
+    def testEndGame(self):
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        game_id = Game.objects.get(user_id1=user1_id, user_id2=user2_id).id
+
+        game_remote = game.end_game(user1_id, game_id)
+        self.assertFalse(game_remote.active)
+        self.assertFalse(Game.objects.get(id=game_id).active)
+
+        try:
+            game.start_new_round(user1_id, game_id)
+        except RemoteException:
+            pass
+
+        try:
+            game.end_game(user1_id, game_id)
+        except RemoteException:
+            pass
+
+
+    def testValidateGuess(self):
+        WordPrompt.objects.create(word='apple')
+
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        game_id = Game.objects.get(user_id1=user1_id, user_id2=user2_id).id
+
+        #TODO finish function
+
+
 
 
 
