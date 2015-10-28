@@ -63,7 +63,8 @@ def start_new_round(user_id, game_id):
     if (game.curr_round >= game.max_rounds):
         return RemoteException("Max number of rounds reached")
 
-    if (int(user_id) != _get_curr_photographer(game_model=game)):
+    # Check if user is photographer of PREVIOUS round
+    if (int(user_id) == _get_curr_photographer(game_model=game)):
         return RemoteException("This user can't start a new round")
 
     words_seen = _get_words_played(game_id)
@@ -126,6 +127,14 @@ def validate_guess(user_id, game_id, guess):
         current_turn = Turn.objects.get(turn_num=game.curr_round, game=game)
     except Turn.DoesNotExist:
         return RemoteException("Turn does not exist")
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        return RemoteException('User ID and game ID combination not valid') 
+
+    if (int(user_id) == _get_curr_photographer(game)):
+        return RemoteException("Not this user's turn to guess")
+
     current_word = current_turn.word_prompt.word
     if (guess.strip() == current_word):
         return SuccessPacket()
@@ -148,12 +157,13 @@ def _get_words_played(game_model):
 def _get_curr_photographer(game_model):
     """
     Returns the id of the user who is the photographer for the current round
+    For a new game, photographer is set to the user who DIDN'T initiate the game
     """
     curr_round = game_model.curr_round
     photographer_id = None
-    if (curr_round % 2 == 0):
+    if (curr_round % 2 == 1):
         photographer_id = game_model.user_id1
-    else:
+    elif (curr_round % 2 == 0):
         photographer_id = game_model.user_id2
     return photographer_id
 

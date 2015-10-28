@@ -181,7 +181,22 @@ class GameTests(TestCase):
         game.start_new_game(user_id=user1_id, friend_id=user2_id)
         game_id = Game.objects.get(user_id1=user1_id, user_id2=user2_id).id
 
-        #TODO finish function
+        game.start_new_round(user_id=user1_id, game_id=game_id)
+
+        try:
+            game.validate_guess(user2_id, game_id, 'pear')
+        except RemoteException:
+            pass
+
+        try:
+            game.validate_guess(user1_id, game_id, 'apple')
+        except RemoteException:
+            pass
+
+        success = game.validate_guess(user2_id, game_id, 'apple')
+        self.assertTrue(isinstance(success, SuccessPacket))
+
+
 
 
 
