@@ -112,7 +112,7 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=True)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=None)
 
 def validate_guess(user_id, game_id, guess):
     """
