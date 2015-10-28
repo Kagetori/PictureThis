@@ -44,7 +44,7 @@ def _set_friendship(user_id, target_id, relation):
         user1 = User.objects.get(obfuscated_id=user_id)
         user2 = User.objects.get(obfuscated_id=target_id)
     except User.DoesNotExist:
-        return RemoteException('Invalid user id.')
+        raise RemoteException('Invalid user id.')
 
     friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=target_id)
     friendship.relation = relation

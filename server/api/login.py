@@ -19,13 +19,13 @@ def create_user(username, password, client_version=1, device_id=None):
     API Function to create a user
     """
     if username is None or password is None:
-        return RemoteException('Username and password cannot be blank.')
+        raise RemoteException('Username and password cannot be blank.')
 
     user = None
 
     try:
         user = User.objects.get(name=username)
-        return RemoteException('Username already exists.')
+        raise RemoteException('Username already exists.')
     except User.DoesNotExist:
         pass
 
@@ -45,20 +45,20 @@ def login(username, password, client_version=1, device_id=None):
     API Function to login a user using password
     """
     if username is None or password is None:
-        return RemoteException('Username and password cannot be blank.')
+        raise RemoteException('Username and password cannot be blank.')
 
     user = None
 
     try:
         user = User.objects.get(name=username)
     except User.DoesNotExist:
-        return RemoteException('Username password combination not valid.')
+        raise RemoteException('Username password combination not valid.')
 
     if user is None:
-        return RemoteException('Username password combination not valid.')
+        raise RemoteException('Username password combination not valid.')
 
     if not check_password(password=password, encoded=user.password):
-        return RemoteException('Username password combination not valid.')
+        raise RemoteException('Username password combination not valid.')
 
     # Create new auth token
     auth_token = uuid.uuid4()

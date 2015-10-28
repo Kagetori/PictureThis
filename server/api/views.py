@@ -13,7 +13,7 @@ def friend__add_friend(request):
     user_id = params.get('user_id', 0)
     target_id = params.get('target_id', 0)
 
-    return _response(friend.add_friend(user_id=user_id, target_id=target_id))
+    return _response(friend.add_friend, user_id=user_id, target_id=target_id)
 
 def friend__remove_friend(request):
     params = _params(request)
@@ -21,16 +21,14 @@ def friend__remove_friend(request):
     user_id = params.get('user_id', 0)
     target_id = params.get('target_id', 0)
 
-    return _response(friend.remove_friend(user_id=user_id, target_id=target_id))
+    return _response(friend.remove_friend, user_id=user_id, target_id=target_id)
 
 def friend__get_friends(request):
     params = _params(request)
     
     user_id = params.get('user_id', 0)
 
-    return _response(friend.get_user_friends(user_id=user_id))
-
-
+    return _response(friend.get_user_friends, user_id=user_id)
 
 # LOGIN API
 
@@ -42,7 +40,7 @@ def login__create_user(request):
     client_version = params.get('client_version', 0)
     device_id =  params.get('device_id', None)
 
-    return _response(login.create_user(username=username, password=password, client_version=client_version, device_id=device_id))
+    return _response(login.create_user, username=username, password=password, client_version=client_version, device_id=device_id)
 
 def login__login(request):
     params = _params(request)
@@ -52,7 +50,7 @@ def login__login(request):
     client_version = params.get('client_version', 0)
     device_id =  params.get('device_id', None)
 
-    return _response(login.login(username=username, password=password, client_version=client_version, device_id=device_id))
+    return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
 
 # POLL API
@@ -62,7 +60,7 @@ def poll__update(request):
 
     user_id = params.get('user_id', 0)
 
-    return _response(poll.update(user_id=user_id))
+    return _response(poll.update, user_id=user_id)
 
 
 
@@ -73,7 +71,7 @@ def search__find_user(request):
 
     username = params.get('username', None)
 
-    return _response(search.find_user(username=username))
+    return _response(search.find_user, username=username)
 
 
 
@@ -84,7 +82,7 @@ def game__start_new_game(request):
     user_id = params.get('user_id', 0)
     friend_id = params.get('friend_id', 0)
 
-    return _response(game.start_new_game(user_id=user_id, friend_id=friend_id))
+    return _response(game.start_new_game, user_id=user_id, friend_id=friend_id)
 
 def game__start_new_round(request):
     params = _params(request)
@@ -92,7 +90,7 @@ def game__start_new_round(request):
     user_id = params.get('user_id', None)
     game_id = params.get('game_id', None)
 
-    return _response(game.start_new_round(user_id=user_id, game_id=game_id))
+    return _response(game.start_new_round, user_id=user_id, game_id=game_id)
 
 def game__end_game(request):
     params = _params(request)
@@ -100,7 +98,7 @@ def game__end_game(request):
     user_id = params.get('user_id', None)
     game_id = params.get('game_id', None)
 
-    return _response(game.end_game(user_id=user_id, game_id=game_id))
+    return _response(game.end_game, user_id=user_id, game_id=game_id)
 
 def game__validate_guess(request):
     params = _params(request)
@@ -109,14 +107,14 @@ def game__validate_guess(request):
     game_id = params.get('game_id', None)
     guess = params.get('guess', None)
 
-    return _response(game.validate_guess(user_id=user_id, game_id=game_id, guess=guess))
+    return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess)
 
 def game__get_user_games(request):
     params = _params(request)
 
     user_id = params.get('user_id', None)
 
-    return _response(game.get_user_games(user_id=user_id))
+    return _response(game.get_user_games, user_id=user_id)
 
 
 # HELPER FUNCTIONS
@@ -124,5 +122,9 @@ def game__get_user_games(request):
 def _params(request):
     return request.GET
 
-def _response(response):
-    return JsonResponse(response.ret_dict())
+def _response(fn, **kwargs):
+    try:
+        response = fn(**kwargs)
+        return JsonResponse(response.ret_dict())
+    except RemoteException as e:
+        return JsonResponse(e.ret_dict())

@@ -10,6 +10,8 @@ import login, search, game
 
 # Create your tests here.
 
+
+
 class LoginTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -30,7 +32,10 @@ class LoginTests(TestCase):
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
 
-        # Test duplicate logging in
+        # Test duplicate create user failing
+        self.assertRaises(RemoteException, login.create_user, username='user1', password='pw1')
+
+
 
 class SearchTests(TestCase):
     @classmethod
@@ -230,4 +235,3 @@ class GameTests(TestCase):
 
         user1_games = game.get_user_games(user1_id)
         self.assertEqual(len(user1_games.games), 0)
-
