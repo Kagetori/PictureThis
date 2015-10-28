@@ -61,7 +61,7 @@ def start_new_round(user_id, game_id):
     if (game.curr_round >= game.max_rounds):
         return RemoteException("Max number of rounds reached")
 
-    if (user_id != _get_curr_photographer(game_model=game)):
+    if (int(user_id) != _get_curr_photographer(game_model=game)):
         return RemoteException("This user can't start a new round")
 
     words_seen = _get_words_played(game_id)
@@ -72,7 +72,7 @@ def start_new_round(user_id, game_id):
 
     round_num = game.curr_round + 1
 
-    turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word, photographer=user)
+    turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
     turn.save()
 
     game.curr_round = round_num
@@ -149,11 +149,11 @@ def _get_curr_photographer(game_model):
     """
     curr_round = game_model.curr_round
     photographer_id = None
-    if (curr_round > 0):
-        curr_turn = Turn.objects.filter(game=game_model, turn_num=game_model.curr_round)
-        photographer_id = curr_turn.photographer.id
-    elif (curr_round == 0):
+    if (curr_round % 2 == 0):
         photographer_id = game_model.user_id1
+    else:
+        photographer_id = game_model.user_id2
+    return photographer_id
 
 def _get_random_word():
     """
@@ -167,6 +167,6 @@ def _get_friend_id(user_model, game_model):
     if (user_id == game_model.user_id1):
         return game_model.user_id2
     elif (user_id == game_model.user_id2):
-        return game.user_id1
+        return game_model.user_id1
     else:
         return None

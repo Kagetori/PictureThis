@@ -60,7 +60,6 @@ class Turn(models.Model):
     Defines a turn in the game
     """
     turn_num = models.IntegerField()
-    photographer = models.ForeignKey(User, on_delete=models.SET_NULL)
     game = models.ForeignKey(Game, on_delete=models.SET_NULL)
     word_prompt = models.ForeignKey(WordPrompt, on_delete=models.SET_NULL)
 
