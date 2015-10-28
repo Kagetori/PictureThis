@@ -37,7 +37,7 @@ class WordPrompt(models.Model):
     """
     A word prompt given to the user
     """
-    word = models.CharField(max_length=512, unique=True)
+    word = models.CharField(max_length=255, unique=True)
 
 
 class Game(models.Model):
