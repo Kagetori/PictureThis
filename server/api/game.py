@@ -166,8 +166,15 @@ def get_user_games(user_id):
         game_user_id = g.id
         game_friend_id = g.user_id2
         game_curr_round = g.curr_round
-        game_words_seen = _get_words_played(g)[:-1]
-        game_curr_word = _get_words_played(g)[-1]
+
+        game_words_seen = []
+        game_curr_word = None
+        game_words_played = _get_words_played(g)
+
+        if (len(game_words_played) > 0):
+            game_words_seen = game_words_played[:-1]
+            game_curr_word = game_words_played[-1]
+
         game_my_round = (_get_curr_photographer == int(user_id))
 
         result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
@@ -176,8 +183,15 @@ def get_user_games(user_id):
         game_user_id = g.id
         game_friend_id = g.user_id1
         game_curr_round = g.curr_round
-        game_words_seen = _get_words_played(g)[:-1]
-        game_curr_word = _get_words_played(g)[-1]
+
+        game_words_seen = []
+        game_curr_word = None
+        game_words_played = _get_words_played(g)
+
+        if (len(game_words_played) > 0):
+            game_words_seen = game_words_played[:-1]
+            game_curr_word = game_words_played[-1]
+            
         game_my_round = (_get_curr_photographer == int(user_id))
 
         result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))

@@ -4,6 +4,7 @@ from models import User, Game, WordPrompt, Turn
 
 from interface.exception import RemoteException
 from interface.success import SuccessPacket
+from interface.packets import GamePacket
 
 import login, search, game
 
@@ -59,7 +60,7 @@ class SearchTests(TestCase):
 class GameTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        for i in range(3):
+        for i in range(5):
             username = 'user' + str(i)
             password = 'pw' + str(i)
             login.create_user(username=username, password=password)
@@ -207,5 +208,17 @@ class GameTests(TestCase):
         self.assertTrue(isinstance(success, SuccessPacket))
 
     def testGetUserGames(self):
-        # TODO
-        pass 
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        user3_id = User.objects.get(name='user3').obfuscated_id
+        user4_id = User.objects.get(name='user4').obfuscated_id
+        user0_id = User.objects.get(name='user0').obfuscated_id
+
+        game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        game.start_new_game(user_id=user1_id, friend_id=user3_id)
+        game.start_new_game(user_id=user4_id, friend_id=user1_id)
+
+        user1_games = game.get_user_games(user1_id)
+
+        self.assertEqual(len(user1_games.games), 3)
+
