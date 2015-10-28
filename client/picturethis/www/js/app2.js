@@ -40,26 +40,27 @@ service.initialize().done(function () {
     /* ---------------------------------- Local Functions ---------------------------------- */
 
 function populateTable() {
-var friends = getFriends();
-var friendlist = document.getElementById("friendlist-tpl");
-if (friends.lengt != 0) {
-var tableul = document.createElement('ul');
-tableul.className = "table-view";
-for (i = 0; i < friends.length; i++) {
-	var tableli = document.createElement("LI");
-    tableli.className = "table-view-cell";
-    friendUserName = friends[i].username;
-    var tabletext = document.createTextNode(friendUserName);
-    var tablebutton = document.createElement("BUTTON");
-    tablebutton.className = "btn btn-primary";
+	var friends = getFriends();
+	var friendlist = document.getElementById("friendlist-tpl");
+		if (friends.length != 0) {
+		var tableul = document.createElement('ul');
+		tableul.className = "table-view";
+			for (i = 0; i < friends.length; i++) {
+				var tableli = document.createElement("LI");
+				tableli.className = "table-view-cell";
+				friendUserName = friends[i].username;
+				friendId = friends[i].user_id;
+				var tabletext = document.createTextNode(friendUserName);
+				var tablebutton = document.createElement("BUTTON");
+				tablebutton.className = "btn btn-primary";
 
-    //have to use username for now since id is undefined
-    tablebutton.setAttribute("onClick", "startGame(friendUserName)");
-    var buttontext = document.createTextNode("PLAY");
-    tablebutton.appendChild(buttontext);
-    tableli.appendChild(tabletext);
-    tableli.appendChild(tablebutton);
-    tableul.appendChild(tableli);
+				//have to use username for now since id is undefined
+				tablebutton.setAttribute("onClick", "startGame(friendId)");
+				var buttontext = document.createTextNode("PLAY");
+				tablebutton.appendChild(buttontext);
+				tableli.appendChild(tabletext);
+				tableli.appendChild(tablebutton);
+				tableul.appendChild(tableli);
 }
 }
 friendlist.appendChild(tableul);
@@ -67,11 +68,14 @@ friendlist.appendChild(tableul);
 
 function getFriends(){
 	var user = getUser();
+	console.log(user.friends);
     return user.friends;
 }
 
 //TODO: call the server, get targetid from friend
 //saves game as object in localmemory, do callback to renderGameView
-function getGame(friend){}
+function getGame(friendId){
+	
+};
 
 }());
