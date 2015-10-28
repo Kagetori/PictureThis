@@ -87,6 +87,16 @@ class GameTests(TestCase):
         except RemoteException:
             pass
 
+        try:
+            game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        except RemoteException:
+            pass
+
+        try:
+            game.start_new_game(user_id=user2_id, friend_id=user1_id)
+        except RemoteException:
+            pass
+
     def testStartNewRound(self):
         # populate the word database with six words (=number of rounds)
         WordPrompt.objects.create(word='apple')

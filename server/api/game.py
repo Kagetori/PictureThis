@@ -3,6 +3,7 @@ from models import Game, User, Turn, WordPrompt
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
 from interface.success import SuccessPacket
+from interface.packets import GamePacket
 
 import string
 import utility
@@ -39,7 +40,7 @@ def start_new_game(user_id, friend_id):
 
     game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True)
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, my_round=True)
 
 def start_new_round(user_id, game_id):
     """
@@ -84,7 +85,7 @@ def start_new_round(user_id, game_id):
 
     game.curr_round = round_num
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, my_round=True)
 
 def end_game(user_id, game_id):
     """
@@ -111,7 +112,7 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=True)
 
 def validate_guess(user_id, game_id, guess):
     """
@@ -145,11 +146,33 @@ def validate_guess(user_id, game_id, guess):
     else:
         return RemoteException("Guess is incorrect")
 
+def get_user_games(user_id):
+    """
+    Returns all the user's active games
+    """
+    games = Game.objects.filter(user_id1=user_id, active=True) + Game.objects.filter(user_id2=user_id, active=True)
+    user = User.objects(obfuscated_id=user_id)
+
+    result = []
+
+    for g in games:
+        game_user_id = g.id
+        game_friend_id = _get_friend_id(user_model=user, game_model=g)
+        game_curr_round = g.curr_round
+        game_words_seen = _get_words_played(g)[:-1]
+        game_curr_word = _get_words_played(g)[-1]
+        game_my_round = (_get_curr_photographer == int(user_id))
+
+
+        result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
+
+    return GamePacket(result)
+
 # Helper functions
 
 def _get_words_played(game_model):
 
-    turns = Turn.objects.filter(game=game_model)
+    turns = Turn.objects.filter(game=game_model).order_by('turn_num')
 
     words_played = []
 
@@ -188,8 +211,8 @@ def _get_friend_id(user_model, game_model):
         return None
 
 def _is_active_game(user_id1, user_id2):
-    games1=Game.objects.filter(user_id1=user_id1, user_id2=user_id2, active=True)
-    games2=Game.objects.filter(user_id1=user_id2, user_id2=user_id1, active=True)
+    games1 = Game.objects.filter(user_id1=user_id1, user_id2=user_id2, active=True) 
+    games2 = Game.objects.filter(user_id1=user_id2, user_id2=user_id1, active=True)
     if (games1.count() + games2.count() > 0):
         return True
     else:
