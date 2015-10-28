@@ -38,7 +38,7 @@ def start_new_game(user_id, friend_id):
     game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0)
     game.save()
 
-    game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True)
+    game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True).id
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, my_round=True)
 
