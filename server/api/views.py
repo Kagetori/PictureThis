@@ -111,6 +111,13 @@ def game__validate_guess(request):
 
     return _response(game.validate_guess(user_id=user_id, game_id=game_id, guess=guess))
 
+def game__get_user_games(request):
+    params = _params(request)
+
+    user_id = params.get('user_id', None)
+
+    return _response(game.get_user_games(user_id=user_id))
+
 
 # HELPER FUNCTIONS
 

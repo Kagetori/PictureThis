@@ -37,7 +37,7 @@ class WordPrompt(models.Model):
     """
     A word prompt given to the user
     """
-    word = models.CharField(max_length=512)
+    word = models.CharField(max_length=512, unique=True)
 
 
 class Game(models.Model):
@@ -60,7 +60,7 @@ class Turn(models.Model):
     Defines a turn in the game
     """
     turn_num = models.IntegerField()
-    game = models.ForeignKey(Game, on_delete=models.SET_NULL)
-    word_prompt = models.ForeignKey(WordPrompt, on_delete=models.SET_NULL)
+    game = models.ForeignKey(Game, null=True, on_delete=models.SET_NULL)
+    word_prompt = models.ForeignKey(WordPrompt, null=True, on_delete=models.SET_NULL)
 
 

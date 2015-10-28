@@ -150,19 +150,35 @@ def get_user_games(user_id):
     """
     Returns all the user's active games
     """
-    games = Game.objects.filter(user_id1=user_id, active=True) + Game.objects.filter(user_id2=user_id, active=True)
-    user = User.objects(obfuscated_id=user_id)
+    if user_id is None:
+        return RemoteException('User ID cannot be blank')
+    try:
+         user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        return RemoteException("User does not exist")
+
+    games1 = Game.objects.filter(user_id1=user_id, active=True) 
+    games2 = Game.objects.filter(user_id2=user_id, active=True)
 
     result = []
 
-    for g in games:
+    for g in games1:
         game_user_id = g.id
-        game_friend_id = _get_friend_id(user_model=user, game_model=g)
+        game_friend_id = g.user_id2
         game_curr_round = g.curr_round
         game_words_seen = _get_words_played(g)[:-1]
         game_curr_word = _get_words_played(g)[-1]
         game_my_round = (_get_curr_photographer == int(user_id))
 
+        result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
+
+    for g in games2:
+        game_user_id = g.id
+        game_friend_id = g.user_id1
+        game_curr_round = g.curr_round
+        game_words_seen = _get_words_played(g)[:-1]
+        game_curr_word = _get_words_played(g)[-1]
+        game_my_round = (_get_curr_photographer == int(user_id))
 
         result.append(RemoteGame(game_id=game_user_id, user_id=user_id, friend_id=game_friend_id, active=True, curr_round=game_curr_round, words_seen=game_words_seen, curr_word=game_curr_word, my_round=game_my_round))
 
