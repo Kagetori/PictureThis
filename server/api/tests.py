@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from models import User, Game
+from models import User, Game, WordPrompt
 
 from interface.exception import RemoteException
 
@@ -55,29 +55,66 @@ class SearchTests(TestCase):
         except RemoteException:
             pass # TODO check error message too
 
-# class GameTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # for i in range(3):
-#         #     username = 'user' + str(i)
-#         #     password = 'pw' + str(i)
+class GameTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        for i in range(3):
+            username = 'user' + str(i)
+            password = 'pw' + str(i)
 
-#         #     login.create_user(username=username, password=password)
-#         # return
-#         return
+            login.create_user(username=username, password=password)
+        # populate the word database with six words (=number of rounds)
+        WordPrompt.objects.create(word='apple')
+        WordPrompt.objects.create(word='banana')
+        WordPrompt.objects.create(word='orange')
+        WordPrompt.objects.create(word='avocado')
+        WordPrompt.objects.create(word='grapes')
+        WordPrompt.objects.create(word='watermelon')
+        return
 
-#     def testStartNewGame(self):
-#         game_remote = game.start_new_game(user_id='1', friend_id='2')
+    def testStartNewGame(self):
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        game_remote = game.start_new_game(user_id=user1_id, friend_id=user2_id)
 
-#         #game_model = Game.objects.get(id=1)
+        try:
+            game_model = Game.objects.get(user_id1=user1_id, user_id2=user2_id)
+        except Game.DoesNotExist:
+            self.fail("Game not found")
 
-#         #self.assertEqual(game_remote.user_id, game_model.user_id1)
-#         #self.assertEqual(game_remote.friend_id, game_model.user_id2)
+        self.assertTrue(game_remote.active)
+        self.assertTrue(game_model.active)
 
-#         self.assertTrue(game_remote.active)
-#         #self.assertTrue(game_model.active)
+        self.assertEqual(game_remote.curr_round, 0)
+        self.assertEqual(game_model.curr_round, 0)
 
-#         self.assertEqual(game_remote.curr_round, 0)
-#         #self.assertEqual(game_model.curr_round, 0)
+        try:
+            game.start_new_game(user_id=user1_id, friend_id=user1_id)
+        except RemoteException:
+            pass
+
+    def testStartNewRound(self):
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+
+        game.start_new_game(user_id=user1_id, friend_id=user2_id)
+
+        game_model = Game.objects.get(user_id1=user1_id, user_id2=user2_id)
+        game_id = game_model.id
+
+        game_remote = game.start_new_round(user_id=user1_id, game_id=game_id)
+
+        self.assertEqual(game_remote.curr_round, 1)
+        self.assertEqual(len(game_remote.words_seen), 0)
+        self.assertEqual(game_remote.user_id, user1_id)
+        self.assertEqual(game_remote.friend_id, user2_id)
+
+        game_remote = game.start_new_round(user_id=user2_id, game_id=game_id)
+
+        self.assertTrue(game_remote.curr_round, 2)
+        self.assertEqual(len(game_remote.words_seen), 1)
+        self.assertEqual(game_remote.user_id, user2_id)
+        self.assertEqual(game_remote.friend_id, user1_id)
+
 
 

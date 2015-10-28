@@ -56,8 +56,10 @@ def start_new_round(user_id, game_id):
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
         return RemoteException('User ID and game ID combination not valid') 
+
     if (game.active == False):
         return RemoteException("Game is inactive")
+
     if (game.curr_round >= game.max_rounds):
         return RemoteException("Max number of rounds reached")
 
@@ -163,7 +165,7 @@ def _get_random_word():
     return WordPrompt.objects.order_by('?').first() 
 
 def _get_friend_id(user_model, game_model):
-    user_id = user_model.id
+    user_id = user_model.obfuscated_id
     if (user_id == game_model.user_id1):
         return game_model.user_id2
     elif (user_id == game_model.user_id2):
