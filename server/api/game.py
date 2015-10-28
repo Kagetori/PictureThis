@@ -22,12 +22,12 @@ def start_new_game(user_id, friend_id):
     game = None
 
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         return RemoteException("User 1 doesn't exist")
 
     try:
-        friend = User.objects.get(id=friend_id)
+        friend = User.objects.get(obfuscated_id=friend_id)
     except User.DoesNotExist:
         return RemoteException("User 2 doesn't exist")
     # TODO: check no active game already exists between user 1 and 2
@@ -45,7 +45,7 @@ def start_new_round(user_id, game_id):
     if user_id is None or game_id is None:
         return RemoteException('User ID and game ID cannot be blank.')
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         return RemoteException("User does not exist")
     try:
@@ -86,7 +86,7 @@ def end_game(user_id, game_id):
     if user_id is None or game_id is None:
         return RemoteException('User ID and game ID cannot be blank.')
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         return RemoteException("User does not exist")
     try:
@@ -113,7 +113,7 @@ def validate_guess(user_id, game_id, guess):
     if user_id is None or game_id is None:
         return RemoteException('User ID and game ID cannot be blank.')
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         return RemoteException("User does not exist")
     try:
