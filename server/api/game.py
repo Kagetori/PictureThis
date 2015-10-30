@@ -277,3 +277,13 @@ def _get_remote_game(user_id, friend_id, game_model):
 
     except Turn.DoesNotExist:
         raise RemoteException("Turn does not exist")
+
+# WARNING: THE FOLLOWING ARE DEBUGGING FUNCTIONS ONLY
+# EXTERNAL APIs SHOULD NOT HAVE ACCECSS TO THESE
+def _end_all_games():
+    games = Game.objects.filter(active=True)
+
+    for game in games:
+        game.active = False;
+        game.save()
+
