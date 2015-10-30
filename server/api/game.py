@@ -198,7 +198,7 @@ def _get_curr_photographer(game_model):
     photographer_id = None
     if (curr_round % 2 == 1):
         photographer_id = game_model.user_id1
-    elif (curr_round % 2 == 0):
+    else:
         photographer_id = game_model.user_id2
     return photographer_id
 
@@ -230,7 +230,7 @@ def _get_remote_game(user_id, friend_id, game_model):
     curr_round = game_model.curr_round
     game_id = game_model.id
     active = game_model.active
-    my_round = (_get_curr_photographer == int(user_id))
+    my_round = (_get_curr_photographer(game_model) == int(user_id))
 
     words_seen = []
     curr_word = None
