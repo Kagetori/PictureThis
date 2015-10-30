@@ -40,7 +40,7 @@ def start_new_game(user_id, friend_id):
 
     game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True).id
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, my_round=False, turn_status=config.TURN_CAN_START_ROUND)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, is_photographer=False, turn_status=config.TURN_CAN_START_ROUND)
 
 def start_new_round(user_id, game_id):
     """
@@ -85,7 +85,7 @@ def start_new_round(user_id, game_id):
 
     game.curr_round = round_num
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, my_round=True, turn_status=config.TURN_WAITING) # change status to TURN_PHOTO once we implement photos TODO
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, is_photographer=True, turn_status=config.TURN_WAITING) # change status to TURN_PHOTO once we implement photos TODO
 
 def end_game(user_id, game_id):
     """
@@ -112,7 +112,7 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=None, turn_status=config.TURN_GAME_OVER)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, is_photographer=None, turn_status=config.TURN_GAME_OVER)
 
 def validate_guess(user_id, game_id, guess):
     """
@@ -142,9 +142,9 @@ def validate_guess(user_id, game_id, guess):
     if (friend_id is None):
         raise RemoteException('User ID and game ID combination not valid') 
 
-    my_round = int(user_id) == _get_curr_photographer(game)
+    is_photographer = int(user_id) == _get_curr_photographer(game)
 
-    if my_round:
+    if is_photographer:
         raise RemoteException("Not this user's turn to guess")
 
     current_word = current_turn.word_prompt.word
@@ -156,7 +156,7 @@ def validate_guess(user_id, game_id, guess):
         if game.curr_round == game.max_rounds:
             return end_game(user_id, game_id)
         else:
-            return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=game.curr_round, words_seen=_get_words_played(game_id), curr_word=current_word, my_round=my_round, turn_status=config.TURN_CAN_START_ROUND)
+            return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=game.curr_round, words_seen=_get_words_played(game_id), curr_word=current_word, is_photographer=is_photographer, turn_status=config.TURN_CAN_START_ROUND)
     else:
         raise RemoteException("Guess is incorrect")
 
@@ -242,7 +242,7 @@ def _get_remote_game(user_id, friend_id, game_model):
     curr_round = game_model.curr_round
     game_id = game_model.id
     active = game_model.active
-    my_round = (_get_curr_photographer(game_model) == int(user_id))
+    is_photographer = (_get_curr_photographer(game_model) == int(user_id))
 
     words_seen = []
     curr_word = None
@@ -252,7 +252,7 @@ def _get_remote_game(user_id, friend_id, game_model):
         turn_status = None
 
         if game_model.curr_round == 0:
-            if my_round:
+            if is_photographer:
                 turn_status = config.TURN_WAITING
             else:
                 turn_status = config.TURN_CAN_START_ROUND
@@ -260,7 +260,7 @@ def _get_remote_game(user_id, friend_id, game_model):
         else:
             current_turn = Turn.objects.get(turn_num=game_model.curr_round, game=game_model)
 
-            if my_round:
+            if is_photographer:
                 # TODO status needs to take into account photos once we implement that
                 turn_status = config.TURN_WAITING
             else:
@@ -273,7 +273,7 @@ def _get_remote_game(user_id, friend_id, game_model):
             words_seen = words_played[:-1]
             curr_word = words_played[-1]
             
-        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, words_seen=words_seen, curr_word=curr_word, my_round=my_round, turn_status=turn_status)
+        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, words_seen=words_seen, curr_word=curr_word, is_photographer=is_photographer, turn_status=turn_status)
 
     except Turn.DoesNotExist:
         raise RemoteException("Turn does not exist")
