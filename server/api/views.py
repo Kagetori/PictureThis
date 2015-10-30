@@ -84,13 +84,13 @@ def game__start_new_game(request):
 
     return _response(game.start_new_game, user_id=user_id, friend_id=friend_id)
 
-def game__start_new_round(request):
+def game__send_picture(request):
     params = _params(request)
 
     user_id = params.get('user_id', None)
     game_id = params.get('game_id', None)
 
-    return _response(game.start_new_round, user_id=user_id, game_id=game_id)
+    return _response(game.send_picture, user_id=user_id, game_id=game_id)
 
 def game__end_game(request):
     params = _params(request)

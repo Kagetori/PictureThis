@@ -66,6 +66,7 @@ class Turn(models.Model):
     game = models.ForeignKey(Game, null=True, on_delete=models.SET_NULL)
     word_prompt = models.ForeignKey(WordPrompt, null=True, on_delete=models.SET_NULL)
     guessed = models.BooleanField(default=False)
+    picture_added = models.BooleanField(default=False)
     picture_seen = models.BooleanField(default=False)
     picture_seen_date = models.DateTimeField(null=True)
     picture_url = models.CharField(max_length=512)

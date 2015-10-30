@@ -18,6 +18,10 @@ class FriendUser(User):
             username of friend
         user_id
             friend's user id
+        active_game
+            whether or not there is an active game with the friend
+        game_id
+            if user has an active game, the game_id
         """
         User.__init__(self, username, user_id)
 
