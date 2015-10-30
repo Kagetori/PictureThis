@@ -27,9 +27,10 @@ var GamesParser = function(result) {
         showAlert(userGames);
         userGames.push(game);
         user.games = userGames;
-          //user.games.push(game);
 
-        showAlert('New game id: ' + game.game_id);
+        window.localStorage.removeItem('activeGame');
+        window.localStorage.setItem('activeGame',JSON.stringify(game));
+
     } else {
           showAlert(obj.exception);
           };
@@ -45,12 +46,16 @@ var makeGame = function(obj) {
      game.curr_round = obj.curr_round;
      game.words_seen = obj.words_seen;
 
+     if (typeof obj.is_turn != "undefined") {
+             game.is_turn = obj.curr_word;
+          };
+
      if (typeof obj.curr_word != "undefined") {
         game.curr_word = obj.curr_word;
      };
 
-    if (typeof obj.my_round != "undefined") {
-        game.my_round = obj.my_round;
+    if (typeof obj.is_photographer != "undefined") {
+        game.my_round = obj.is_photographer;
     };
 
     return game;
