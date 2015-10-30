@@ -9,15 +9,37 @@ var Game = function(game_id, user_id, friend_id, active, is_photographer, is_tur
     this.curr_round = curr_round;
     this.curr_word = curr_word;
     this.words_seen = words_seen;
-}
+};
 
 //checks if there's an ongoing game with the friend. Continues game if there is, else starts a new game.
 function playGame(friendId){
 	showAlert(friendId);
-	//TODO: check for ongoing game (query server for most recent results?)
+
+    if (hasOngoingGame(friendId) {
 	//TODO: continue current game (go to appropriate screen)
-	//TODO: else start a new game
-	startNewGame(friendId);
+	    continueGame(friendId);
+	} else {
+	    startNewGame(friendId);
+	}
+};
+
+// returns true if there is an ongoing game with a friend (also saves game to localStorage), false otherwise
+function hasOngoingGame(friendId) {
+	var user = getUser();
+	var userGames = user.games;
+	for (var game in userGames) {
+	    if(game.friend_id === friendId && game.active) {
+	        window.localStorage.removeItem('activeGame');
+            window.localStorage.setItem('activeGame',JSON.stringify(game));
+            return true;
+	    }
+	}
+	return false;
+};
+
+// figures out which screen to go to based on is_photographer and is_turn, then goes to screen
+function continueGame(friendId) {
+
 };
 
 // queries server to get new game object. Then parses game and add to list of games in user
