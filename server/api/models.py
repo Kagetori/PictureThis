@@ -55,6 +55,9 @@ class Game(models.Model):
     game_type = models.IntegerField(default=config.GAME_TYPE_NORMAL)
     words_seen = models.ManyToManyField(WordPrompt, through='Turn')
 
+    class Meta:
+        index_together = ('user_id1', 'user_id2', 'active')
+
 class Turn(models.Model):
     """
     Defines a turn in the game
@@ -63,3 +66,6 @@ class Turn(models.Model):
     game = models.ForeignKey(Game, null=True, on_delete=models.SET_NULL)
     word_prompt = models.ForeignKey(WordPrompt, null=True, on_delete=models.SET_NULL)
     guessed = models.BooleanField(default=False)
+    picture_seen = models.BooleanField(default=False)
+    picture_seen_date = models.DateTimeField(null=True)
+    picture_url = models.CharField(max_length=512)

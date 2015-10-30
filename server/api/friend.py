@@ -42,6 +42,9 @@ def _set_friendship(user_id, friend_id, relation):
     except User.DoesNotExist:
         raise RemoteException('Invalid user id.')
 
+    if user_id == friend_id:
+        raise RemoteException('Cannot set friendship between two identical users')
+
     friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=friend_id)
     friendship.relation = relation
     friendship.save()
