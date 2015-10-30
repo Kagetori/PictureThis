@@ -6,7 +6,7 @@ from interface.success import SuccessPacket
 from interface.packets import GamePacket
 
 import string
-import utility
+import config, utility
 
 # Game api
 
@@ -40,7 +40,7 @@ def start_new_game(user_id, friend_id):
 
     game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True).id
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, my_round=True)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=0, words_seen=[], curr_word=None, my_round=False, turn_status=config.TURN_CAN_START_ROUND)
 
 def start_new_round(user_id, game_id):
     """
@@ -85,7 +85,7 @@ def start_new_round(user_id, game_id):
 
     game.curr_round = round_num
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, my_round=True)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, my_round=True, turn_status=config.TURN_WAITING) # change status to TURN_PHOTO once we implement photos TODO
 
 def end_game(user_id, game_id):
     """
@@ -112,22 +112,27 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=None)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, my_round=None, turn_status=config.TURN_GAME_OVER)
 
 def validate_guess(user_id, game_id, guess):
     """
     Checks if guess is correct. Return a sucess packet if guess matches latest word prompt
     """
+    game = None
+
     if user_id is None or game_id is None:
         raise RemoteException('User ID and game ID cannot be blank.')
+
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         raise RemoteException("User does not exist")
+
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
         raise RemoteException("Game does not exist")
+
     try:
         current_turn = Turn.objects.get(turn_num=game.curr_round, game=game)
     except Turn.DoesNotExist:
@@ -137,12 +142,18 @@ def validate_guess(user_id, game_id, guess):
     if (friend_id is None):
         raise RemoteException('User ID and game ID combination not valid') 
 
-    if (int(user_id) == _get_curr_photographer(game)):
+    my_round = int(user_id) == _get_curr_photographer(game)
+
+    if my_round:
         raise RemoteException("Not this user's turn to guess")
 
     current_word = current_turn.word_prompt.word
     if (guess.strip() == current_word):
-        return SuccessPacket()
+
+        current_turn.guessed = True
+        current_turn.save()
+
+        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=game.curr_round, words_seen=_get_words_played(game_id), curr_word=current_word, my_round=my_round, turn_status=config.TURN_CAN_START_ROUND)
     else:
         raise RemoteException("Guess is incorrect")
 
@@ -198,7 +209,7 @@ def _get_curr_photographer(game_model):
         photographer_id = game_model.user_id1
     else:
         photographer_id = game_model.user_id2
-    return photographer_id
+    return int(photographer_id)
 
 def _get_random_word():
     """
@@ -214,7 +225,7 @@ def _get_friend_id(user_model, game_model):
     elif (user_id == game_model.user_id2):
         return game_model.user_id1
     else:
-        return None
+        raise RemoteException('Not a player in this game.')
 
 def _is_active_game(user_id1, user_id2):
     games1 = Game.objects.filter(user_id1=user_id1, user_id2=user_id2, active=True) 
@@ -228,14 +239,38 @@ def _get_remote_game(user_id, friend_id, game_model):
     curr_round = game_model.curr_round
     game_id = game_model.id
     active = game_model.active
-    my_round = (_get_curr_photographer(game_model) == user_id)
+    my_round = (_get_curr_photographer(game_model) == int(user_id))
 
     words_seen = []
     curr_word = None
     words_played = _get_words_played(game_model)
 
-    if (len(words_played) > 0):
-        words_seen = words_played[:-1]
-        curr_word = words_played[-1]
-        
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, words_seen=words_seen, curr_word=curr_word, my_round=my_round)
+    try:
+        turn_status = None
+
+        if game_model.curr_round == 0:
+            if my_round:
+                turn_status = config.TURN_WAITING
+            else:
+                turn_status = config.TURN_CAN_START_ROUND
+
+        else:
+            current_turn = Turn.objects.get(turn_num=game_model.curr_round, game=game_model)
+
+            if my_round:
+                # TODO status needs to take into account photos once we implement that
+                turn_status = config.TURN_WAITING
+            else:
+                if current_turn.guessed:
+                    turn_status = config.TURN_CAN_START_ROUND
+                else:
+                    turn_status = config.TURN_GUESSING
+
+        if (len(words_played) > 0):
+            words_seen = words_played[:-1]
+            curr_word = words_played[-1]
+            
+        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, words_seen=words_seen, curr_word=curr_word, my_round=my_round, turn_status=turn_status)
+
+    except Turn.DoesNotExist:
+        raise RemoteException("Turn does not exist")

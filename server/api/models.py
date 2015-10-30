@@ -62,5 +62,4 @@ class Turn(models.Model):
     turn_num = models.IntegerField()
     game = models.ForeignKey(Game, null=True, on_delete=models.SET_NULL)
     word_prompt = models.ForeignKey(WordPrompt, null=True, on_delete=models.SET_NULL)
-
-
+    guessed = models.BooleanField(default=False)
