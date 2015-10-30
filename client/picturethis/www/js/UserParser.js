@@ -11,12 +11,12 @@ var UserParser = function(result) {
         myUser.friends = obj.friends;
         myUser.auth_token = obj.auth_token;
 
-        if (typeof obj.games != "undefined") {
-            myUser.games = obj.games;
-        };
-
         window.localStorage.clear();
         window.localStorage.setItem('userObject', JSON.stringify(myUser));
+
+        if (typeof obj.games != "undefined") {
+            var gamesParser = new GamesParser(JSON.stringify(obj.games));
+        };
 
         } else {
         //shows exception message
