@@ -41,7 +41,7 @@ var AddFriendView = function (service) {
 	this.addFriend = function(friend_id) {
     		var user = getUser();
     		var user_id = user.id;
-    		var url = 'http://picturethis.brianchau.ca/api/friend/add_friend?user_id=' + user_id + '&target_id=' + friend_id;
+    		var url = 'http://picturethis.brianchau.ca/api/friend/add_friend?user_id=' + user_id + '&friend_id=' + friend_id;
     		var addFriendParser = function(result) {
     			var obj = JSON.parse(result);
     			   if (typeof obj.exception === "undefined") {

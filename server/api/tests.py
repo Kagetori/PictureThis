@@ -80,7 +80,7 @@ class FriendTests(TestCase):
             username = 'user' + str(i)
             user_id = User.objects.get(name=username).obfuscated_id
 
-            friend.add_friend(user_id=user0_id, target_id=user_id)
+            friend.add_friend(user_id=user0_id, friend_id=user_id)
 
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
@@ -93,7 +93,7 @@ class FriendTests(TestCase):
             username = 'user' + str(i)
             user_id = User.objects.get(name=username).obfuscated_id
 
-            friend.remove_friend(user_id=user0_id, target_id=user_id)
+            friend.remove_friend(user_id=user0_id, friend_id=user_id)
 
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_REMOVED)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
