@@ -55,7 +55,7 @@ function populateTable() {
 				tablebutton.className = "btn btn-primary";
 
 				//have to use username for now since id is undefined
-				tablebutton.setAttribute("onClick", "startGame(friendId)");
+				tablebutton.setAttribute("onClick", "play(friendId)");
 				var buttontext = document.createTextNode("PLAY");
 				tablebutton.appendChild(buttontext);
 				tableli.appendChild(tabletext);
@@ -72,10 +72,5 @@ function getFriends(){
     return user.friends;
 }
 
-//TODO: call the server, get targetid from friend
-//saves game as object in localmemory, do callback to renderGameView
-function getGame(friendId){
-	
-};
-
 }());
+
