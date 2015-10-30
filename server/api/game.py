@@ -163,16 +163,14 @@ def get_user_games(user_id):
     result = []
 
     for g in games1:
-        game_user_id = g.id
         game_friend_id = g.user_id2
 
-        result.append(_get_remote_game(user_id=game_user_id, friend_id=game_friend_id, game_model=g))
+        result.append(_get_remote_game(user_id=user_id, friend_id=game_friend_id, game_model=g))
 
     for g in games2:
-        game_user_id = g.id
         game_friend_id = g.user_id1
 
-        result.append(_get_remote_game(user_id=game_user_id, friend_id=game_friend_id, game_model=g))
+        result.append(_get_remote_game(user_id=user_id, friend_id=game_friend_id, game_model=g))
 
     return GamePacket(result)
 
@@ -230,7 +228,7 @@ def _get_remote_game(user_id, friend_id, game_model):
     curr_round = game_model.curr_round
     game_id = game_model.id
     active = game_model.active
-    my_round = (_get_curr_photographer(game_model) == int(user_id))
+    my_round = (_get_curr_photographer(game_model) == user_id)
 
     words_seen = []
     curr_word = None
