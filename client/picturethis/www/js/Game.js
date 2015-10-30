@@ -1,11 +1,11 @@
 // definition of the Game class
-var Game = function(game_id, user_id, friend_id, active, my_round, is_photographer, curr_round, curr_word, words_seen) {
+var Game = function(game_id, user_id, friend_id, active, is_photographer, is_turn, curr_round, curr_word, words_seen) {
     this.game_id = game_id;
     this.user_id = user_id;
     this.friend_id = friend_id;
     this.active = active;
-    this.my_round = my_round;
     this.is_photographer = is_photographer;
+    this.is_turn = is_turn;
     this.curr_round = curr_round;
     this.curr_word = curr_word;
     this.words_seen = words_seen;
@@ -25,5 +25,18 @@ function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
     var url = 'http://picturethis.brianchau.ca/api/game/start_new_game?user_id=' + userId + '&friend_id=' + friendId;
+    var serverCaller = new ServerCaller(url,GameParser,callback);
+    // gets the game that was just started, goes to photographer screen, displays word on screen
+    // Note: Yuki, definitely feel free to rename this function
+    var callback = function() {
+        var activeGame = getActiveGame();
+        var currentWord = activeGame.curr_word; //here's the word to display
+    };
+};
 
+//gets the active game with the selected friend from localstorage and returns an game object
+var getActiveGame = function(){
+    var retrievedGame =  window.localStorage.getItem('activeGame');
+    var parsedGame = JSON.parse(retrievedGame);
+    return parsedGame;
 };
