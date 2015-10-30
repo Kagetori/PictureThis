@@ -88,8 +88,44 @@ def start_new_round(user_id, game_id):
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 def send_picture(user_id, game_id):
-    # TODO
-    raise RemoteException('Not implemented')
+    """
+    Marks a picture as sent
+    """
+    if user_id is None or game_id is None:
+        raise RemoteException('User ID and game ID cannot be blank.')
+
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException("User does not exist")
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        raise RemoteException('User ID and game ID combination not valid') 
+
+    game = None
+
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        raise RemoteException("Game does not exist")
+
+    if game is None or game.active is False:
+        raise RemoteException("Game is inactive")
+
+    round_num = game.curr_round
+
+    try:
+        turn = Turn.objects.get(turn_num=round_num, game=game)
+
+        turn.picture_added = True
+        # TODO add picture URLs later
+        turn.save()
+
+        return _get_remote_game(user_id=user_id, friend_id=friend_id, game_id=game_id)
+
+    except Turn.DoesNotExist:
+        raise RemoteException("Invalid turn")
 
 def end_game(user_id, game_id):
     """
