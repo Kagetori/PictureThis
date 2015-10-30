@@ -49,13 +49,13 @@ function populateTable() {
 				var tableli = document.createElement("LI");
 				tableli.className = "table-view-cell";
 				friendUserName = friends[i].username;
-				friendId = friends[i].user_id;
 				var tabletext = document.createTextNode(friendUserName);
 				var tablebutton = document.createElement("BUTTON");
 				tablebutton.className = "btn btn-primary";
 
 				//have to use username for now since id is undefined
-				tablebutton.setAttribute("onClick", "play(friendId)");
+				var friendId = friends[i].user_id;
+				tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
 				var buttontext = document.createTextNode("PLAY");
 				tablebutton.appendChild(buttontext);
 				tableli.appendChild(tabletext);
@@ -64,6 +64,7 @@ function populateTable() {
 }
 }
 friendlist.appendChild(tableul);
+console.log($("#friendlist-tpl").html());
 }
 
 function getFriends(){
