@@ -284,6 +284,4 @@ def _end_all_games():
     games = Game.objects.filter(active=True)
 
     for game in games:
-        game.active = False;
-        game.save()
-
+        end_game(user_id=game.user_id1, game_id=game.id)
