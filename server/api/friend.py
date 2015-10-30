@@ -15,7 +15,7 @@ def add_friend(user_id, target_id):
 def remove_friend(user_id, target_id):
     return _set_friendship(user_id=user_id, target_id=target_id, relation=config.FRIEND_STATUS_REMOVED)
 
-def is_friend(user_id1, user_id2):
+def get_friend_status(user_id1, user_id2):
     try:
         return Friend.objects.get(user_id1=user_id1, user_id2=user_id2).relation
     except User.DoesNotExist:

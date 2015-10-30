@@ -6,11 +6,9 @@ from interface.exception import RemoteException
 from interface.success import SuccessPacket
 from interface.packets import GamePacket
 
-import login, friend, search, game
+import config, login, friend, search, game
 
 # Create your tests here.
-
-
 
 class LoginTests(TestCase):
     @classmethod
@@ -84,8 +82,8 @@ class FriendTests(TestCase):
 
             friend.add_friend(user_id=user0_id, target_id=user_id)
 
-            self.assertTrue(friend.is_friend(user_id1=user0_id, user_id2=user_id))
-            self.assertTrue(friend.is_friend(user_id1=user_id, user_id2=user0_id))
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
 
         user0_friends = friend.get_user_friends(user_id=user0_id)
 
@@ -97,8 +95,8 @@ class FriendTests(TestCase):
 
             friend.remove_friend(user_id=user0_id, target_id=user_id)
 
-            self.assertFalse(friend.is_friend(user_id1=user0_id, user_id2=user_id))
-            self.assertFalse(friend.is_friend(user_id1=user_id, user_id2=user0_id))
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_REMOVED)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
 
 
 class SearchTests(TestCase):
