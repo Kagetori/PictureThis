@@ -24,7 +24,12 @@ var GamesParser = function(result) {
         var game = makeGame(obj);
         var user = getUser();
         var userGames = user.games;
-        user.games.add(game);
+        showAlert(userGames);
+        userGames.push(game);
+        user.games = userGames;
+          //user.games.push(game);
+
+        showAlert('New game id: ' + game.game_id);
     } else {
           showAlert(obj.exception);
           };

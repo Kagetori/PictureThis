@@ -25,5 +25,6 @@ function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
     var url = 'http://picturethis.brianchau.ca/api/game/start_new_game?user_id=' + userId + '&friend_id=' + friendId;
+    var serverCaller = new ServerCaller(url,GameParser);
 
 };
