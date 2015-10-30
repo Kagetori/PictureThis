@@ -15,7 +15,7 @@ var Game = function(game_id, user_id, friend_id, active, is_photographer, is_tur
 function playGame(friendId){
 	showAlert(friendId);
 
-    if (hasOngoingGame(friendId) {
+    if (hasOngoingGame(friendId)) {
 	//TODO: continue current game (go to appropriate screen)
 	    continueGame(friendId);
 	} else {
