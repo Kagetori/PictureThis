@@ -153,7 +153,10 @@ def validate_guess(user_id, game_id, guess):
         current_turn.guessed = True
         current_turn.save()
 
-        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=game.curr_round, words_seen=_get_words_played(game_id), curr_word=current_word, my_round=my_round, turn_status=config.TURN_CAN_START_ROUND)
+        if game.curr_round == game.max_rounds:
+            return end_game(user_id, game_id)
+        else:
+            return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=game.curr_round, words_seen=_get_words_played(game_id), curr_word=current_word, my_round=my_round, turn_status=config.TURN_CAN_START_ROUND)
     else:
         raise RemoteException("Guess is incorrect")
 
