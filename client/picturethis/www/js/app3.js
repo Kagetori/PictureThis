@@ -17,7 +17,7 @@ GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
 var word = ({word: currentWord});
 service.initialize().done(function () {
 	if (isPhotographer && isTurn){
-//		$('body').html(new TakePictureView(word).render().$el);
+//		$('body').html(new TakePictureView(word).render().$el); //for no routing
 			router.addRoute('', function () {
         		$('body').html(new TakePictureView(word).render().$el);
         	});
