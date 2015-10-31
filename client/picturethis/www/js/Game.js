@@ -32,23 +32,23 @@ function hasOngoingGame(friendId, callback) {
     var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
 
     var checkParser = function(result) {
-          showAlert("Called GameParser!");
-          var obj = JSON.parse(result);
-          if (typeof obj.exception === "undefined") {
-              var game = makeGame(obj);
-              var user = getUser();
-              var userGames = user.games;
-              userGames.push(game);
-              user.games = userGames;
+        showAlert("Called GameParser!");
+        var obj = JSON.parse(result);
+        if (typeof obj.exception === "undefined") {
+          var game = makeGame(obj);
+          var user = getUser();
+          var userGames = user.games;
+          userGames.push(game);
+          user.games = userGames;
 
-              window.localStorage.removeItem('activeGame');
-              window.localStorage.setItem('activeGame',JSON.stringify(game));
+          window.localStorage.removeItem('activeGame');
+          window.localStorage.setItem('activeGame',JSON.stringify(game));
 
-              callback(true);
+          callback(true);
 
-          } else {
-               callback(false);
-          };
+        } else {
+          callback(false);
+        };
     };
 
     var serverCaller = new ServerCaller(api,params,checkParser);

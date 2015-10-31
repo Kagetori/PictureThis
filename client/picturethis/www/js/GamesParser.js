@@ -19,6 +19,7 @@ var GamesParser = function(result) {
 
    } else {
          showAlert(obj.exception);
+                setSpinnerVisibility(false);
          };
  };
 
@@ -39,6 +40,7 @@ var GamesParser = function(result) {
 
     } else {
           showAlert(obj.exception);
+                setSpinnerVisibility(false);
           };
   };
 

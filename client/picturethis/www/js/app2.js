@@ -12,13 +12,13 @@
     //    renderLoginView();
 
         router.addRoute('', function () {
-            $('body').html(new FriendListView(service).render().$el);
+            $('#main_page').html(new FriendListView(service).render().$el);
         });
         router.addRoute('add friend', function () {
-            $('body').html(new AddFriendView(service).render().$el);
+            $('#main_page').html(new AddFriendView(service).render().$el);
         });
         router.addRoute('main', function () {
-            $('body').html(new FriendListView(service).render().$el);
+            $('#main_page').html(new FriendListView(service).render().$el);
         });
 
         router.start();

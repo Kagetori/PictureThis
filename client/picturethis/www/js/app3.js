@@ -17,18 +17,18 @@ GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
 var word = ({word: currentWord});
 service.initialize().done(function () {
 	if (isPhotographer && isTurn){
-//		$('body').html(new TakePictureView(word).render().$el); //for no routing
+//		$('#main_page').html(new TakePictureView(word).render().$el); //for no routing
 			router.addRoute('', function () {
-        		$('body').html(new TakePictureView(word).render().$el);
+        		$('#main_page').html(new TakePictureView(word).render().$el);
         	});
         	router.addRoute('wait view', function () {
-        		$('body').html(new WaitingView(service).render().$el);
+        		$('#main_page').html(new WaitingView(service).render().$el);
         	});
         	router.start();
 	} else if (!isTurn) {
-		$('body').html(new WaitingView(service).render().$el);
+		$('#main_page').html(new WaitingView(service).render().$el);
 	} else if (!isPhotographer && isTurn){
-		$('body').html(new GuessView(service).render().$el);
+		$('#main_page').html(new GuessView(service).render().$el);
 	}
 });
 

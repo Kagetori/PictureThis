@@ -31,7 +31,7 @@
     <div class="bar bar-standard bar-header-secondary">
         <form onsubmit="event.preventDefault()">
             Your Friend&#39;s Username:<br>
-            <input type="text" name="username">
+            <input type="text" name="username" id="friend_search">
             <br><br>
             <!--input type="submit" value="Find"-->
             <button type="submit" onclick="findFriend()">Find</button>
@@ -41,6 +41,7 @@
 
 <script>
     function findFriend() {
+        setSpinnerVisibility(true);
         var username = $("[name='username']").val();
 
         var addFriendView = new AddFriendView();
@@ -48,16 +49,19 @@
     }
 
     function logout() {
+        setSpinnerVisibility(true);
         var friendListView = new FriendListView();
         friendListView.logout();
     }
 
     function backToMain() {
+        setSpinnerVisibility(true);
         var addFriendView = new AddFriendView();
         addFriendView.backToMain();
     }
 
     function play(friendId) {
+        setSpinnerVisibility(true);
         console.log("startGame");
         playGame(friendId);
     }

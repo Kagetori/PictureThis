@@ -11,10 +11,10 @@ SignUpView.prototype.template = Handlebars.compile($("#signup-tpl").html());
 service.initialize().done(function () {
 //    renderLoginView();
 	router.addRoute('', function() {
-		$('body').html(new LoginView(service).render().$el);
+		$('#main_page').html(new LoginView(service).render().$el);
 	});
 	router.addRoute('sign up', function () {
-		$('body').html(new SignUpView(service).render().$el);
+		$('#main_page').html(new SignUpView(service).render().$el);
 	});
 
 	router.start();
