@@ -43,11 +43,12 @@ function continueGame(friendId) {
 function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
-    var url = 'http://picturethis.brianchau.ca/api/game/start_new_game?user_id=' + userId + '&friend_id=' + friendId;
+    var api = 'game/start_new_game';
+    var params = 'user_id=' + encodeURIComponent(user_id) + '&friend_id=' + encodeURIComponent(friend_id);
     var callGameView = function() {
         toGameView();
     };
-    var serverCaller = new ServerCaller(url,GameParser,callGameView);
+    var serverCaller = new ServerCaller(api,params,GameParser,callGameView);
 };
 
 function toGameView() {

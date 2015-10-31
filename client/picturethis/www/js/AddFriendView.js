@@ -15,7 +15,8 @@ var AddFriendView = function (service) {
 	this.findFriend = function(username) {
 		showAlert("got to findFriend!");
 		showAlert("username: " + username);
-		var url = 'http://picturethis.brianchau.ca/api/search/find_user?username=' + username;
+		var api = 'search/find_user';
+        var params = 'username=' + encodeURIComponent(username);
 
 		var searchParser = function(result) {
 		   var obj = JSON.parse(result);
@@ -33,7 +34,7 @@ var AddFriendView = function (service) {
 					};
 			};
 
-		var serverCaller = new ServerCaller(url,searchParser);
+		var serverCaller = new ServerCaller(api,params,searchParser);
 
 	};
 
@@ -41,7 +42,8 @@ var AddFriendView = function (service) {
 	this.addFriend = function(friend_id) {
     		var user = getUser();
     		var user_id = user.id;
-    		var url = 'http://picturethis.brianchau.ca/api/friend/add_friend?user_id=' + user_id + '&friend_id=' + friend_id;
+    		var api = 'friend/add_friend';
+            var params = 'user_id=' + encodeURIComponent(user_id) + '&friend_id=' + encodeURIComponent(friend_id);
     		var addFriendParser = function(result) {
     			var obj = JSON.parse(result);
     			   if (typeof obj.exception === "undefined") {
@@ -54,7 +56,7 @@ var AddFriendView = function (service) {
     					};
     		};
 
-    		var serverCaller = new ServerCaller(url,addFriendParser);
+    		var serverCaller = new ServerCaller(api,params,addFriendParser);
 
     	};
 
