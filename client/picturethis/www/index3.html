@@ -12,7 +12,7 @@
 <script id="takepicture-tpl" type="text/template">
     <header class="bar bar-nav">
         <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Take a picture of this object:</h1>
+        <h1 class="title">Take a picture of this:</h1>
     </header>
     <br><br><br>
     <label>{{word}}</label>
@@ -24,21 +24,21 @@
 <script id="waiting-tpl" type="text/template">
     <header class="bar bar-nav">
         <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Waiting for your friend&#39;s turn</h1>
+        <h1 class="title">Waiting&#39;s turn</h1>
     </header>
 </script>
 
 <script id="guess-tpl" type="text/template">
     <header class="bar bar-nav">
         <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Guess what object this is</h1>
+        <h1 class="title">Guess what this is</h1>
     </header>
     <br><br><br>
     <div class="bar bar-standard bar-footer-secondary">
-        <input type="text" name="guess" placeholder="input your guess">
+        <input type="text" name="guess" placeholder="input your guess" id="guess">
     </div>
     <div class="bar bar-standard bar-footer">
-        <button class="btn btn-block">Send</button>
+        <button onclick="sendAnswer()" class="btn btn-block">Send</button>
     </div>
 </script>
 
@@ -51,6 +51,14 @@
 <script>
     function toWaitingView() {
         window.location.href = '#wait view'
+    }
+</script>
+
+<script>
+    function sendAnswer() {
+        var guess = $("[name='guess']").val();
+        var guessView = new GuessView();
+        guessView.sendGuess(guess);
     }
 </script>
 
