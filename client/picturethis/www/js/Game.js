@@ -58,6 +58,7 @@ function hasOngoingGame(friendId, callback) {
 // figures out which screen to go to based on is_photographer and is_turn, then goes to screen
 function continueGame(friendId) {
     //go to view
+    toGameView();
 };
 
 // queries server to get new game object. Then parses game and add to list of games in user

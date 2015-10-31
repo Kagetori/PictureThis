@@ -28,8 +28,8 @@ var ServerCaller = function(api,params,parser,callback) {
             if (xmlhttp.responseText != "undefined"){
                 showAlert(xmlhttp.responseText);
                 parser(xmlhttp.responseText);
-                callback();
-                }
+                if (callback) callback();
+            }
         } else {
             // wait for the call to complete
         };
