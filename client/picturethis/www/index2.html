@@ -26,12 +26,12 @@
         <h1 class="title">Search friend</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
-        <form action="add_friend.php">
+        <form onsubmit="event.preventDefault()">
             Your Friend&#39;s Username:<br>
             <input type="text" name="username">
             <br><br>
-            <!--		<input type="submit" value="Find"> -->
-            <button type="button" onclick="findFriend()">Find</button>
+            <!--input type="submit" value="Find"-->
+            <button type="submit" onclick="findFriend()">Find</button>
         </form>
     </div>
 </script>
@@ -62,7 +62,7 @@
 <script>
 function play(friendId) {
     console.log("startGame");
-	playGame(friendId);
+    playGame(friendId);
 }
 </script>
 

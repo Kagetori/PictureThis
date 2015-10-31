@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
-	<link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -13,20 +13,21 @@
         <h1 class="title">Login</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
-        <form>
-		Username:<br>
-		<input type="text" name="username">
-		<br>
-		Password:<br>
-		<input type="text" name="password">
-		<br><br>
-<!--		<input type="submit" value="Login"> -->
-            <button type="button" onclick="userLogin()">Login</button>
-		</form>
-		<br>
-	<a href="#sign up">Sign up for an account</a>
+        <form onsubmit="event.preventDefault()">
+        Username:<br>
+        <input type="text" name="username">
+        <br>
+        Password:<br>
+        <input type="text" name="password">
+        <br><br>
+        <!--input type="submit" value="Login"-->
+        <button type="submit" onclick="userLogin()">Login</button>
+        </form>
+        <br>
+    <a href="#sign up">Sign up for an account</a>
     </div>
     <div class="content"></div>
+
 </script>
 
 <script id="signup-tpl" type="text/template">
@@ -34,18 +35,18 @@
         <h1 class="title">Create your account</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
-        <form action="sign_up.php">
-		Username:<br>
-		<input type="text" name="username">
-		<br>
-		Password:<br>
-		<input type="text" name="password">
-		<br><br>
-<!--		<input type="submit" value="Create account" onclick="createAccount"> -->
-            <button type="button" onclick="makeAccount()">Create Account</button>
-		</form>
+        <form onsubmit="event.preventDefault()">
+        Username:<br>
+        <input type="text" name="username">
+        <br>
+        Password:<br>
+        <input type="text" name="password">
+        <br><br>
+        <!--input type="submit" value="Create account" onclick="createAccount"-->
+        <button type="submit" onclick="makeAccount()">Create Account</button>
+        </form>
     </div>
-	<br>
+    <br>
     <div class="content"></div>
 </script>
 
@@ -57,9 +58,7 @@
         var signUpView = new SignUpView();
         signUpView.createAccount(username,password);
     }
-</script>
 
-<script>
     function userLogin() {
         var username = $("[name='username']").val();
         var password = $("[name='password']").val();
