@@ -99,10 +99,6 @@ def send_picture(user_id, game_id):
     except User.DoesNotExist:
         raise RemoteException("User does not exist")
 
-    friend_id = _get_friend_id(user_model=user, game_model=game)
-    if (friend_id is None):
-        raise RemoteException('User ID and game ID combination not valid') 
-
     game = None
 
     try:
@@ -113,6 +109,10 @@ def send_picture(user_id, game_id):
     if game is None or game.active is False:
         raise RemoteException("Game is inactive")
 
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        raise RemoteException('User ID and game ID combination not valid') 
+
     round_num = game.curr_round
 
     try:
@@ -122,7 +122,7 @@ def send_picture(user_id, game_id):
         # TODO add picture URLs later
         turn.save()
 
-        return _get_remote_game(user_id=user_id, friend_id=friend_id, game_id=game_id)
+        return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=game)
 
     except Turn.DoesNotExist:
         raise RemoteException("Invalid turn")
