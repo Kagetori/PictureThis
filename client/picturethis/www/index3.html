@@ -17,7 +17,7 @@
     <br><br><br>
     <label>{{word}}</label>
     <div class="bar bar-standard bar-footer">
-        <button class="btn btn-block">Send</button>
+        <button onclick="toWaitingView()" class="btn btn-block">Send</button>
     </div>
 </script>
 
@@ -44,8 +44,13 @@
 
 <script>
     function backToMain() {
-        var addFriendView = new AddFriendView();
-        addFriendView.backToMain();
+        window.location="index2.html";
+    }
+</script>
+
+<script>
+    function toWaitingView() {
+        window.location.href = '#wait view'
     }
 </script>
 

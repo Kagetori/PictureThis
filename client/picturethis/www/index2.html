@@ -22,7 +22,7 @@
 
 <script id="add-friend-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="backToMain()" class="btn pull-left">Back</button>
+        <button onclick="location.href = '#main';" class="btn pull-left">Back</button>
         <h1 class="title">Search friend</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
@@ -63,7 +63,6 @@
 function play(friendId) {
     console.log("startGame");
 	playGame(friendId);
-    //window.location="index3.html";
 }
 </script>
 
