@@ -13,10 +13,7 @@ var Game = function(game_id, user_id, friend_id, active, is_photographer, is_tur
 
 //checks if there's an ongoing game with the friend. Continues game if there is, else starts a new game.
 function playGame(friendId){
-	showAlert(friendId);
-
     if (hasOngoingGame(friendId)) {
-	//TODO: continue current game (go to appropriate screen)
 	    continueGame(friendId);
 	} else {
 	    startNewGame(friendId);
@@ -39,7 +36,7 @@ function hasOngoingGame(friendId) {
 
 // figures out which screen to go to based on is_photographer and is_turn, then goes to screen
 function continueGame(friendId) {
-
+    //go to view
 };
 
 // queries server to get new game object. Then parses game and add to list of games in user
