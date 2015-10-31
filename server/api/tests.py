@@ -123,7 +123,7 @@ class SearchTests(TestCase):
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
 
-        self.assertRaises(RemoteException, search.find_user, username='nonexistent')
+        self.assertRaises(RemoteException, search.find_user, user_id=user_id, username='nonexistent')
 
 class GameTests(TestCase):
     @classmethod

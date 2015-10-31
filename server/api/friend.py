@@ -18,7 +18,7 @@ def remove_friend(user_id, friend_id):
 def get_friend_status(user_id1, user_id2):
     try:
         return Friend.objects.get(user_id1=user_id1, user_id2=user_id2).relation
-    except User.DoesNotExist:
+    except Friend.DoesNotExist:
         return config.FRIEND_STATUS_REMOVED
 
 def get_user_friends(user_id):
