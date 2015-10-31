@@ -31,3 +31,40 @@ td.spinner_cell {
     z-index: 100;
 }
 
+div.dropdown_wrapper {
+
+}
+
+div.dropdown {
+    position: absolute;
+    border-color: #fff #ccc #ccc #ccc;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0px 0px 15px 15px;
+    background-color: #fff;
+    top: 0;
+    left: 15px;
+    right: 15px;
+    min-height: 40px;
+    padding: 10px;
+    z-index: 90;
+    margin-top: -40px;
+    text-align: center;
+    animation-name: dropdown;
+    animation-duration: 5s;
+}
+
+@keyframes dropdown {
+    0% {
+        margin-top: -40px;
+    }
+    20% {
+        margin-top: 0px;
+    }
+    80% {
+        margin-top: 0px;
+    }
+    100% {
+        margin-top: -40px;
+    }
+}
