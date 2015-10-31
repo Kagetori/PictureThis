@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 
 from api import friend, game, login, poll, search
+from model import User
 
 from interface.success import SuccessPacket
 from interface.exception import RemoteException
@@ -14,7 +15,7 @@ def friend__add_friend(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', 0)
     friend_id = _get_param(params, 'friend_id', 0)
 
@@ -22,10 +23,9 @@ def friend__add_friend(request):
 
 def friend__remove_friend(request):
     params = _params(request)
-    
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', 0)
     friend_id = _get_param(params, 'friend_id', 0)
 
@@ -33,10 +33,9 @@ def friend__remove_friend(request):
 
 def friend__get_friends(request):
     params = _params(request)
-    
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', 0)
 
     return _response(friend.get_user_friends, user_id=user_id)
@@ -45,7 +44,6 @@ def friend__get_friends(request):
 
 def login__create_user(request):
     params = _params(request)
-    
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
     client_version = _get_param(params, 'client_version', 0)
@@ -55,7 +53,6 @@ def login__create_user(request):
 
 def login__login(request):
     params = _params(request)
-    
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
     client_version = _get_param(params, 'client_version', 0)
@@ -71,7 +68,7 @@ def poll__update(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', 0)
 
     return _response(poll.update, user_id=user_id)
@@ -85,7 +82,7 @@ def search__find_user(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     username = _get_param(params, 'username', None)
 
     return _response(search.find_user, username=username)
@@ -98,7 +95,7 @@ def game__start_new_game(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', 0)
     friend_id = _get_param(params, 'friend_id', 0)
 
@@ -109,7 +106,7 @@ def game__send_picture(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
@@ -118,9 +115,10 @@ def game__send_picture(request):
 def game__get_picture(request):
     params = _params(request)
 
-    if (!_authenticate(params)):
-        return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+    # TODO for now, don't authenticate this call snce it just returns squirrel anyway
+    #if (!_authenticate(params)):
+    #    return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
@@ -134,7 +132,7 @@ def game__end_game(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
@@ -145,7 +143,7 @@ def game__validate_guess(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
     guess = _get_param(params, 'guess', None)
@@ -157,7 +155,7 @@ def game__get_user_games(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', None)
 
     return _response(game.get_user_games, user_id=user_id)
@@ -167,7 +165,7 @@ def game__get_game_status(request):
 
     if (!_authenticate(params)):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
-    
+
     user_id = _get_param(params, 'user_id', None)
     friend_id = _get_param(params, 'friend_id', None)
 
@@ -195,5 +193,15 @@ def _response(fn, **kwargs):
         return JsonResponse(e.ret_dict())
 
 def _authenticate(params):
-    # TODO: authenticate with auth_token
-    return True
+    auth_token = _get_param(params, 'auth_token')
+    user_id = _get_param(params, 'user_id')
+
+    if auth_token is None or user_id is None:
+        return False
+
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+        return user.authenticate(auth_token)
+
+    except User.DoesNotExist:
+        return False
