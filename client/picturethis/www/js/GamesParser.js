@@ -2,19 +2,24 @@
 var GamesParser = function(result) {
    showAlert("Called GamesParser!");
    var obj = JSON.parse(result);
+
    if (typeof obj.exception === "undefined") {
-        var games = obj.games;
         var user = getUser();
-        var parsedGames = {};
-        for (var game in games) {
-            makeGame(game);
-            parsedGames.add(game);
+
+        var parsedGames = [];
+        var games = obj.games;
+
+        for (var i = 0; i < games.length; i++) {
+            var game = games[i];
+            var newGame = makeGame(game);
+            parsedGames.push(newGame);
         };
+
         user.games = parsedGames;
+
    } else {
          showAlert(obj.exception);
          };
-   showAlert("Finished GamesParser!");
  };
 
 // parses one game and adds it to the games field in user
