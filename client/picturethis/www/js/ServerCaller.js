@@ -7,6 +7,12 @@ var ServerCaller = function(api,params,parser) {
 var ServerCaller = function(api,params,parser,callback) {
     var serverURL = "http://picturethis.brianchau.ca/api/";
 
+    if (api.substring(0, 6) != "login/") {
+        var authToken = getUser().auth_token;
+
+        params += "&auth_token=" + encodeURIComponent(authToken);
+    }
+
     showAlert("called ServerCaller!");
     var xmlhttp;
     if (window.XMLHttpRequest){
