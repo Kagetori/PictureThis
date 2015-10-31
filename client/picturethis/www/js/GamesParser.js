@@ -14,6 +14,7 @@ var GamesParser = function(result) {
    } else {
          showAlert(obj.exception);
          };
+   showAlert("Finished GamesParser!");
  };
 
 // parses one game and adds it to the games field in user
