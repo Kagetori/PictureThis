@@ -40,4 +40,5 @@ urlpatterns = [
     url(r'^game/end_game', views.game__end_game, name='game__end_game'),
     url(r'^game/validate_guess', views.game__validate_guess, name='game__validate_guess'),
     url(r'^game/get_user_games', views.game__get_user_games, name='game__get_user_games'),
+    url(r'^game/get_game_status', views.game__get_game_status, name='game__get_game_status'),
 ]

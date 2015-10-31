@@ -176,7 +176,7 @@ def get_user_games(user_id):
     if user_id is None:
         raise RemoteException('User ID cannot be blank')
     try:
-         user = User.objects.get(obfuscated_id=user_id)
+         User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         raise RemoteException("User does not exist")
 
@@ -196,6 +196,34 @@ def get_user_games(user_id):
         result.append(_get_remote_game(user_id=user_id, friend_id=game_friend_id, game_model=g))
 
     return GamePacket(result)
+
+def get_game_status(user_id, friend_id):
+    """
+    Returns the active game
+    """
+    if user_id is None or friend_id is None:
+        raise RemoteException('User ID and Friend ID cannot be blank')
+    try:
+         User.objects.get(obfuscated_id=user_id)
+         User.objects.get(obfuscated_id=friend_id)
+    except User.DoesNotExist:
+        raise RemoteException("User does not exist")
+
+    games1 = Game.objects.filter(user_id1=user_id, user_id2=friend_id, active=True) 
+    games2 = Game.objects.filter(user_id2=user_id, user_id1=friend_id, active=True)
+
+    result = []
+
+    for g in games1:
+        result.append(_get_remote_game(user_id=user_id, friend_id=friend_id, game_model=g))
+
+    for g in games2:
+        result.append(_get_remote_game(user_id=user_id, friend_id=friend_id, game_model=g))
+
+    if len(result) != 1:
+        raise RemoteException("No game between the users")
+
+    return result[0]
 
 # Helper functions
 

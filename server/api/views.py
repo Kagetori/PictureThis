@@ -129,13 +129,21 @@ def game__get_user_games(request):
 
     return _response(game.get_user_games, user_id=user_id)
 
+def game__get_game_status(request):
+    params = _params(request)
+
+    user_id = _get_param(params, 'user_id', None)
+    friend_id = _get_param(params, 'friend_id', None)
+
+    return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
+
 
 # HELPER FUNCTIONS
 
 def _params(request):
     return request.GET
 
-def _get_param(params, key, default):
+def _get_param(params, key, default=None):
     value = params.get(key, default)
 
     if value == default:
