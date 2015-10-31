@@ -2,9 +2,8 @@
 var UserParser = function(result) {
    showAlert("Called UserParser!");
    var obj = JSON.parse(result);
-   if (typeof obj.exception === "undefined") {
-        showAlert("there's a user!");
 
+   if (typeof obj.exception === "undefined") {
         var myUser = new User();
         myUser.username = obj.username;
         myUser.id = obj.user_id;
@@ -12,13 +11,19 @@ var UserParser = function(result) {
         myUser.auth_token = obj.auth_token;
         myUser.games = [];
 
+        if (typeof obj.games != "undefined") {
+            var parsedGames = [];
+            var games = obj.games;
+
+            for (var i = 0; i < games.length; i++) {
+                var game = games[i];
+                var newGame = makeGame(game);
+                parsedGames.push(newGame);
+            };
+        };
+
         window.localStorage.clear();
         window.localStorage.setItem('userObject', JSON.stringify(myUser));
-
-        if (typeof obj.games != "undefined") {
-
-            var gamesParser = new GamesParser(JSON.stringify(obj.games));
-        };
 
         } else {
         //shows exception message

@@ -14,14 +14,17 @@ var Game = function(game_id, user_id, friend_id, active, is_photographer, is_tur
 //checks if there's an ongoing game with the friend. Continues game if there is, else starts a new game.
 function playGame(friendId){
     if (hasOngoingGame(friendId)) {
+        showAlert("yes ongoing game");
 	    continueGame(friendId);
 	} else {
+	    showAlert("no ongoing game");
 	    startNewGame(friendId);
 	}
 };
 
 // returns true if there is an ongoing game with a friend (also saves game to localStorage), false otherwise
 function hasOngoingGame(friendId) {
+    showAlert("got to hasOngoingGame!");
 	var user = getUser();
 	var userGames = user.games;
 	for (var game in userGames) {
