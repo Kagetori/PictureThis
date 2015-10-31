@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+
 from models import Game, User, Turn, WordPrompt
 
 from interface.exception import RemoteException
@@ -40,52 +42,7 @@ def start_new_game(user_id, friend_id):
 
     game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True).id
 
-    return start_new_round(user_id=user_id, game_id=game_id)
-
-def start_new_round(user_id, game_id):
-    """
-    Starts a new round by giving the user a new word prompt 
-    Only the photographer can start a new round
-    """
-    if user_id is None or game_id is None:
-        raise RemoteException('User ID and game ID cannot be blank.')
-    try:
-        user = User.objects.get(obfuscated_id=user_id)
-    except User.DoesNotExist:
-        raise RemoteException("User does not exist")
-    try:
-        game = Game.objects.get(id=game_id)
-    except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
-
-    friend_id = _get_friend_id(user_model=user, game_model=game)
-    if (friend_id is None):
-        raise RemoteException('User ID and game ID combination not valid') 
-
-    if (game.active == False):
-        raise RemoteException("Game is inactive")
-
-    if (game.curr_round >= game.max_rounds):
-        raise RemoteException("Max number of rounds reached")
-
-    # Check if user is photographer of PREVIOUS round
-    if (int(user_id) == _get_curr_photographer(game_model=game)):
-        raise RemoteException("This user can't start a new round")
-
-    words_seen = _get_words_played(game_id)
-    
-    new_word = _get_random_word()
-    while (new_word.word in words_seen):
-        new_word = _get_random_word()
-
-    round_num = game.curr_round + 1
-
-    turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
-    turn.save()
-
-    game.curr_round = round_num
-    game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
+    return _start_new_round(user_id=user_id, game_id=game_id)
 
 def send_picture(user_id, game_id):
     """
@@ -126,6 +83,18 @@ def send_picture(user_id, game_id):
 
     except Turn.DoesNotExist:
         raise RemoteException("Invalid turn")
+
+def get_picture(user_id, game_id):
+    """
+    Gets a picture for the specified user_id and game_id
+    """
+
+    # TODO get the photo for the actual turn
+    # File name will probably be along the lines of
+    # '%s_%s.jpg' % (str(game_id), str(turn_id))
+
+    with open('/var/www/picturethis/media/squirrel.jpg', 'rb') as f:
+        return HttpResponse(f.read(), content_type='image/jpeg')
 
 def end_game(user_id, game_id):
     """
@@ -196,7 +165,7 @@ def validate_guess(user_id, game_id, guess):
         if game.curr_round == game.max_rounds:
             return end_game(user_id, game_id)
         else:
-            return start_new_round(user_id=user_id, game_id=game_id)
+            return _start_new_round(user_id=user_id, game_id=game_id)
     else:
         raise RemoteException("Guess is incorrect")
 
@@ -229,6 +198,49 @@ def get_user_games(user_id):
     return GamePacket(result)
 
 # Helper functions
+
+def _start_new_round(user_id, game_id):
+    """
+    Starts a new round by giving the user a new word prompt 
+    Only the photographer can start a new round
+    """
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException("User does not exist")
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        raise RemoteException("Game does not exist")
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        raise RemoteException('User ID and game ID combination not valid') 
+
+    if (game.active == False):
+        raise RemoteException("Game is inactive")
+
+    if (game.curr_round >= game.max_rounds):
+        raise RemoteException("Max number of rounds reached")
+
+    # Check if user is photographer of PREVIOUS round
+    if (int(user_id) == _get_curr_photographer(game_model=game)):
+        raise RemoteException("This user can't start a new round")
+
+    words_seen = _get_words_played(game_id)
+    
+    new_word = _get_random_word()
+    while (new_word.word in words_seen):
+        new_word = _get_random_word()
+
+    round_num = game.curr_round + 1
+
+    turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
+    turn.save()
+
+    game.curr_round = round_num
+    game.save()
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 def _get_words_played(game_model):
 

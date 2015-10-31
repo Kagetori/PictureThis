@@ -36,6 +36,7 @@ urlpatterns = [
     # GAME API
     url(r'^game/start_new_game', views.game__start_new_game, name='game__start_new_game'),
     url(r'^game/send_picture', views.game__send_picture, name='game__send_picture'),
+    url(r'^game/get_picture', views.game__get_picture, name='game__get_picture'),
     url(r'^game/end_game', views.game__end_game, name='game__end_game'),
     url(r'^game/validate_guess', views.game__validate_guess, name='game__validate_guess'),
     url(r'^game/get_user_games', views.game__get_user_games, name='game__get_user_games'),

@@ -171,11 +171,23 @@ class GameTests(TestCase):
         self.assertEqual(game_remote.is_photographer, 1)
         self.assertEqual(game_remote.is_turn, 1)
 
+        game_remote_friend = game.get_user_games(user_id=user2_id).games[0]
+
+        self.assertEqual(game_remote_friend.curr_round, 1)
+        self.assertEqual(game_remote_friend.is_photographer, 0)
+        self.assertEqual(game_remote_friend.is_turn, 0)
+
         game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id)
 
         self.assertEqual(game_remote.curr_round, 1)
         self.assertEqual(game_remote.is_photographer, 1)
         self.assertEqual(game_remote.is_turn, 0)
+
+        game_remote_friend = game.get_user_games(user_id=user2_id).games[0]
+
+        self.assertEqual(game_remote_friend.curr_round, 1)
+        self.assertEqual(game_remote_friend.is_photographer, 0)
+        self.assertEqual(game_remote_friend.is_turn, 1)
 
 
     def testEndGame(self):
@@ -187,10 +199,6 @@ class GameTests(TestCase):
         game_remote = game.end_game(user_id=user1_id, game_id=game_id)
         self.assertFalse(game_remote.active)
         self.assertFalse(Game.objects.get(id=game_id).active)
-
-        self.assertRaises(RemoteException, game.start_new_round, user_id=user1_id, game_id=game_id)
-
-        self.assertRaises(RemoteException, game.end_game, user_id=user1_id, game_id=game_id)
 
     def testValidateGuess(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
