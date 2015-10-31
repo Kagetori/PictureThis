@@ -47,13 +47,18 @@ function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
     var url = 'http://picturethis.brianchau.ca/api/game/start_new_game?user_id=' + userId + '&friend_id=' + friendId;
-    var serverCaller = new ServerCaller(url,GameParser,callback);
-    // gets the game that was just started, goes to photographer screen, displays word on screen
-    // Note: Yuki, definitely feel free to rename this function
-    var callback = function() {
-        var activeGame = getActiveGame();
-        var currentWord = activeGame.curr_word; //here's the word to display
+    var callDisplayWord = function() {
+        displayWord();
     };
+    var serverCaller = new ServerCaller(url,GameParser,callDisplayWord);
+};
+
+// gets the game that was just started, goes to photographer screen, displays word on screen
+// Note: Yuki, definitely feel free to rename this function
+var displayWord = function() {
+    var activeGame = getActiveGame();
+    var currentWord = activeGame.curr_word; //here's the word to display
+    showAlert(currentWord);
 };
 
 //gets the active game with the selected friend from localstorage and returns an game object
