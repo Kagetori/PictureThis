@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 
 from api import friend, game, login, poll, search
-from model import User
+from models import User
 
 from interface.success import SuccessPacket
 from interface.exception import RemoteException
