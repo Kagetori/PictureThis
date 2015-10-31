@@ -47,13 +47,13 @@ var AddFriendView = function (service) {
     		var addFriendParser = function(result) {
     			var obj = JSON.parse(result);
     			   if (typeof obj.exception === "undefined") {
-    					user.friends = obj.friends;
+    					setFriends(obj.friends);
     					showAlert("Friend added!");
 
     				} else {
     					//shows exception message
     					showAlert(obj.exception);
-    					};
+    				};
     		};
 
     		var serverCaller = new ServerCaller(api,params,addFriendParser);

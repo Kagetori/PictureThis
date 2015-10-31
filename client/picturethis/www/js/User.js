@@ -14,3 +14,10 @@ var getUser = function(){
     var parsedUser = JSON.parse(retrievedUser);
     return parsedUser;
 };
+
+var setFriends = function(friends){
+    var parsedUser = JSON.parse(window.localStorage.getItem('userObject'));
+    parsedUser.friends = friends;
+    //window.localStorage.removeItem('userObject');
+    window.localStorage.setItem('userObject', JSON.stringify(parsedUser));
+}
