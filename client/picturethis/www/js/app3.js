@@ -4,19 +4,25 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
 var service = new PictureThisService();
 
+var retrievedGame =  window.localStorage.getItem('activeGame');
+var parsedGame = JSON.parse(retrievedGame);
+
+var isPhotographer = parsedGame.is_photographer;
+var isTurn = parsedGame.is_turn;
+var currentWord = parsedGame.curr_word; //here's the word to display
+
 TakePictureView.prototype.template = Handlebars.compile($("#takepicture-tpl").html());
 WaitingView.prototype.template = Handlebars.compile($("#waiting-tpl").html());
 GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
-//var word = ({word: game.word()});
-var word = ({word: 'squirrel'});
+var word = ({word: currentWord});
 service.initialize().done(function () {
-//	if (game.status = "picture"){
+	if (isPhotographer && isTurn){
 		$('body').html(new TakePictureView(word).render().$el);
-//	} else if (game.status = "wait") {
-//		$('body').html(new WaitingView(service).render().$el);
-//	} else if (game.status = "guess"){
-//		$('body').html(new GuessView(service).render().$el);
-//	}
+	} else if (!isTurn) {
+		$('body').html(new WaitingView(service).render().$el);
+	} else if (!isPhotographer && isTurn){
+		$('body').html(new GuessView(service).render().$el);
+	}
 });
 
     /* --------------------------------- Event Registration -------------------------------- */
