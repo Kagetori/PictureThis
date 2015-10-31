@@ -98,7 +98,6 @@ class FriendTests(TestCase):
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_REMOVED)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
 
-
 class SearchTests(TestCase):
     @classmethod
     def setUpTestData(cls):

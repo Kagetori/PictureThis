@@ -18,7 +18,7 @@ var AddFriendView = function (service) {
 		var user = getUser();
 		var user_id = user.id;
 		var api = 'search/find_user';
-        var params = 'user_id' + encodeURIComponent(user_id) + '&username=' + encodeURIComponent(username);
+        var params = 'user_id=' + encodeURIComponent(user_id) + '&username=' + encodeURIComponent(username);
 
 		var searchParser = function(result) {
 		   var obj = JSON.parse(result);
