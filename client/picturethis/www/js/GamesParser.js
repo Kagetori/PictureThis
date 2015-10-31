@@ -48,7 +48,7 @@ var makeGame = function(obj) {
      game.words_seen = obj.words_seen;
 
      if (typeof obj.is_turn != "undefined") {
-             game.is_turn = obj.curr_word;
+             game.is_turn = obj.is_turn;
           };
 
      if (typeof obj.curr_word != "undefined") {
@@ -56,7 +56,7 @@ var makeGame = function(obj) {
      };
 
     if (typeof obj.is_photographer != "undefined") {
-        game.my_round = obj.is_photographer;
+        game.is_photographer = obj.is_photographer;
     };
 
     return game;
