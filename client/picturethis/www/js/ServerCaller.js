@@ -1,10 +1,12 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
-var ServerCaller = function(url,parser) {
+var ServerCaller = function(api,params,parser) {
     var emptyFunction = function() {};
-    var serverCaller = new ServerCaller(url,parser,emptyFunction);
+    var serverCaller = new ServerCaller(api,params,parser,emptyFunction);
 };
 
-var ServerCaller = function(url,parser,callback) {
+var ServerCaller = function(api,params,parser,callback) {
+    var serverURL = "http://picturethis.brianchau.ca/api/";
+
     showAlert("called ServerCaller!");
     var xmlhttp;
     if (window.XMLHttpRequest){
@@ -17,7 +19,7 @@ var ServerCaller = function(url,parser,callback) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open('GET', url, true);
+    xmlhttp.open('GET', serverURL + api + "?" + params, true);
     xmlhttp.send();
 
     xmlhttp.onreadystatechange = function() {
