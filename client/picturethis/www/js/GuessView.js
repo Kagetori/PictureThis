@@ -13,21 +13,30 @@ var GuessView = function (service) {
 	this.initialize();
 
 	this.sendGuess = function(guess) {
-		var retrievedGame =  window.localStorage.getItem('activeGame');
-        var parsedGame = JSON.parse(retrievedGame);
-        var currentWord = parsedGame.curr_word;
+		var currentGame = getActiveGame();
+        var currentWord = currentGame.curr_word;
         console.log(currentWord);
         if (currentWord != guess) {
-        	window.alert("Your guess is incorrect. Try again.");
+        	showAlert("Your guess is incorrect. Try again.");
         }
         else {
-        	window.alert("Your guess is correct! Continue!");
+        	showAlert("Your guess is correct! Continue!");
 
-			//implementation of sending guess to server, and retrieving updated game (with new word and updated turn) from server
-			//need callback to toPictureView() function
+			var user = getUser();
+			var user_id = user.id;
+			console.log(user_id);
+			var game_id = currentGame.game_id;
+			console.log(game_id);
+			console.log(guess);
+			var api = 'game/validate_guess';
+			var params = 'user_id=' + encodeURIComponent(user_id) + '&game_id=' + encodeURIComponent(game_id) + '&guess=' + encodeURIComponent(guess);
 
-			//not sure if this function will bring user to the photographer view with the new word
-			this.toPictureView();
+			var picView = function(){
+				var guessView = new GuessView();
+				guessView.toPictureView();
+			};
+
+			var serverCaller = new ServerCaller(api,params,GameParser,picView);
         }
 	}
 
