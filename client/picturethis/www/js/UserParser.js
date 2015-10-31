@@ -19,14 +19,15 @@ var UserParser = function(result) {
                 var game = games[i];
                 var newGame = makeGame(game);
                 parsedGames.push(newGame);
-            };
-        };
+            }
+        }
 
         window.localStorage.clear();
         window.localStorage.setItem('userObject', JSON.stringify(myUser));
 
-        } else {
+    } else {
         //shows exception message
         showAlert(obj.exception);
-        };
+        setSpinnerVisibility(false);
+    }
 }

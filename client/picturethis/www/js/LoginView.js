@@ -28,8 +28,10 @@ var LoginView = function (service) {
     	var user = getUser();
         if (user.username == username) {
         	window.location="index2.html";
-            } else {
-            showAlert("Login failed, username and/or password don't match.")}
+        } else {
+            showAlert("Login failed, username and/or password don't match.");
+            setSpinnerVisibility(false);
+        }
     }
 
 	this.initialize();

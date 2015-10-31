@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+<div class="fullscreen" id="main_page">
 
 <script id="takepicture-tpl" type="text/template">
     <header class="bar bar-nav">
@@ -46,9 +49,7 @@
     function backToMain() {
         window.location="index2.html";
     }
-</script>
 
-<script>
     function toWaitingView() {
         var takePictureView = new TakePictureView();
         takePictureView.sendPicture();
@@ -60,6 +61,7 @@
 <script src="lib/jquery.js"></script>
 <script src="lib/router.js"></script>
 <script src="js/services/memory/PictureThisService.js"></script>
+<script src="js/spinner.js"></script>
 <script src="js/TakePictureView.js"></script>
 <script src="js/WaitingView.js"></script>
 <script src="js/GuessView.js"></script>
@@ -72,6 +74,12 @@
 <script src="js/GamesParser.js"></script>
 
 <script src="js/app3.js"></script>
+
+</div>
+
+<div id="spinner_wrapper" style="visibility: hidden;"><table class="spinner_table"><tr><td class="spinner_cell">
+<div class="spinner-loader">Loading…</div>
+</td></tr></table></div>
 
 </body>
 </html>
