@@ -17,6 +17,9 @@ service.initialize().done(function () {
 	router.addRoute('add friend', function () {
 		$('body').html(new AddFriendView(service).render().$el);
 	});
+	router.addRoute('main', function () {
+    	$('body').html(new FriendListView(service).render().$el);
+    });
 
 	router.start();
 
@@ -38,6 +41,8 @@ service.initialize().done(function () {
 		}, false);
 
     /* ---------------------------------- Local Functions ---------------------------------- */
+
+console.log(getFriends());
 
 function populateTable() {
 	var friends = getFriends();
@@ -69,7 +74,6 @@ console.log($("#friendlist-tpl").html());
 
 function getFriends(){
 	var user = getUser();
-	console.log(user.friends);
     return user.friends;
 }
 
