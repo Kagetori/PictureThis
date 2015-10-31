@@ -61,6 +61,7 @@ var AddFriendView = function (service) {
     	};
 
 	this.backToMain = function() {
+		window.location.reload();
 		window.location="index2.html";
     	}
 

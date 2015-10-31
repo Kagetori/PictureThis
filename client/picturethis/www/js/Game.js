@@ -13,28 +13,46 @@ var Game = function(game_id, user_id, friend_id, active, is_photographer, is_tur
 
 //checks if there's an ongoing game with the friend. Continues game if there is, else starts a new game.
 function playGame(friendId){
-    if (hasOngoingGame(friendId)) {
-        showAlert("yes ongoing game");
-	    continueGame(friendId);
-	} else {
-	    showAlert("no ongoing game");
-	    startNewGame(friendId);
-	}
+    var callback = function(ongoing) {
+        if (ongoing) {
+            continueGame(friendId);
+        } else {
+            startNewGame(friendId);
+        }
+    };
+
+    hasOngoingGame(friendId, callback);
 };
 
 // returns true if there is an ongoing game with a friend (also saves game to localStorage), false otherwise
-function hasOngoingGame(friendId) {
-    showAlert("got to hasOngoingGame!");
-	var user = getUser();
-	var userGames = user.games;
-	for (var game in userGames) {
-	    if(game.friend_id === friendId && game.active) {
-	        window.localStorage.removeItem('activeGame');
-            window.localStorage.setItem('activeGame',JSON.stringify(game));
-            return true;
-	    }
-	}
-	return false;
+function hasOngoingGame(friendId, callback) {
+    var user = getUser();
+    var userId = user.id;
+    var api = 'game/get_game_status';
+    var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
+
+    var checkParser = function(result) {
+          showAlert("Called GameParser!");
+          var obj = JSON.parse(result);
+          if (typeof obj.exception === "undefined") {
+              var game = makeGame(obj);
+              var user = getUser();
+              var userGames = user.games;
+              userGames.push(game);
+              user.games = userGames;
+
+              window.localStorage.removeItem('activeGame');
+              window.localStorage.setItem('activeGame',JSON.stringify(game));
+
+              callback(true);
+
+          } else {
+               callback(false);
+          };
+    };
+
+    var serverCaller = new ServerCaller(api,params,checkParser);
+
 };
 
 // figures out which screen to go to based on is_photographer and is_turn, then goes to screen
@@ -47,7 +65,7 @@ function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
     var api = 'game/start_new_game';
-    var params = 'user_id=' + encodeURIComponent(user_id) + '&friend_id=' + encodeURIComponent(friend_id);
+    var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
     var callGameView = function() {
         toGameView();
     };
