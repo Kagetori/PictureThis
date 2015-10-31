@@ -83,9 +83,10 @@ def search__find_user(request):
     if not _authenticate(params):
         return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
+    user_id = _get_param(params, 'user_id', 0)
     username = _get_param(params, 'username', None)
 
-    return _response(search.find_user, username=username)
+    return _response(search.find_user, user_id=user_id, username=username)
 
 
 
@@ -193,16 +194,13 @@ def _response(fn, **kwargs):
         return JsonResponse(e.ret_dict())
 
 def _authenticate(params):
-    return True
-#    auth_token = _get_param(params, 'auth_token')
-#    user_id = _get_param(params, 'user_id')
-
-#    if auth_token is None or user_id is None:
-#        return False
-
-#    try:
-#        user = User.objects.get(obfuscated_id=user_id)
-#        return user.authenticate(auth_token)
-
-#    except User.DoesNotExist:
-#        return False
+#    return True
+    auth_token = _get_param(params, 'auth_token')
+    user_id = _get_param(params, 'user_id')
+    if auth_token is None or user_id is None:
+        return False
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+        return user.authenticate(auth_token)
+    except User.DoesNotExist:
+        return False

@@ -15,8 +15,10 @@ var AddFriendView = function (service) {
 	this.findFriend = function(username) {
 		showAlert("got to findFriend!");
 		showAlert("username: " + username);
+		var user = getUser();
+		var user_id = user.id;
 		var api = 'search/find_user';
-        var params = 'username=' + encodeURIComponent(username);
+        var params = 'user_id' + encodeURIComponent(user_id) + '&username=' + encodeURIComponent(username);
 
 		var searchParser = function(result) {
 		   var obj = JSON.parse(result);

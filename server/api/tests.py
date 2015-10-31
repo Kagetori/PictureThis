@@ -102,7 +102,7 @@ class FriendTests(TestCase):
 class SearchTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        for i in range(5):
+        for i in range(6):
             username = 'user' + str(i)
             password = 'pw' + str(i)
 
@@ -110,12 +110,15 @@ class SearchTests(TestCase):
         return
 
     def testFindUser(self):
+        my_user = User.objects.get(name='user5')
+        user_id = my_user.obfuscated_id
+
         for i in range(5):
             username = 'user' + str(i)
             password = 'pw' + str(i)
             
             user = User.objects.get(name=username)
-            user_view = search.find_user(username=username)
+            user_view = search.find_user(user_id=user_id, username=username)
 
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
