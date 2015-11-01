@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from api import friend, game, login, poll, search
 from models import User
@@ -10,6 +11,7 @@ import urllib
 
 # FRIEND API
 
+@csrf_exempt
 def friend__add_friend(request):
     params = _params(request)
 
@@ -21,6 +23,7 @@ def friend__add_friend(request):
 
     return _response(friend.add_friend, user_id=user_id, friend_id=friend_id)
 
+@csrf_exempt
 def friend__remove_friend(request):
     params = _params(request)
     if not _authenticate(params):
@@ -31,6 +34,7 @@ def friend__remove_friend(request):
 
     return _response(friend.remove_friend, user_id=user_id, friend_id=friend_id)
 
+@csrf_exempt
 def friend__get_friends(request):
     params = _params(request)
     if not _authenticate(params):
@@ -42,6 +46,7 @@ def friend__get_friends(request):
 
 # LOGIN API
 
+@csrf_exempt
 def login__create_user(request):
     params = _params(request)
     username = _get_param(params, 'username', None)
@@ -51,6 +56,7 @@ def login__create_user(request):
 
     return _response(login.create_user, username=username, password=password, client_version=client_version, device_id=device_id)
 
+@csrf_exempt
 def login__login(request):
     params = _params(request)
     username = _get_param(params, 'username', None)
@@ -63,6 +69,7 @@ def login__login(request):
 
 # POLL API
 
+@csrf_exempt
 def poll__update(request):
     params = _params(request)
 
@@ -77,6 +84,7 @@ def poll__update(request):
 
 # SEARCH API
 
+@csrf_exempt
 def search__find_user(request):
     params = _params(request)
 
@@ -90,7 +98,8 @@ def search__find_user(request):
 
 
 
-# GAME API
+
+@csrf_exempt# GAME API
 def game__start_new_game(request):
     params = _params(request)
 
@@ -102,6 +111,7 @@ def game__start_new_game(request):
 
     return _response(game.start_new_game, user_id=user_id, friend_id=friend_id)
 
+@csrf_exempt
 def game__send_picture(request):
     params = _params(request)
 
@@ -113,6 +123,7 @@ def game__send_picture(request):
 
     return _response(game.send_picture, user_id=user_id, game_id=game_id)
 
+@csrf_exempt
 def game__get_picture(request):
     params = _params(request)
 
@@ -128,6 +139,7 @@ def game__get_picture(request):
     except RemoteException as e:
         return JsonResponse(e.ret_dict())
 
+@csrf_exempt
 def game__end_game(request):
     params = _params(request)
 
@@ -139,6 +151,7 @@ def game__end_game(request):
 
     return _response(game.end_game, user_id=user_id, game_id=game_id)
 
+@csrf_exempt
 def game__validate_guess(request):
     params = _params(request)
 
@@ -151,6 +164,7 @@ def game__validate_guess(request):
 
     return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess)
 
+@csrf_exempt
 def game__get_user_games(request):
     params = _params(request)
 
@@ -161,6 +175,7 @@ def game__get_user_games(request):
 
     return _response(game.get_user_games, user_id=user_id)
 
+@csrf_exempt
 def game__get_game_status(request):
     params = _params(request)
 

@@ -26,8 +26,6 @@ var ServerCaller = function(api,params,parser,callback) {
 
     xmlhttp.open('POST', serverURL + api, true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.setRequestHeader("Content-length", params.length);
-    xmlhttp.setRequestHeader("Connection", "close");
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
