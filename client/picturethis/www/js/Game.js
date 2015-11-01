@@ -35,19 +35,18 @@ function hasOngoingGame(friendId, callback) {
         debugAlert("Called GameParser!");
         var obj = JSON.parse(result);
         if (typeof obj.exception === "undefined") {
-          var game = makeGame(obj);
-          var user = getUser();
-          var userGames = user.games;
-          userGames.push(game);
-          user.games = userGames;
+            var game = makeGame(obj);
+            var user = getUser();
+            var userGames = user.games;
+            userGames.push(game);
+            user.games = userGames;
 
-          window.localStorage.removeItem('activeGame');
-          window.localStorage.setItem('activeGame',JSON.stringify(game));
+            window.localStorage.removeItem('activeGame');
+            window.localStorage.setItem('activeGame',JSON.stringify(game));
 
-          callback(true);
-
+            callback(true);
         } else {
-          callback(false);
+            callback(false);
         }
     };
 
@@ -82,7 +81,7 @@ function toGameView() {
 var displayWord = function() {
     var activeGame = getActiveGame();
     var currentWord = activeGame.curr_word; //here's the word to display
-    debugAlert(currentWord);
+    showAlert(currentWord); // TODO change this to debugAlert later
     return currentWord;
 };
 
