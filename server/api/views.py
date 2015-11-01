@@ -11,6 +11,7 @@ import urllib
 
 # FRIEND API
 
+# TODO add requires_csrf_token
 @csrf_exempt
 def friend__add_friend(request):
     params = _params(request)
@@ -123,9 +124,10 @@ def game__send_picture(request):
 
     return _response(game.send_picture, user_id=user_id, game_id=game_id)
 
-@csrf_exempt
+# THIS should be just a GET request, not POST. It's easier for the client to get
+# an image with GET
 def game__get_picture(request):
-    params = _params(request)
+    params = request.GET
 
     # TODO for now, don't authenticate this call snce it just returns squirrel anyway
     #i not !_authenticate(params):
