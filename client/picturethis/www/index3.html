@@ -39,10 +39,11 @@
     <img src="img\squirrel.jpg" alt="Squirrel!" style="width:304px;height:228px;">
     <br><br><br>
     <div class="bar bar-standard bar-footer-secondary">
-        <input type="text" name="guess" placeholder="input your guess" id="guess">
+        <input type="text" name="guess" placeholder="input your guess" id="guess"
+               onkeydown="if (event.keyCode == 13) document.getElementById('guessButton').click()">
     </div>
     <div class="bar bar-standard bar-footer">
-        <button onclick="sendAnswer()" class="btn btn-block">Send</button>
+        <button id="guessButton" onclick="sendAnswer()" class="btn btn-block">Send</button>
     </div>
 </script>
 
@@ -63,6 +64,7 @@
         var guess = $("[name='guess']").val();
         var guessView = new GuessView();
         guessView.sendGuess(guess);
+        document.getElementById("guess").value = "";
     }
 </script>
 
