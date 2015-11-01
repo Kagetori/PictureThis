@@ -19,6 +19,7 @@
     </header>
     <br><br><br>
     <label>{{word}}</label>
+    <button onclick="toTakePicture()" class="btn btn-block">Take Picture</button>
     <div class="bar bar-standard bar-footer">
         <button onclick="toWaitingView()" class="btn btn-block">Send</button>
     </div>
@@ -63,6 +64,10 @@
         var guessView = new GuessView();
         guessView.sendGuess(guess);
         document.getElementById("guess").value = "";
+    }
+
+    function toTakePicture() {
+        takePicture();
     }
 </script>
 
