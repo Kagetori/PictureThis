@@ -22,7 +22,7 @@ var LoginView = function (service) {
 	    	loginView.LoginFriendView(username);
 	    };
         var serverCaller = new ServerCaller(api,params,UserParser,login);
-       };
+    };
 
     this.LoginFriendView = function(username) {
     	var user = getUser();

@@ -13,8 +13,8 @@ var AddFriendView = function (service) {
 
 	//queries server with friend username. Adds as friend if username found, throws exception otherwise
 	this.findFriend = function(username) {
-		showAlert("got to findFriend!");
-		showAlert("username: " + username);
+		debugAlert("got to findFriend!");
+		debugAlert("username: " + username);
 		var user = getUser();
 		var user_id = user.id;
 		var api = 'search/find_user';

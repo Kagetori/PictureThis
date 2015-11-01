@@ -1,6 +1,6 @@
 //Takes return of server call and either parses&stores user in localStorage or shows an alert(exception)
 var UserParser = function(result) {
-   showAlert("Called UserParser!");
+   debugAlert("Called UserParser!");
    var obj = JSON.parse(result);
 
    if (typeof obj.exception === "undefined") {

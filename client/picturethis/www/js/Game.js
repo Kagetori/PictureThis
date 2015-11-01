@@ -32,7 +32,7 @@ function hasOngoingGame(friendId, callback) {
     var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
 
     var checkParser = function(result) {
-        showAlert("Called GameParser!");
+        debugAlert("Called GameParser!");
         var obj = JSON.parse(result);
         if (typeof obj.exception === "undefined") {
           var game = makeGame(obj);
@@ -48,7 +48,7 @@ function hasOngoingGame(friendId, callback) {
 
         } else {
           callback(false);
-        };
+        }
     };
 
     var serverCaller = new ServerCaller(api,params,checkParser);
@@ -82,7 +82,7 @@ function toGameView() {
 var displayWord = function() {
     var activeGame = getActiveGame();
     var currentWord = activeGame.curr_word; //here's the word to display
-    showAlert(currentWord);
+    debugAlert(currentWord);
     return currentWord;
 };
 

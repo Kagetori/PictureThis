@@ -4,8 +4,7 @@ var SignUpView = function (service) {
 		this.$el = $('<div/>');
 		this.render();
 	};
-	
-//	this.initialize();
+
 	this.render = function() {
 		this.$el.html(this.template());
 		return this;
@@ -20,15 +19,16 @@ var SignUpView = function (service) {
 			signUpView.LoginFriendView(username);
 		};
 		var serverCaller = new ServerCaller(api,params,UserParser,create);
-		};
+	};
 
 	this.LoginFriendView = function(username) {
        	var user = getUser();
         if (user.username == username) {
             window.location="index.html";
-            } else {
-            showAlert("Try again")}
+        } else {
+            showAlert("Try again");
         }
+    }
 
 	this.initialize();
 }
