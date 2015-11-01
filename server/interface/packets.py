@@ -1,6 +1,10 @@
 from remote_object import RemoteObject
 
-class FriendPacket(RemoteObject):
+class SuccessPacket(RemoteObject):
+    def __init__(self):
+        return
+
+class FriendPacket(SuccessPacket):
     def __init__(self, friends):
         """
         friends
@@ -8,7 +12,7 @@ class FriendPacket(RemoteObject):
         """
         self.friends = friends
 
-class GamePacket(RemoteObject):
+class GamePacket(SuccessPacket):
     def __init__(self, games):
         """
         games

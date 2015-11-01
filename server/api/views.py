@@ -4,7 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 from api import friend, game, login, poll, search
 from models import User
 
-from interface.success import SuccessPacket
 from interface.exception import RemoteException
 
 import urllib

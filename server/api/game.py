@@ -4,7 +4,6 @@ from models import Game, User, Turn, WordPrompt
 
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
-from interface.success import SuccessPacket
 from interface.packets import GamePacket
 
 import string

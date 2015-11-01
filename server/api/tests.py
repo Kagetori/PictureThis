@@ -3,7 +3,6 @@ from django.test import TestCase
 from models import User, Game, WordPrompt, Turn
 
 from interface.exception import RemoteException
-from interface.success import SuccessPacket
 from interface.packets import GamePacket
 
 import config, login, friend, search, game

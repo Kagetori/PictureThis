@@ -2,7 +2,6 @@ from models import User, Friend
 
 from interface.exception import RemoteException
 from interface.packets import FriendPacket
-from interface.success import SuccessPacket
 from interface.user import FriendUser
 
 import config
