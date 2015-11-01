@@ -24,8 +24,10 @@ var ServerCaller = function(api,params,parser,callback) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open('GET', serverURL + api + "?" + params, true);
-    xmlhttp.send();
+    xmlhttp.open('POST', serverURL + api, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.setRequestHeader("Content-length", params.length);
+    xmlhttp.setRequestHeader("Connection", "close");
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -39,4 +41,6 @@ var ServerCaller = function(api,params,parser,callback) {
             // wait for the call to complete
         }
     };
+
+    xmlhttp.send(params);
 }

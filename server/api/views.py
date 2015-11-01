@@ -176,7 +176,7 @@ def game__get_game_status(request):
 # HELPER FUNCTIONS
 
 def _params(request):
-    return request.GET
+    return request.POST
 
 def _get_param(params, key, default=None):
     value = params.get(key, default)
