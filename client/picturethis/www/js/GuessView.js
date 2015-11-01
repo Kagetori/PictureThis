@@ -41,6 +41,12 @@ var GuessView = function (service) {
 	}
 
 	this.toPictureView = function() {
-		window.location.reload();
+		var currentGame = getActiveGame;
+		if (currentGame.active) {
+			window.location.reload();
+		} else {
+			showAlert("Game Finished!" + '\n' + "(You can start another game from the main page)");
+			window.location="index2.html";
+		}
 	}
 }
