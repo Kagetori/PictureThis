@@ -67,7 +67,7 @@ var AddFriendView = function (service) {
 
 	this.backToMain = function() {
 		window.location.reload();
-		window.location="index2.html";
+		window.location="friends.html";
     }
 
 	this.initialize();

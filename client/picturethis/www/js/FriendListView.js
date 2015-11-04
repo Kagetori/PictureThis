@@ -16,7 +16,7 @@ var FriendListView = function (service) {
 //		var nullUser = new User("","","","","","");
 //		window.localStorage.setItem('userObject', nullUser);
 		window.localStorage.clear();
-		window.location="index.html";
+		window.location="login.html";
 	}
 
 	this.initialize();

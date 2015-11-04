@@ -24,7 +24,7 @@ var SignUpView = function (service) {
 	this.LoginFriendView = function(username) {
        	var user = getUser();
         if (user.username == username) {
-            window.location="index.html";
+            window.location="login.html";
         } else {
             showAlert("Try again");
         }

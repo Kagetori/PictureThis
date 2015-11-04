@@ -7,6 +7,8 @@
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
 <body>
@@ -14,7 +16,7 @@
 
 <script id="login-tpl" type="text/template">
     <header class="bar bar-nav">
-        <h1 class="title">Login</h1>
+        <h1>Login</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
         <form onsubmit="event.preventDefault()">
@@ -25,7 +27,7 @@
         <input type="password" name="password">
         <br><br>
         <!--input type="submit" value="Login"-->
-        <button type="submit" onclick="userLogin()">Login</button>
+        <button class="mainbutton" type="submit" onclick="userLogin()">Login</button>
         </form>
         <br>
     <a href="#sign up">Sign up for an account</a>

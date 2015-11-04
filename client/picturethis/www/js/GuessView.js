@@ -43,7 +43,7 @@ var GuessView = function (service) {
             window.location.reload();
         } else {
             showAlert("Game Finished!" + '\n' + "(You can start another game from the main page)");
-            window.location="index2.html";
+            window.location="friends.html";
         }
     }
 

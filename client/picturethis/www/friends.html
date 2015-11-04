@@ -7,6 +7,7 @@
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
 <body>
@@ -14,19 +15,19 @@
 
 <script id="friendlist-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="logout()" class="btn pull-left">Logout</button>
-        <button onclick="location.href = '#add friend';" class="btn pull-right">
+        <button onclick="logout()" class="mainbutton pull-left">Logout</button>
+        <button onclick="location.href = '#add friend';" class="mainbutton pull-right">
             Add Friend
         </button>
-        <h1 class="title">Friends</h1>
+        <h1>Friends</h1>
     </header>
     <br><br>
 </script>
 
 <script id="add-friend-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Search friend</h1>
+        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
+        <h1>Search friend</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
         <form onsubmit="event.preventDefault()">

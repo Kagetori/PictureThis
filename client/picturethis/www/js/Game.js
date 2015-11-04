@@ -73,7 +73,7 @@ function startNewGame(friendId) {
 };
 
 function toGameView() {
-    window.location="index3.html";
+    window.location="game.html";
 }
 
 // gets the game that was just started, goes to photographer screen, displays word on screen

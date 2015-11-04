@@ -7,6 +7,7 @@
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
 <body>
@@ -14,8 +15,8 @@
 
 <script id="takepicture-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Take a picture of this:</h1>
+        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
+        <h1>Take a picture of this:</h1>
     </header>
     <br><br><br>
     <label>{{word}}</label>
@@ -27,15 +28,15 @@
 
 <script id="waiting-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Waiting for turn</h1>
+        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
+        <h1>Waiting for turn</h1>
     </header>
 </script>
 
 <script id="guess-tpl" type="text/template">
     <header class="bar bar-nav">
-        <button onclick="backToMain()" class="btn pull-left">Back</button>
-        <h1 class="title">Guess what this is</h1>
+        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
+        <h1>Guess what this is</h1>
     </header>
     <img src="http://picturethis.brianchau.ca/api/game/get_picture" id="guess_img" alt="Squirrel!" style="width:304px;height:228px;">
     <br><br><br>
@@ -50,7 +51,7 @@
 
 <script>
     function backToMain() {
-        window.location="index2.html";
+        window.location="friends.html";
     }
 
     function toWaitingView() {

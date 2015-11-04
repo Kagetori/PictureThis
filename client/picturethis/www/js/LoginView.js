@@ -27,7 +27,7 @@ var LoginView = function (service) {
     this.LoginFriendView = function(username) {
     	var user = getUser();
         if (user.username == username) {
-        	window.location="index2.html";
+        	window.location="friends.html";
         } else {
             showAlert("Login failed, username and/or password don't match.");
             setSpinnerVisibility(false);
