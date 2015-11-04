@@ -18,7 +18,7 @@ def create_user(username, password, client_version=1, device_id=None):
     """
     API Function to create a user
     """
-    if username is None or password is None:
+    if username is None or password is None or username == '' or password == '':
         raise RemoteException('Username and password cannot be blank.')
 
     user = None
@@ -45,7 +45,7 @@ def login(username, password, client_version=1, device_id=None):
     """
     API Function to login a user using password
     """
-    if username is None or password is None:
+    if username is None or password is None or username == '' or password == '':
         raise RemoteException('Username and password cannot be blank.')
 
     user = None

@@ -27,32 +27,34 @@ var TakePictureView = function (word) {
 }
 
 function takePicture() {
+    var onDeviceReady = function() {
+        console.log(navigator.camera);
+    };
+
+    var clearCache = function() {
+        navigator.camera.cleanup();
+    };
+
+    var onSuccess = function(imageURI) {
+        var myImage = document.getElementById('myImage');
+        myImage.src = imageURI;
+    };
+
+    var onFail = function(message) {
+        debugAlert('Failed because: ' + message);
+    };
+
 
     document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady() {
-        console.log(navigator.camera);
-    }
 
     if (!navigator.camera) {
-          showAlert("Camera API not supported", "Error");
-          return;
-      }
-
-    function clearCache() {
-        navigator.camera.cleanup();
+        showAlert("Camera API not supported", "Error");
+        return;
     }
 
     navigator.camera.getPicture(onSuccess, onFail, {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
-        sourceType : Camera.PictureSourceType.CAMERA });
-
-    function onSuccess(imageURI) {
-        var myImage = document.getElementById('myImage');
-        myImage.src = imageURI;
-    }
-
-    function onFail(message) {
-        debugAlert('Failed because: ' + message);
-    }
-};
+        sourceType : Camera.PictureSourceType.CAMERA
+    });
+}

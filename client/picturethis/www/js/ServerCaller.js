@@ -31,7 +31,7 @@ var ServerCaller = function(api,params,parser,callback) {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             // do something with the results
             if (xmlhttp.responseText != "undefined"){
-                showAlert(xmlhttp.responseText);
+                debugAlert(xmlhttp.responseText);
                 parser(xmlhttp.responseText);
                 if (callback) callback();
             }
