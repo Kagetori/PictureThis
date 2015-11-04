@@ -27,8 +27,20 @@ var TakePictureView = function (word) {
 }
 
 function takePicture() {
-	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-        destinationType: Camera.DestinationType.DATA_URL
+
+	document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log(navigator.camera);
+    }
+
+	if (!navigator.camera) {
+          showAlert("Camera API not supported", "Error");
+          return;
+      }
+
+	navigator.camera.getPicture(onSuccess, onFail, {
+		quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI
     });
 
     function onSuccess(imageData) {
