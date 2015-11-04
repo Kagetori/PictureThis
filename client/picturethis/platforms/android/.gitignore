@@ -4,11 +4,22 @@ local.properties
 /gradlew
 /gradlew.bat
 /gradle
+
 # Ant builds
 ant-build
 ant-gen
+
 # Eclipse builds
 gen
 out
+
 # Gradle builds
+/.gradle
 /build
+/CordovaLib/build
+
+# Specific asset folders to ignore
+/assets/www/*
+# Except
+!/assets/www/plugins
+!/assets/www/cordova_plugins.js
