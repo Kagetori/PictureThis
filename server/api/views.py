@@ -189,6 +189,15 @@ def game__get_game_status(request):
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
 
+def upload_file(request):
+    params = _params(request)
+    form = Photo(request.POST, request.FILES)
+    form.save()
+    #user_id = _get_param(params, 'user_id', None)
+    #game_id = _get_param(params, 'game_id', None)
+    #return _response(game.handle_uploaded_file, form=form, user_id=user_id, game_id=game_id)
+
+
 # HELPER FUNCTIONS
 
 def _params(request):
