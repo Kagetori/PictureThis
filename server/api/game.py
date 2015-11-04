@@ -95,6 +95,12 @@ def get_picture(user_id, game_id):
     with open('/var/www/picturethis/media/squirrel.jpg', 'rb') as f:
         return HttpResponse(f.read(), content_type='image/jpeg')
 
+def handle_uploaded_file(form, user_id, game_id):
+
+    with open('', 'wb+') as destination:
+        for chunk in form.chunks():
+            destination.write(chunk)
+
 def end_game(user_id, game_id):
     """
     Ends a pre-existing game by setting it to inactive

@@ -70,3 +70,6 @@ class Turn(models.Model):
     picture_seen = models.BooleanField(default=False)
     picture_seen_date = models.DateTimeField(null=True)
     picture_url = models.CharField(max_length=512)
+
+class Photo(model.Model):
+    photo = models.FileField(upload_to='')

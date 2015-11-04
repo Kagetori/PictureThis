@@ -32,8 +32,8 @@ body {
         linear,
         left top,
         left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
+        color-stop(0, #FFFFFF),
+        color-stop(0.51, #FFFFFF)
     );
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
@@ -70,11 +70,11 @@ body {
 }
 
 h1 {
-    font-size:24px;
-    font-weight:normal;
+    font-size:20px;
+    font-weight:bold;
     margin:0px;
     overflow:visible;
-    padding:0px;
+    padding-top:10px;
     text-align:center;
 }
 
@@ -113,3 +113,39 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+.mainbutton {
+  -webkit-border-radius: 60;
+  -moz-border-radius: 60;
+  border-radius: 60px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 16px;
+  background: #d93434;
+  padding: 4px 8px 4px 8px;
+  text-decoration: none;
+}
+
+.mainbutton:hover {
+  background: #e36666;
+  text-decoration: none;
+}
+
+.playbutton {
+  -webkit-border-radius: 60;
+  -moz-border-radius: 60;
+  border-radius: 60px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #347ed9;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+}
+
+.playbutton:hover {
+  background: #6897d1;
+  text-decoration: none;
+}
+
+
