@@ -8,7 +8,7 @@ from interface.user import User as RemoteUser
 # Search api
 
 def find_user(user_id, username):
-    if username is None:
+    if username is None or username == '':
         raise RemoteException('Username cannot be blank.')
 
     user = None
