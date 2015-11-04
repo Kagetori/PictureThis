@@ -264,7 +264,7 @@ a:active {
   bottom: 0;
   left: 0;
   overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: auto;
   background-color: #fff;
 }
 
