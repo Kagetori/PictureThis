@@ -1,5 +1,6 @@
 .idea/*
 picturethis/.idea/*
+picturethis/www/.idea/*
 picturethis/platforms/*
 picturethis/plugins/*
 picturethis/platforms/android/.gradle/*
