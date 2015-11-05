@@ -60,9 +60,9 @@
 
     function toWaitingView() {
         var takePictureView = new TakePictureView();
-        takePictureView.sendPicture();
-        // TODO Add progression to waiting view
-        //window.location.href = '#wait view';
+        takePictureView.sendPicture(function() {
+            window.location.href = '#wait view';
+        });
     }
 
     function sendAnswer() {
@@ -73,11 +73,7 @@
     }
 
     function toTakePicture() {
-        takePicture(function(imgURI) {
-            console.log(imgURI);
-            // have imgURL
-            // Can use this as form element for send answer
-        });
+        takePicture();
     }
 </script>
 

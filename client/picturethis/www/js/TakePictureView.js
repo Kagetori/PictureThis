@@ -14,7 +14,7 @@ var TakePictureView = function (word) {
 
     this.initialize();
 
-    this.sendPicture = function() {
+    this.sendPicture = function(callback) {
         var game = getActiveGame();
         var user_id = game.user_id;
         var game_id = game.game_id;
@@ -28,11 +28,11 @@ var TakePictureView = function (word) {
         params['user_id'] = user_id;
         params['game_id'] = game_id;
 
-        serverCaller(api, params, GameParser, null, imgSrc);
+        serverCaller(api, params, GameParser, callback, imgSrc);
     };
 }
 
-function takePicture(callback) {
+function takePicture() {
     var onDeviceReady = function() {
         console.log(navigator.camera);
     };
