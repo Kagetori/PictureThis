@@ -120,7 +120,7 @@ def game__send_picture(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
-    photo = request.FILES['file']
+    photo = request.FILES['game_photo']
 
     return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
 
