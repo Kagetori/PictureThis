@@ -43,7 +43,7 @@ def start_new_game(user_id, friend_id):
 
     return _start_new_round(user_id=user_id, game_id=game_id)
 
-def send_picture(user_id, game_id):
+def send_picture(user_id, game_id, photo):
     """
     Marks a picture as sent
     """
@@ -75,8 +75,12 @@ def send_picture(user_id, game_id):
         turn = Turn.objects.get(turn_num=round_num, game=game)
 
         turn.picture_added = True
-        # TODO add picture URLs later
         turn.save()
+
+        # save photo
+        with open('/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_id)), 'wb+') as dest:
+            for chunk in photo.chunks():
+                dest.write(chunk)
 
         return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=game)
 

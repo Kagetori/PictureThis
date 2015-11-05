@@ -10,7 +10,6 @@ import urllib
 
 # FRIEND API
 
-# TODO add requires_csrf_token
 @csrf_exempt
 def friend__add_friend(request):
     params = _params(request)
@@ -121,10 +120,13 @@ def game__send_picture(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
-    return _response(game.send_picture, user_id=user_id, game_id=game_id)
+    photo = request.FILES['file']
+
+    return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
 
 # THIS should be just a GET request, not POST. It's easier for the client to get
 # an image with GET
+# Since this is get, don't need @csrf_exempt
 def game__get_picture(request):
     params = request.GET
 
