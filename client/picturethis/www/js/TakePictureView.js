@@ -41,9 +41,9 @@ function takePicture(callback) {
         navigator.camera.cleanup();
     };
 
-    var onSuccess = function(imageURI) {
+    var onSuccess = function(imageData) {
         var myImage = document.getElementById('myImage');
-        myImage.src = imageURI;
+        myImage.src = "data:image/jpeg;base64," + imageData;
     };
 
     var onFail = function(message) {
@@ -61,6 +61,8 @@ function takePicture(callback) {
 
     navigator.camera.getPicture(onSuccess, onFail, {
         quality: 50,
+        targetWidth: 600,
+        targetHeight: 600,
         sourceType: Camera.PictureSourceType.CAMERA,
         destinationType: Camera.DestinationType.DATA_URL,
         encodingType: Camera.EncodingType.JPEG
