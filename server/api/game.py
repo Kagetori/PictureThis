@@ -6,8 +6,11 @@ from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
 from interface.packets import GamePacket
 
+import base64
 import string
 import config, utility
+import datetime
+import os.path
 
 # Game api
 
@@ -78,7 +81,7 @@ def send_picture(user_id, game_id, photo):
         turn.save()
 
         # save photo
-        with open('/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_id)), 'wb+') as dest:
+        with open('/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_num)), 'wb+') as dest:
             for chunk in photo.chunks():
                 dest.write(chunk)
 
@@ -92,18 +95,49 @@ def get_picture(user_id, game_id):
     Gets a picture for the specified user_id and game_id
     """
 
-    # TODO get the photo for the actual turn
-    # File name will probably be along the lines of
-    # '%s_%s.jpg' % (str(game_id), str(turn_id))
+    if user_id is None or game_id is None:
+        raise RemoteException('User ID and game ID cannot be blank.')
 
-    with open('/var/www/picturethis/media/squirrel.jpg', 'rb') as f:
-        return HttpResponse(f.read(), content_type='image/jpeg')
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException("User does not exist")
 
-def handle_uploaded_file(form, user_id, game_id):
+    game = None
 
-    with open('', 'wb+') as destination:
-        for chunk in form.chunks():
-            destination.write(chunk)
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        raise RemoteException("Game does not exist")
+
+    if game is None or game.active is False:
+        raise RemoteException("Game is inactive")
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        raise RemoteException('User ID and game ID combination not valid') 
+
+    round_num = game.curr_round
+
+    try:
+        turn = Turn.objects.get(turn_num=round_num, game=game)
+        if not turn.picture_seen:
+            turn.picture_seen = True
+            turn.picture_seen_date = datetime.datetime.now()
+            turn.save()
+
+        filename = '/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_num))
+
+        if os.path.isfile(filename):
+            with open(filename, 'rb') as f:
+                return HttpResponse('data:imagejpg;base64,'+base64.encodestring(f.read()), content_type='image/jpeg')
+        else:
+            # return squirrel for now. In the future return some error
+            with open('/var/www/picturethis/media/squirrel.jpg', 'rb') as f:
+                return HttpResponse('data:imagejpg;base64,'+base64.encodestring(f.read()), content_type='image/jpeg')
+
+    except Turn.DoesNotExist:
+        raise RemoteException("Invalid turn")
 
 def end_game(user_id, game_id):
     """

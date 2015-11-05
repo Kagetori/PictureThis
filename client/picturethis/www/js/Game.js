@@ -29,7 +29,9 @@ function hasOngoingGame(friendId, callback) {
     var user = getUser();
     var userId = user.id;
     var api = 'game/get_game_status';
-    var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
+    var params = new Array();
+    params['user_id'] = userId;
+    params['friend_id'] = friendId;
 
     var checkParser = function(result) {
         debugAlert("Called GameParser!");
@@ -50,7 +52,7 @@ function hasOngoingGame(friendId, callback) {
         }
     };
 
-    var serverCaller = new ServerCaller(api,params,checkParser);
+    serverCaller(api, params, checkParser, null, null);
 
 };
 
@@ -65,11 +67,14 @@ function startNewGame(friendId) {
     var user = getUser();
     var userId = user.id;
     var api = 'game/start_new_game';
-    var params = 'user_id=' + encodeURIComponent(userId) + '&friend_id=' + encodeURIComponent(friendId);
+    var params = new Array();
+    params['user_id'] = userId;
+    params['friend_id'] = friendId;
+
     var callGameView = function() {
         toGameView();
     };
-    var serverCaller = new ServerCaller(api,params,GameParser,callGameView);
+    serverCaller(api, params, GameParser, callGameView, null);
 };
 
 function toGameView() {

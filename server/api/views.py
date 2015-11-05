@@ -120,19 +120,16 @@ def game__send_picture(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
-    photo = request.FILES['game_photo']
+    photo = request.FILES.get('file')
 
     return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
 
-# THIS should be just a GET request, not POST. It's easier for the client to get
-# an image with GET
-# Since this is get, don't need @csrf_exempt
+@csrf_exempt
 def game__get_picture(request):
-    params = request.GET
+    params = _params(request)
 
-    # TODO for now, don't authenticate this call snce it just returns squirrel anyway
-    #i not !_authenticate(params):
-    #    return JsonResponse(RemoteException('Not authenticated').ret_dict())
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
@@ -190,14 +187,6 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
-
-def upload_file(request):
-    params = _params(request)
-    form = Photo(request.POST, request.FILES)
-    form.save()
-    #user_id = _get_param(params, 'user_id', None)
-    #game_id = _get_param(params, 'game_id', None)
-    #return _response(game.handle_uploaded_file, form=form, user_id=user_id, game_id=game_id)
 
 
 # HELPER FUNCTIONS

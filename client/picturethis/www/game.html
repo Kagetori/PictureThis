@@ -42,7 +42,7 @@
         <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
         <h1>Guess what this is</h1>
     </header>
-    <img src="http://picturethis.brianchau.ca/api/game/get_picture" id="guess_img" alt="Squirrel!" style="width:304px;height:228px;">
+    <img src="" id="guess_img" alt="" style="width:304px;height:228px;">
     <br><br><br>
     <div class="bar bar-standard bar-footer-secondary">
         <input type="text" name="guess" placeholder="input your guess" id="guess"
@@ -61,7 +61,8 @@
     function toWaitingView() {
         var takePictureView = new TakePictureView();
         takePictureView.sendPicture();
-        window.location.href = '#wait view'
+        // TODO Add progression to waiting view
+        //window.location.href = '#wait view';
     }
 
     function sendAnswer() {
@@ -72,7 +73,11 @@
     }
 
     function toTakePicture() {
-        takePicture();
+        takePicture(function(imgURI) {
+            console.log(imgURI);
+            // have imgURL
+            // Can use this as form element for send answer
+        });
     }
 </script>
 

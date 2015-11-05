@@ -26,14 +26,17 @@ var GuessView = function (service) {
             console.log(game_id);
             console.log(guess);
             var api = 'game/validate_guess';
-            var params = 'user_id=' + encodeURIComponent(user_id) + '&game_id=' + encodeURIComponent(game_id) + '&guess=' + encodeURIComponent(guess);
+            var params = new Array();
+            params['user_id'] = user_id;
+            params['game_id'] = game_id;
+            params['guess'] = guess;
 
             var picView = function(){
                 var guessView = new GuessView();
                 guessView.toPictureView();
             };
 
-            var serverCaller = new ServerCaller(api,params,GameParser,picView);
+            serverCaller(api, params, GameParser, picView, null);
         }
     }
 
@@ -48,4 +51,18 @@ var GuessView = function (service) {
     }
 
     this.initialize();
+}
+
+function getGuessImage() {
+    var user = getUser();
+    var user_id = user.id;
+    var currentGame = getActiveGame();
+    var game_id = currentGame.game_id;
+    var params = new Array();
+    params['user_id'] = user_id;
+    params['game_id'] = game_id;
+
+    serverCaller('game/get_picture', params, function(result) {
+        document.getElementById('guess_img').src = result;
+    }, null, null);
 }

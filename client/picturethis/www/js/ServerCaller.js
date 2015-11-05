@@ -1,16 +1,11 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
-var ServerCaller = function(api,params,parser) {
-    var emptyFunction = function() {};
-    var serverCaller = new ServerCaller(api,params,parser,emptyFunction);
-};
 
-var ServerCaller = function(api,params,parser,callback) {
+function serverCaller(api, params, parser, callback, imgSrc) {
+    //var serverURL = "http://picturethis.brianchau.ca/api/";
     var serverURL = "http://picturethis.brianchau.ca/api/";
 
     if (api.substring(0, 6) != "login/") {
-        var authToken = getUser().auth_token;
-
-        params += "&auth_token=" + encodeURIComponent(authToken);
+        params['auth_token'] = getUser().auth_token;
     }
 
     debugAlert("called ServerCaller!");
@@ -25,7 +20,6 @@ var ServerCaller = function(api,params,parser,callback) {
     }
 
     xmlhttp.open('POST', serverURL + api, true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -40,5 +34,26 @@ var ServerCaller = function(api,params,parser,callback) {
         }
     };
 
-    xmlhttp.send(params);
+    var formData = new FormData();
+
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            formData.append(key, params[key]);
+        }
+    }
+
+    if (imgSrc) {
+        formData.append('file', dataURItoBlob(imgSrc));
+    }
+
+    xmlhttp.send(formData);
+}
+
+function dataURItoBlob(dataURI) {
+    var binary = atob(dataURI.split(',')[1]);
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }

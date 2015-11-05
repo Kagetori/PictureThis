@@ -1,1 +1,4 @@
 *.pyc
+media/*
+!media/squirrel.jpg
+!media/cat.png
