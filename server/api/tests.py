@@ -5,7 +5,7 @@ from models import User, Game, WordPrompt, Turn
 from interface.exception import RemoteException
 from interface.packets import GamePacket
 
-import config, login, friend, search, game
+import config, login, friend, search, game, poll
 
 # Create your tests here.
 
@@ -96,6 +96,19 @@ class FriendTests(TestCase):
 
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_REMOVED)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
+
+    def testGetAllFriends(self):
+        user0_id = User.objects.get(name='user0').obfuscated_id
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        user3_id = User.objects.get(name='user3').obfuscated_id
+        user4_id = User.objects.get(name='user4').obfuscated_id
+        friend.add_friend(user_id=user0_id, friend_id=user1_id)
+        friend.add_friend(user_id=user2_id, friend_id=user0_id)
+        friend.add_friend(user_id=user0_id, friend_id=user3_id)
+        friend.add_friend(user_id=user4_id, friend_id=user0_id)
+
+        self.assertEqual(len(friend.get_user_friends(user0_id).friends), 4)
 
 class SearchTests(TestCase):
     @classmethod
@@ -243,3 +256,24 @@ class GameTests(TestCase):
 
         user1_games = game.get_user_games(user_id=user1_id)
         self.assertEqual(len(user1_games.games), 0)
+
+class PollTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        for i in range(5):
+            username = 'user' + str(i)
+            password = 'pw' + str(i)
+            login.create_user(username=username, password=password)
+    def testUpdate(self):
+        user0_id = User.objects.get(name='user0').obfuscated_id
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        user3_id = User.objects.get(name='user3').obfuscated_id
+        user4_id = User.objects.get(name='user4').obfuscated_id
+
+        friend.add_friend(user_id=user0_id, friend_id=user1_id)
+        friend.add_friend(user_id=user2_id, friend_id=user0_id)
+        friend.add_friend(user_id=user0_id, friend_id=user3_id)
+        friend.add_friend(user_id=user4_id, friend_id=user0_id)
+
+        self.assertEqual(len(poll.update(user0_id).polls), 4)

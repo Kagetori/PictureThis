@@ -19,3 +19,11 @@ class GamePacket(SuccessPacket):
             List of Game objects
         """
         self.games = games
+
+class PollPacket(SuccessPacket):
+    def __init__(self, polls):
+        """
+        polls
+            List of Poll objects
+        """
+        self.polls = polls

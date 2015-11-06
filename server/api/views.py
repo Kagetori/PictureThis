@@ -79,8 +79,6 @@ def poll__update(request):
 
     return _response(poll.update, user_id=user_id)
 
-
-
 # SEARCH API
 
 @csrf_exempt
@@ -96,9 +94,9 @@ def search__find_user(request):
     return _response(search.find_user, user_id=user_id, username=username)
 
 
+# GAME API
 
-
-@csrf_exempt# GAME API
+@csrf_exempt
 def game__start_new_game(request):
     params = _params(request)
 
@@ -187,7 +185,19 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
+# POLL API
 
+@csrf_exempt
+def update(request):
+    params = _params(request)
+
+    # if not_authenticate(params):
+    #     return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+    friend_id = _get_param(params, 'friend_id', None)
+
+    return _response(poll.update, user_id=user_id)
 
 # HELPER FUNCTIONS
 
