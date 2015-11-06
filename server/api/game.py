@@ -46,7 +46,7 @@ def start_new_game(user_id, friend_id):
 
     return _start_new_round(user_id=user_id, game_id=game_id)
 
-def send_picture(user_id, game_id, photo):
+def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
     """
     Marks a picture as sent
     """
@@ -81,7 +81,7 @@ def send_picture(user_id, game_id, photo):
         turn.save()
 
         # save photo
-        with open('/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_num)), 'wb+') as dest:
+        with open(path + ('%s_%s.jpg' % (str(game_id), str(round_num))), 'wb+') as dest:
             for chunk in photo.chunks():
                 dest.write(chunk)
 
@@ -90,7 +90,7 @@ def send_picture(user_id, game_id, photo):
     except Turn.DoesNotExist:
         raise RemoteException("Invalid turn")
 
-def get_picture(user_id, game_id):
+def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
     """
     Gets a picture for the specified user_id and game_id
     """
@@ -126,15 +126,13 @@ def get_picture(user_id, game_id):
             turn.picture_seen_date = datetime.datetime.now()
             turn.save()
 
-        filename = '/var/www/picturethis/media/%s_%s.jpg' % (str(game_id), str(round_num))
+        filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
                 return HttpResponse('data:imagejpg;base64,'+base64.encodestring(f.read()), content_type='image/jpeg')
         else:
-            # return squirrel for now. In the future return some error
-            with open('/var/www/picturethis/media/squirrel.jpg', 'rb') as f:
-                return HttpResponse('data:imagejpg;base64,'+base64.encodestring(f.read()), content_type='image/jpeg')
+            raise RemoteException("Cannot find image")
 
     except Turn.DoesNotExist:
         raise RemoteException("Invalid turn")
