@@ -81,9 +81,11 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
         turn.picture_added = True
         turn.save()
 
+        file_photo = _decode_64_to_file(photo)
+
         # save photo
         with open(path + ('%s_%s.jpg' % (str(game_id), str(round_num))), 'wb+') as dest:
-            for chunk in _decode_64_to_file(photo).chunks():
+            for chunk in file_photo.chunks():
                 dest.write(chunk)
 
         return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=game)
