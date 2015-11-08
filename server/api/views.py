@@ -119,13 +119,12 @@ def game__send_picture(request):
 
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
+    photo = _get_param(params, 'file', None)
 
-    try:
-        photo = request.FILES.get('file')
-        return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
-
-    except Exception as e:
+    if photo is None:
         return JsonResponse(RemoteException('Unable to upload image').ret_dict())
+
+    return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
 
 @csrf_exempt
 def game__get_picture(request):
@@ -138,7 +137,7 @@ def game__get_picture(request):
     game_id = _get_param(params, 'game_id', None)
 
     try:
-        return game.get_picture(user_id=user_id, game_id=game_id)
+        return HttpResponse(game.get_picture(user_id=user_id, game_id=game_id), content_type='image/jpeg')
     except RemoteException as e:
         return JsonResponse(e.ret_dict())
 
