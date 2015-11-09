@@ -1,6 +1,9 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
 
 function serverCaller(api, params, parser, callback, unusedParam) {
+    // there is this unusedParam; all calls to serverCaller currently
+    // send null to this. If you ever need to send a new param to serverCaller,
+    // you can change the name of this and use it.
     var serverURL = "http://picturethis.brianchau.ca/api/";
 
     if (api.substring(0, 6) != "login/") {

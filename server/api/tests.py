@@ -230,10 +230,10 @@ class GameTests(TestCase):
 
         game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path='/var/www/picturethis/media_test/')
 
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear')
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote_1.curr_word)
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear', path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
-        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote_1.curr_word)
+        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
         self.assertTrue(game_remote_2.active)
         self.assertEqual(game_remote_2.curr_round, 2)

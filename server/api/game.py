@@ -167,7 +167,7 @@ def end_game(user_id, game_id):
     game.save()
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, curr_word=None, is_photographer=None, is_turn=None)
 
-def validate_guess(user_id, game_id, guess):
+def validate_guess(user_id, game_id, guess, path='/var/www/picturethis/media/'):
     """
     Checks if guess is correct. Return a sucess packet if guess matches latest word prompt
     """
@@ -206,7 +206,14 @@ def validate_guess(user_id, game_id, guess):
         current_turn.guessed = True
         current_turn.save()
 
-        if game.curr_round == game.max_rounds:
+        round_num = game.curr_round
+
+        filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
+
+        if os.path.isfile(filename):
+            os.remove(filename)
+
+        if round_num == game.max_rounds:
             return end_game(user_id, game_id)
         else:
             return _start_new_round(user_id=user_id, game_id=game_id)
