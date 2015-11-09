@@ -191,14 +191,13 @@ def game__get_game_status(request):
 # POLL API
 
 @csrf_exempt
-def update(request):
+def poll__update(request):
     params = _params(request)
 
     # if not_authenticate(params):
     #     return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
     user_id = _get_param(params, 'user_id', None)
-    friend_id = _get_param(params, 'friend_id', None)
 
     return _response(poll.update, user_id=user_id)
 
