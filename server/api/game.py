@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from models import Game, User, Turn, WordPrompt
 
@@ -80,9 +81,11 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
         turn.picture_added = True
         turn.save()
 
+        file_photo = _decode_64_to_file(photo)
+
         # save photo
         with open(path + ('%s_%s.jpg' % (str(game_id), str(round_num))), 'wb+') as dest:
-            for chunk in photo.chunks():
+            for chunk in file_photo.chunks():
                 dest.write(chunk)
 
         return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=game)
@@ -130,7 +133,7 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
-                return HttpResponse('data:imagejpg;base64,'+base64.encodestring(f.read()), content_type='image/jpeg')
+                return _encode_file_to_64(f)
         else:
             raise RemoteException("Cannot find image")
 
@@ -382,6 +385,12 @@ def _get_remote_game(user_id, friend_id, game_model):
 
     except Turn.DoesNotExist:
         raise RemoteException("Turn does not exist")
+
+def _encode_file_to_64(f):
+    return 'data:imagejpg;base64,' + base64.encodestring(f.read())
+
+def _decode_64_to_file(dataURL):
+    return SimpleUploadedFile(name='file.jpg', content=base64.decodestring(dataURL.split(',')[1]), content_type='image/jpeg')
 
 # WARNING: THE FOLLOWING ARE DEBUGGING FUNCTIONS ONLY
 # EXTERNAL APIs SHOULD NOT HAVE ACCECSS TO THESE

@@ -1,7 +1,6 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
 
-function serverCaller(api, params, parser, callback, imgSrc) {
-    //var serverURL = "http://picturethis.brianchau.ca/api/";
+function serverCaller(api, params, parser, callback, unusedParam) {
     var serverURL = "http://picturethis.brianchau.ca/api/";
 
     if (api.substring(0, 6) != "login/") {
@@ -42,18 +41,5 @@ function serverCaller(api, params, parser, callback, imgSrc) {
         }
     }
 
-    if (imgSrc) {
-        formData.append('file', dataURItoBlob(imgSrc));
-    }
-
     xmlhttp.send(formData);
-}
-
-function dataURItoBlob(dataURI) {
-    var binary = atob(dataURI.split(',')[1]);
-    var array = [];
-    for(var i = 0; i < binary.length; i++) {
-        array.push(binary.charCodeAt(i));
-    }
-    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
