@@ -72,8 +72,8 @@ def login__login(request):
 def poll__update(request):
     params = _params(request)
 
-    if not _authenticate(params):
-        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+    # if not _authenticate(params):
+    #     return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
     user_id = _get_param(params, 'user_id', 0)
 
@@ -187,18 +187,6 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
-# POLL API
-
-@csrf_exempt
-def poll__update(request):
-    params = _params(request)
-
-    # if not_authenticate(params):
-    #     return JsonResponse(RemoteException('Not authenticated').ret_dict())
-
-    user_id = _get_param(params, 'user_id', None)
-
-    return _response(poll.update, user_id=user_id)
 
 # HELPER FUNCTIONS
 
