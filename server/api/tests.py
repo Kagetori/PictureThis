@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 from models import User, Game, WordPrompt, Turn
 
@@ -194,7 +193,7 @@ class GameTests(TestCase):
         self.assertEqual(game_remote_friend.is_photographer, 0)
         self.assertEqual(game_remote_friend.is_turn, 0)
 
-        photo = self._create_file(config.BLANK_PICTURE)
+        photo = config.BLANK_PICTURE
 
         game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id, photo=photo, path='/var/www/picturethis/media_test/')
 
@@ -227,14 +226,14 @@ class GameTests(TestCase):
 
         game_id = Game.objects.get(user_id1=user1_id, user_id2=user2_id).id
 
-        photo = self._create_file(config.BLANK_PICTURE)
+        photo = config.BLANK_PICTURE
 
         game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path='/var/www/picturethis/media_test/')
 
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear')
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote_1.curr_word)
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear', path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
-        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote_1.curr_word)
+        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
         self.assertTrue(game_remote_2.active)
         self.assertEqual(game_remote_2.curr_round, 2)
@@ -264,9 +263,6 @@ class GameTests(TestCase):
         user1_games = game.get_user_games(user_id=user1_id)
         self.assertEqual(len(user1_games.games), 0)
 
-    def _create_file(self, dataURL):
-        return SimpleUploadedFile(name='file.jpg', content=base64.decodestring(dataURL.split(',')[1]), content_type='image/jpeg')
-
 class PollTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -287,5 +283,3 @@ class PollTests(TestCase):
         friend.add_friend(user_id=user4_id, friend_id=user0_id)
 
         self.assertEqual(len(poll.update(user0_id).polls), 4)
-
-
