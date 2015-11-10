@@ -14,7 +14,8 @@ var GuessView = function (service) {
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
         console.log(currentWord);
-        if (currentWord != guess) {
+        var cleanGuess = guess.trim().toLowerCase();
+        if (currentWord != cleanGuess) {
             showAlert("Your guess is incorrect. Try again.");
         } else {
             showAlert("Your guess is correct! Continue!");
@@ -24,12 +25,12 @@ var GuessView = function (service) {
             console.log(user_id);
             var game_id = currentGame.game_id;
             console.log(game_id);
-            console.log(guess);
+            console.log(cleanGuess);
             var api = 'game/validate_guess';
             var params = new Array();
             params['user_id'] = user_id;
             params['game_id'] = game_id;
-            params['guess'] = guess;
+            params['guess'] = cleanGuess;
 
             var picView = function(){
                 var guessView = new GuessView();
