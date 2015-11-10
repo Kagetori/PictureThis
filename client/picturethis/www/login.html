@@ -7,7 +7,6 @@
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
@@ -37,6 +36,7 @@
 
 <script id="signup-tpl" type="text/template">
     <header class="bar bar-nav">
+        <button onclick="backToLogin()" class="btn btn-positive pull-left">Back</button>
         <h1 class="title">Create your account</h1>
     </header>
     <div class="bar bar-standard bar-header-secondary">
@@ -72,6 +72,12 @@
 
         var loginView = new LoginView();
         loginView.userLogin(username,password);
+    }
+
+    function backToLogin() {
+        setSpinnerVisibility(true);
+        var signUpView = new SignUpView();
+        signUpView.backToLogin();
     }
 </script>
 
