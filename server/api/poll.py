@@ -5,6 +5,7 @@ from interface.poll import Poll
 from interface.packets import PollPacket
 
 import config
+import game
 
 # Poll api
 
@@ -34,34 +35,9 @@ def update(user_id):
 def _get_poll(user_id, friend_id):
     friend_user = User.objects.get(obfuscated_id=friend_id)
 
-    game = None
-
     try:
-        game = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True)
-    except Game.DoesNotExist:
-        pass
+        game_obj = game.get_game_status(user_id=user_id, friend_id=friend_id)
+    except RemoteException:
+        return Poll(user_id=user_id, friend_id=friend_id, friend_username=friend_user.name, active_game=False, is_turn=None, is_photographer=None)
 
-    if game is None:
-        try:
-            Game.objects.get(user_id2=user_id, user_id1=friend_id, active=True)
-        except Game.DoesNotExist:
-            pass
-
-    friend_username = friend_user.name
-    if (game is None or not game.active):
-        active_game=False
-        is_turn=None
-        is_photographer=None
-    else:
-        active_game=True
-        game_initiator=game.user_id1
-        round_num=game.curr_round
-
-        if (user_id==game_initiator):
-            return (round_num % 2 == 0)
-        else:
-            return (round_num % 2 != 0)
-
-    return Poll(user_id=user_id, friend_id=friend_id, friend_username=friend_username, active_game=active_game, is_turn=is_turn, is_photographer=is_photographer)
-
-
+    return Poll(user_id=user_id, friend_id=friend_id, friend_username=friend_user.name, active_game=game_obj.active, is_turn=game_obj.is_turn, is_photographer=game_obj.is_photographer)
