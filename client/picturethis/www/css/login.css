@@ -2,15 +2,11 @@
     background-color: orange;
 }
 
-.fullscreen {
-    background-color: #FFAD5B;
-}
-
-.login_button {
-    width: 15em;
-    height: 2em;
+.big_button {
+    width: 80%;
+    height: 20%;
     text-align: center;
-    position:relative;
+    position: relative;
     font-family: Arial;
     text-transform: capitalize;
     color: white;
@@ -20,8 +16,54 @@
     border: none;
     display: block;
     margin: auto;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.navigation_bar {
+    display: block;
+    color: white;
+    background-color: #0066CC; 
+} 
+
+input[type="text"] {
+    margin: 0;
+    width: 80%;
+    height: 20%;
+    font-family: Arial;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+input[type="password"] {
+    margin: 0;
+    width: 80%;
+    height: 20%;
+    font-family: Arial;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 body{
     background-color: #FFAD5B;
+}
+
+a {
+    font-family: Arial;
+    text-decoration: none;
+    color: #3385FF;
+    font-size: 0.80em;
+}
+
+a:visited {
+    color: #3385FF;
+}
+
+h1 {
+    font-family: Arial;
+    font-size: 1em;
+    text-transform: capitalize;
+    color: white;
+    text-align: center;
+    font-weight: normal;
 }
