@@ -48,6 +48,7 @@ var getFriendListObjects = function(){
 				friendList.push(friendListObject);
 			}
 
+			console.log(JSON.stringify(friendList));
 			return friendList;
 
 		} else {

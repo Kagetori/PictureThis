@@ -27,10 +27,17 @@ var AddFriendView = function (service) {
             if (typeof obj.exception === "undefined") {
                 var friendUsername = obj.username;
                 var friend_id = obj.user_id;
-                //call add friend - they currently don't have a choice
-                showAlert("Your friend " + friendUsername + " has been found!");
-                var addFriendView = new AddFriendView();
-                addFriendView.addFriend(friend_id);
+                //asks if they want to add the user
+                function onConfirm(buttonIndex) {
+                    if(buttonIndex === 1) {
+                        var addFriendView = new AddFriendView();
+                        addFriendView.addFriend(friend_id);
+                    } else {
+                        setSpinnerVisibility(false);
+                    }
+                }
+                showNotification("Would you like to add " + friendUsername + " as a friend?",onConfirm,
+                friendUsername + " has been found!",['Yes','No']);
 
             } else {
                 //shows exception message
