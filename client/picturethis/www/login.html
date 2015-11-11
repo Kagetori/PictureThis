@@ -31,11 +31,13 @@
     </script>
 
     <script id="signup-tpl" type="text/template">
-        <header class="bar bar-nav">
-            <button onclick="backToLogin()" class="btn btn-positive pull-left">Back</button>
-            <h1 class="title">Create your account</h1>
+        <div>        
+        <header class="navigation_bar">
+            <button onclick="backToLogin()" class="navigation_button">←</button>
+            <div style="text-align:center;"><h1 class="title">Create your account</h1></div>
         </header>
-        <div style="text-align:center;">
+        </div>
+        <div style="text-align:center;" class="under_navbar">
             <form onsubmit="event.preventDefault()">
                 <br>
                 <input type="text" name="username" placeholder="Username">

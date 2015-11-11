@@ -20,11 +20,33 @@
     padding-bottom: 0.5em;
 }
 
+.navigation_button {
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin: 0;
+    font-style: oblique;
+    position: fixed;
+}
+
 .navigation_bar {
     display: block;
     color: white;
     background-color: #0066CC; 
-} 
+}  
+
+header {
+    background: #fff;
+    width: 100%;
+    height: 6%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-bottom: 4px solid #4C9CF1;
+    z-index: 100;
+    padding-top: 3%;
+}
 
 input[type="text"] {
     margin: 0;
@@ -59,11 +81,16 @@ a:visited {
     color: #3385FF;
 }
 
-h1 {
+h1.title {
     font-family: Arial;
     font-size: 1em;
     text-transform: capitalize;
     color: white;
     text-align: center;
     font-weight: normal;
+    display: inline;
+}
+
+div.under_navbar {
+    margin-top: 9%;
 }
