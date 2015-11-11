@@ -38,6 +38,8 @@ class WordPrompt(models.Model):
     A word prompt given to the user
     """
     word = models.CharField(max_length=255, unique=True)
+    word_class = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
 
 
 class Game(models.Model):
