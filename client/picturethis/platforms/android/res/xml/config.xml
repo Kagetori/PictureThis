@@ -23,9 +23,9 @@
     </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <allow-intent href="market:*" />
-    <name>picturethis</name>
+    <name>PictureThis!</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        A photo guessing game for friends. 
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
