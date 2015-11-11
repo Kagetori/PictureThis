@@ -15,3 +15,16 @@ var debugAlert = function (message, title) {
         showAlert(message, title);
     }
 };
+
+var showNotification = function(message, callback, title, labels) {
+    if (navigator.notification) {
+        navigator.notification.confirm(
+             message,   // message
+             callback,  // callback to invoke with index of button pressed
+             title,     // title
+             labels     // buttonLabels
+        )
+    } else {
+        alert("Notification Error");
+    }
+};

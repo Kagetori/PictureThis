@@ -5,6 +5,7 @@
     var service = new PictureThisService();
 
     populateTable();
+    getFriendListObjects();
 
     FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
     AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
@@ -70,6 +71,7 @@
             friendlist.appendChild(tableul);
         }
         console.log($("#friendlist-tpl").html());
+
     }
 
     function getFriends(){
