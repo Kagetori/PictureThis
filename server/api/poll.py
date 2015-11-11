@@ -33,13 +33,20 @@ def update(user_id):
 
 def _get_poll(user_id, friend_id):
     friend_user = User.objects.get(obfuscated_id=friend_id)
-    if (Game.objects.filter(user_id1=user_id, user_id2=friend_id).exists()):
-        game = Game.objects.get(user_id1=user_id, user_id2=friend_id)
-    else:
-        if (Game.objects.filter(user_id2=user_id, user_id1=friend_id).exists()):
-            game = Game.objects.get(user_id2=user_id, user_id1=friend_id)
-        else:
-            game = None
+
+    game = None
+
+    try:
+        game = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True)
+    except Game.DoesNotExist:
+        pass
+
+    if game is None:
+        try:
+            Game.objects.get(user_id2=user_id, user_id1=friend_id, active=True)
+        except Game.DoesNotExist:
+            pass
+
     friend_username = friend_user.name
     if (game is None or not game.active):
         active_game=False
