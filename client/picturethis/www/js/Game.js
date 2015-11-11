@@ -17,7 +17,15 @@ function playGame(friendId){
         if (ongoing) {
             continueGame(friendId);
         } else {
-            startNewGame(friendId);
+            function onConfirm(buttonIndex) {
+                if(buttonIndex === 1) {
+                    startNewGame(friendId);
+                } else {
+                    setSpinnerVisibility(false);
+                }
+            }
+
+            showNotification('Start a new game with your friend?',onConfirm,'New Game',['Yes','No']);
         }
     };
 
@@ -58,7 +66,6 @@ function hasOngoingGame(friendId, callback) {
 
 // figures out which screen to go to based on is_photographer and is_turn, then goes to screen
 function continueGame(friendId) {
-    //go to view
     toGameView();
 };
 
@@ -82,7 +89,6 @@ function toGameView() {
 }
 
 // gets the game that was just started, goes to photographer screen, displays word on screen
-// Note: Yuki, definitely feel free to rename this function
 var displayWord = function() {
     var activeGame = getActiveGame();
     var currentWord = activeGame.curr_word; //here's the word to display

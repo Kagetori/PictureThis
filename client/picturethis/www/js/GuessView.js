@@ -46,8 +46,18 @@ var GuessView = function (service) {
         if (currentGame.active) {
             window.location.reload();
         } else {
-            showAlert("Game Finished!" + '\n' + "(You can start another game from the main page)");
-            window.location="friends.html";
+            function onConfirm(buttonIndex) {
+                if(buttonIndex === 1) {
+                    startNewGame(friendId);
+                } else {
+                    window.location="friends.html";
+                }
+            }
+
+            showNotification('Would you like to start a new game?',onConfirm,'Game Finished!',['Yes','No']);
+
+//            showAlert("Game Finished!" + '\n' + "(You can start another game from the main page)");
+//            window.location="friends.html";
         }
     }
 

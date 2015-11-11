@@ -9,9 +9,27 @@ var showAlert = function (message, title) {
 
 var debugAlert = function (message, title) {
     // change this to false if want all debug alerts to be disabled
-    var ENABLE_DEBUG_ALERTS = false;
+    var ENABLE_DEBUG_ALERTS = true;
 
     if (ENABLE_DEBUG_ALERTS) {
         showAlert(message, title);
+    }
+};
+
+var showNotification = function(message, callback, title, labels) {
+    if (navigator.notification) {
+        navigator.notification.confirm(
+             message,   // message
+             callback,  // callback to invoke with index of button pressed
+             title,     // title
+             labels     // buttonLabels
+        )
+    } else {
+        var r = confirm(title ? (title + ": " + message) : message);
+        if (r == true) {
+            callback(1);
+        } else {
+            callback(2);
+        }
     }
 };
