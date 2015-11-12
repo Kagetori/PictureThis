@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from api import friend, game, login, poll, search
+from api import friend, game, login, poll, search, hint
 from models import User
 
 from interface.exception import RemoteException
@@ -187,6 +187,19 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
+def hint__get_word_class(request):
+    params = _params(request)
+
+    word = _get_param(params, 'word', None)
+
+    return _response(hint.get_word_class, word=word)
+
+def hint__get_word_category(request):
+    params = _params(request)
+
+    word = _get_param(params, 'word', None)
+
+    return _response(hint.get_word_category, word=word)
 
 # HELPER FUNCTIONS
 

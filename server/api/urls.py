@@ -42,4 +42,7 @@ urlpatterns = [
     url(r'^game/get_user_games', views.game__get_user_games, name='game__get_user_games'),
     url(r'^game/get_game_status', views.game__get_game_status, name='game__get_game_status'),
 
+    # HINT API
+    url(r'^hint/get_word_class', views.hint__get_word_class),
+    url(r'^hint/get_word_category', views.hint__get_word_category),
 ]
