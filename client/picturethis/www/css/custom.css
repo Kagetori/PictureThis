@@ -4,7 +4,7 @@ div.fullscreen {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: #ccff99;
+    background-color: #ffffcc;
     padding: 0;
 }
 
@@ -78,9 +78,9 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    border-bottom: 4px solid #b3ffb3;
     z-index: 100;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .big_button {
@@ -91,7 +91,7 @@ header {
     font-family: Arial;
     text-transform: capitalize;
     color: white;
-    font-size: 1em;
+    font-size: 1.5em;
     background-color: #29a429;
     text-decoration: none;
     border: none;
@@ -102,16 +102,17 @@ header {
 }
 
 .navigation_button {
+    font-size: 1em;
     color: white;
     background-color: transparent;
     border: none;
     outline: none;
-    margin: 0;
+    margin: 3px;
     font-weight: bold;
-    /* position: fixed; */
 }
 
 .navigation_bar {
+    font-size: 1.25em;
     display: block;
     color: white;
     background-color: #009900; 
@@ -140,6 +141,7 @@ div.under_navbar {
 }
 
 input[type="text"] {
+    font-size: 1.25em;
     margin: 0;
     width: 76%;
     height: 20%;
@@ -153,6 +155,7 @@ input[type="text"] {
 }
 
 input[type="password"] {
+    font-size: 1.25em;
     margin: 0;
     width: 76%;
     height: 20%;
@@ -176,18 +179,19 @@ input[type="password"]:focus {
 }
 
 html, body {
-    background-color: #FFAD5B;
+    background-color: #ffffcc;
     padding: 0;
     margin: 0;
     overflow: hidden;
     font-family: Arial
+    font-size: 1.25em;
 }
 
 a {
     font-family: Arial;
     text-decoration: none;
-    color: black;
-    font-size: 0.80em;
+    color: #3385FF;
+    font-size: 1em;
 }
 
 a:visited {
@@ -210,7 +214,7 @@ li {
     margin: 0 0 2px 0;
     padding: 5px 10px 5px 10px;
     list-style: none;
-    font-size: 1em;
+    font-size: 20px;
 }
 
 li button {
@@ -221,7 +225,7 @@ li button {
     text-decoration: none;
     padding: 5px;
     border: none;
-    font-size: 12px;
+    font-size: 16px;
     color: white;
-    margin-top: -3px;
+    margin-top: -2px;
 }
