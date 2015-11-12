@@ -194,3 +194,42 @@ a:visited {
     color: #3385FF;
 }
 
+ul {
+    background-color: white;
+    font-family: Arial;
+    clear: both;
+    border: black;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    list-style-type: none inside;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+li {
+    background-color: green;
+    margin: 0 0 2px 0;
+    padding: 5px 10px 5px 10px;
+    list-style: none;
+}
+
+li button {
+    float: right;
+    font-family: Arial;
+    width: 5em;
+    background-color: #0066CC;
+    text-decoration: none;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    border: none;
+    font-size: 0.85em;
+    color: white;
+}
+
+
+
+ul#main-nav {font-family:helvetica,arial,sans-serif;margin:0;padding:0;width:120em;}
+ul#main-nav li {margin:0;padding:0;list-style:none;margin:0 0 0.3em 0;}
+ul#main-nav li a {text-decoration:none;display:block;padding:0.3em 0.5em;border-top:0.4em solid silver;border-bottom:0.4em solid silver;color:#003;background:#fff;font-size:0.8em;width:12em;}
+ul#main-nav li a:hover {border-top:0.4em solid #900;border-bottom:0.4em solid #900;color:#000;text-transform:uppercase;}
