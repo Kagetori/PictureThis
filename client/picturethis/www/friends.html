@@ -4,33 +4,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="refresh" content="1500; url=friends.html" >
-    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+<!--     <link href="assets/ratchet/css/ratchet.css" rel="stylesheet" type="text/css">
+<link href="assets/css/styles.css" rel="stylesheet" type="text/css"> -->
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+<!--     <link rel="stylesheet" type="text/css" href="css/index.css"> -->
 </head>
 
 <body>
 <div class="fullscreen" id="main_page">
 
 <script id="friendlist-tpl" type="text/template">
-    <header class="bar bar-nav">
-        <button onclick="logout()" class="mainbutton pull-left">Logout</button>
-        <button onclick="location.href = '#add friend';" class="mainbutton pull-right">
+    <header class="navigation_bar">
+        <button onclick="logout()" class="navigation_button float-left">Logout</button>
+        <button onclick="location.href = '#add friend';" class="navigation_button float-right">
             Add Friend
         </button>
-        <h1>Friends</h1>
+        <div style="text-align:center;"><h1 class="title">Friends</h1></div>
     </header>
     <br><br>
 </script>
 
 <script id="add-friend-tpl" type="text/template">
-    <header class="bar bar-nav">
-        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
-        <h1>Search friend</h1>
+    <header class="navigation_bar">
+        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+        <div style="text-align:center;"><h1 class="title">Search User</h1></div>
     </header>
-    <div class="bar bar-standard bar-header-secondary">
+    <div class="under_navbar">
         <form onsubmit="event.preventDefault()">
             Your Friend&#39;s Username:<br>
             <input type="text" name="username" id="friend_search">
