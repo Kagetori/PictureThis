@@ -61,11 +61,11 @@ var GuessView = function (service) {
         }
     }
 
-    this.askWordClass = function() {
+    this.getHint = function() {
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
         var params = new Array();
-        var api = 'hint/get_word_class';
+        var api = 'word_prompt/get_word_prompt';
         params['word'] = currentWord;
 
         serverCaller(api, params, HintParser, null, null);
