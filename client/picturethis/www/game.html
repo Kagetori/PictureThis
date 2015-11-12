@@ -18,13 +18,16 @@
         <button onclick="backToMain()" class="navigation_button float-left">Back</button>
         <div style="text-align:center;"><h1 class="title">Take a picture of this:</h1></div>
     </header>
-    <br>
-    <div style="text-align:center;"><label>{{word}}</label></div>
-    <br><br>
-    <img style="border-style:none;width:324px" align="middle" id="myImage" src="">
-    <button onclick="toTakePicture()" class="big_button">Take Picture</button>
-    <br>
-    <button onclick="toWaitingView()" class="big_button">Send</button>
+    <div style="under_navbar">
+        <br><br><br>
+        <label>{{word}}</label>
+        <br><br>
+        <img style="border-style:none;width:324px" id="myImage" src="" />
+        <br><br>
+        <button onclick="toTakePicture()" class="big_button">Take Picture</button>
+        <br>
+        <button onclick="backToMain()" class="big_button">Send</button>
+    </div>
 </script>
 
 <script id="waiting-tpl" type="text/template">
@@ -37,7 +40,7 @@
 <script id="guess-tpl" type="text/template">
     <header class="navigation_bar">
         <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <h1 class="title">Guess what this is</h1>
+        <div style="text-align:center;"><h1 class="title">Guess what this is</h1></div>
     </header>
     <div style="text-align:center;" class="under_navbar">
         <br>

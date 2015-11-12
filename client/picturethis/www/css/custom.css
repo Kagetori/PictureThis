@@ -74,13 +74,13 @@ div.dropdown {
 
 header {
     width: 100%;
-    height: 6%;
+    height: 30px;
     position: fixed;
     top: 0;
     left: 0;
     border-bottom: 4px solid #b3ffb3;
     z-index: 100;
-    padding-top: 3%;
+    padding-top: 10px;
 }
 
 .big_button {
@@ -128,7 +128,7 @@ h1.title {
 }
 
 div.under_navbar {
-    margin-top: 10%;
+    margin-top: 40px;
 }
 
 .float-right {
@@ -186,7 +186,7 @@ html, body {
 a {
     font-family: Arial;
     text-decoration: none;
-    color: #3385FF;
+    color: black;
     font-size: 0.80em;
 }
 
@@ -198,13 +198,11 @@ ul {
     background-color: #a3a375;
     font-family: Arial;
     clear: both;
-    border: black;
-    padding-top: 5px;
-    padding-bottom: 5px;
     list-style-type: none inside;
     margin: 0;
     padding: 0;
     width: 100%;
+    padding-bottom: 0.5px;
 }
 
 li {
@@ -212,6 +210,7 @@ li {
     margin: 0 0 2px 0;
     padding: 5px 10px 5px 10px;
     list-style: none;
+    font-size: 1em;
 }
 
 li button {
@@ -220,9 +219,9 @@ li button {
     width: 5em;
     background-color: #ff9932;
     text-decoration: none;
-    padding-top: 0.1em;
-    padding-bottom: 0.1em;
+    padding: 5px;
     border: none;
-    font-size: 0.85em;
+    font-size: 12px;
     color: white;
+    margin-top: -3px;
 }
