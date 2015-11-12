@@ -14,42 +14,39 @@
 <div class="fullscreen" id="main_page">
 
 <script id="takepicture-tpl" type="text/template">
-    <header class="bar bar-nav">
-        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
-        <h1>Take a picture of this:</h1>
+    <header class="navigation_bar">
+        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+        <div style="text-align:center;"><h1 class="title">Take a picture of this:</h1></div>
     </header>
-    <br><br><br>
-    <label>{{word}}</label>
+    <br>
+    <div style="text-align:center;"><label>{{word}}</label></div>
     <br><br>
-    <img style="border-style:none;width:324px" id="myImage" src="" />
-    <div class="bar bar-standard bar-footer-secondary">
-        <button onclick="toTakePicture()" class="btn btn-block">Take Picture</button>
-    </div>
-    <div class="bar bar-standard bar-footer">
-        <button onclick="toWaitingView()" class="btn btn-block">Send</button>
-    </div>
+    <img style="border-style:none;width:324px" align="middle" id="myImage" src="">
+    <button onclick="toTakePicture()" class="big_button">Take Picture</button>
+    <br>
+    <button onclick="toWaitingView()" class="big_button">Send</button>
 </script>
 
 <script id="waiting-tpl" type="text/template">
-    <header class="bar bar-nav">
-        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
-        <h1>Waiting for turn</h1>
+    <header class="navigation_bar">
+        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+        <div style="text-align:center;"><h1 class="title">Waiting for turn</h1></div>
     </header>
 </script>
 
 <script id="guess-tpl" type="text/template">
-    <header class="bar bar-nav">
-        <button onclick="backToMain()" class="mainbutton pull-left">Back</button>
-        <h1>Guess what this is</h1>
+    <header class="navigation_bar">
+        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+        <h1 class="title">Guess what this is</h1>
     </header>
-    <img src="" id="guess_img" alt="" style="width:304px;height:228px;">
-    <br><br><br>
-    <div class="bar bar-standard bar-footer-secondary">
-        <input type="text" name="guess" placeholder="input your guess" id="guess"
-               onkeydown="if (event.keyCode == 13) document.getElementById('guessButton').click()">
-    </div>
-    <div class="bar bar-standard bar-footer">
-        <button id="guessButton" onclick="sendAnswer()" class="btn btn-block">Send</button>
+    <div style="text-align:center;" class="under_navbar">
+        <br>
+        <img src="" id="guess_img" alt="" style="width:304px;height:228px;">
+        <br><br><br>
+        <input type="text" name="guess" placeholder="Input your guess" 
+                onkeydown="if (event.keyCode == 13) document.getElementById('guessButton').click()">
+        <br><br>
+        <button class="big_button" onclick="sendAnswer()">Guess!</button>
     </div>
 </script>
 
