@@ -4,7 +4,7 @@ div.fullscreen {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: #FFAD5B;
+    background-color: #ccff99;
     padding: 0;
 }
 
@@ -73,13 +73,12 @@ div.dropdown {
 }
 
 header {
-    background: #fff;
     width: 100%;
     height: 6%;
     position: fixed;
     top: 0;
     left: 0;
-    border-bottom: 4px solid #4C9CF1;
+    border-bottom: 4px solid #b3ffb3;
     z-index: 100;
     padding-top: 3%;
 }
@@ -93,7 +92,7 @@ header {
     text-transform: capitalize;
     color: white;
     font-size: 1em;
-    background-color: #0066CC;
+    background-color: #29a429;
     text-decoration: none;
     border: none;
     display: block;
@@ -115,7 +114,7 @@ header {
 .navigation_bar {
     display: block;
     color: white;
-    background-color: #0066CC; 
+    background-color: #009900; 
 }  
 
 h1.title {
@@ -196,7 +195,7 @@ a:visited {
 }
 
 ul {
-    background-color: white;
+    background-color: #a3a375;
     font-family: Arial;
     clear: both;
     border: black;
@@ -209,7 +208,7 @@ ul {
 }
 
 li {
-    background-color: green;
+    background-color: #ffffcc;
     margin: 0 0 2px 0;
     padding: 5px 10px 5px 10px;
     list-style: none;
@@ -219,7 +218,7 @@ li button {
     float: right;
     font-family: Arial;
     width: 5em;
-    background-color: #0066CC;
+    background-color: #ff9932;
     text-decoration: none;
     padding-top: 0.1em;
     padding-bottom: 0.1em;
