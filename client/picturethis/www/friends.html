@@ -30,13 +30,12 @@
         <button onclick="backToMain()" class="navigation_button float-left">Back</button>
         <div style="text-align:center;"><h1 class="title">Search User</h1></div>
     </header>
-    <div class="under_navbar">
+    <div style="text-align:center;" class="under_navbar">
         <form onsubmit="event.preventDefault()">
-            Your Friend&#39;s Username:<br>
-            <input type="text" name="username" id="friend_search">
-            <br><br>
-            <!--input type="submit" value="Find"-->
-            <button type="submit" onclick="findFriend()">Find</button>
+            <br><br><br>
+            <input type="text" name="username" id="friend_search" placeholder="Find Username">
+            <br><br><br>
+            <button type="submit" onclick="findFriend()" class="big_button">Search</button>
         </form>
     </div>
 </script>
