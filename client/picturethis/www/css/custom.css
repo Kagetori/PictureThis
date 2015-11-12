@@ -226,10 +226,3 @@ li button {
     font-size: 0.85em;
     color: white;
 }
-
-
-
-ul#main-nav {font-family:helvetica,arial,sans-serif;margin:0;padding:0;width:120em;}
-ul#main-nav li {margin:0;padding:0;list-style:none;margin:0 0 0.3em 0;}
-ul#main-nav li a {text-decoration:none;display:block;padding:0.3em 0.5em;border-top:0.4em solid silver;border-bottom:0.4em solid silver;color:#003;background:#fff;font-size:0.8em;width:12em;}
-ul#main-nav li a:hover {border-top:0.4em solid #900;border-bottom:0.4em solid #900;color:#000;text-transform:uppercase;}
