@@ -61,6 +61,16 @@ var GuessView = function (service) {
         }
     }
 
+    this.askWordClass = function() {
+        var currentGame = getActiveGame();
+        var currentWord = currentGame.curr_word;
+        var params = new Array();
+        var api = 'hint/get_word_class';
+        params['word'] = currentWord;
+
+        serverCaller(api, params, HintParser, null, null);
+    }
+
     this.initialize();
 }
 

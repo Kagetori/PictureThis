@@ -1,19 +1,37 @@
 input[type="text"] {
     margin: 0;
-    width: 80%;
+    width: 76%;
     height: 20%;
     font-family: Arial;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    padding-left: 2%;
+    padding-right: 2%;
+    border: solid 1px #dcdcdc;
+    transition: box-shadow 0.3s, border 0.3s;
 }
 
 input[type="password"] {
     margin: 0;
-    width: 80%;
+    width: 76%;
     height: 20%;
     font-family: Arial;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    padding-left: 2%;
+    padding-right: 2%;
+    border: solid 1px #dcdcdc;
+    transition: box-shadow 0.3s, border 0.3s;
+}
+
+input[type="text"]:focus {
+    border: solid 1px #707070;
+    box-shadow: 0 0 5px 1px #969696;
+}
+
+input[type="password"]:focus {
+    border: solid 1px #707070;
+    box-shadow: 0 0 5px 1px #969696;
 }
 
 body{
