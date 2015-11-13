@@ -51,19 +51,27 @@
             <span class="boxed" id="G2" >_</span>
             <span class="boxed" id="G3" >_</span>
             <span class="boxed" id="G4" >_</span>
+            <span class="boxed" id="G5" >_</span>
+            <span class="boxed" id="G6" >_</span>
+            <span class="boxed" id="G7" >_</span>
+            <span class="boxed" id="G8" >_</span>
         </p>
         <p>
-            <span class="boxed" id="1" onclick="boxClick(this)">H</span>
-            <span class="boxed" id="2" onclick="boxClick(this)">I</span>
-            <span class="boxed" id="3" onclick="boxClick(this)">D</span>
-            <span class="boxed" id="4" onclick="boxClick(this)">E</span>
+            <span class="boxed" id="1" onclick="boxClick(this)">P</span>
+            <span class="boxed" id="2" onclick="boxClick(this)">U</span>
+            <span class="boxed" id="3" onclick="boxClick(this)">R</span>
+            <span class="boxed" id="4" onclick="boxClick(this)">P</span>
+            <span class="boxed" id="5" onclick="boxClick(this)">L</span>
+            <span class="boxed" id="6" onclick="boxClick(this)">E</span>
             <span class="boxed" id="del" onclick="deleteLastLetter()">[<-]</span>
         </p>
         <p>
             <span class="boxed" id="7" onclick="boxClick(this)">C</span>
             <span class="boxed" id="8" onclick="boxClick(this)">A</span>
-            <span class="boxed" id="9" onclick="boxClick(this)">T</span>
-            <span class="boxed" id="10" onclick="boxClick(this)">S</span>
+            <span class="boxed" id="9" onclick="boxClick(this)">M</span>
+            <span class="boxed" id="10" onclick="boxClick(this)">E</span>
+            <span class="boxed" id="11" onclick="boxClick(this)">L</span>
+            <span class="boxed" id="12" onclick="boxClick(this)">S</span>
             <span class="boxed" id="clear" onclick="clearAllLetters()">[X]</span>
         </p>
         <input type="text" name="guess" placeholder="Input your guess" 
@@ -112,19 +120,19 @@
             var lastLetterId = "G" + lastLetterNum;
             document.getElementById(lastLetterId).innerHTML = "_";
         } else {
-            document.getElementById("G4").innerHTML = "_";
+            document.getElementById("G8").innerHTML = "_"; //hardcoded
         }
     }
 
     function clearAllLetters(){
-        for (i = 1; i < 5; i++) {
+        for (i = 1; i < 9; i++) { //hardcoded
             document.getElementById("G" + i).innerHTML = "_";
         }
     }
 
     //returns element id of first blank guess box
     function getFirstBlankId() {
-        for (i = 1; i < 5; i++) {
+        for (i = 1; i < 9; i++) { //hardcoded
             var id = "G" + i;
             if (document.getElementById(id).innerHTML == "_"){
                 return id;
