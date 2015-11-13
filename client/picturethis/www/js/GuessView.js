@@ -12,10 +12,11 @@ var GuessView = function (service) {
         return this;
     };
 
-    this.sendGuess = function(guess) {
+    this.sendGuess = function() {
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
         console.log(currentWord);
+        var guess = parseGuess();
         var cleanGuess = guess.trim().toLowerCase();
         if (currentWord != cleanGuess) {
             showAlert("Your guess is incorrect. Try again.");
@@ -85,7 +86,26 @@ function addLetters() {
         var letter = currentWord.charAt(i);
         document.getElementById(i).innerHTML = letter.toUpperCase();
     }
-};
+}
+
+//returns guess as a string
+function parseGuess() {
+    console.log("parsing guess");
+    var guess = "";
+    var i = 1;
+    do{
+        if(document.getElementById("G" + i).innerHTML != "_") {
+            guess = guess + document.getElementById("G" + i).innerHTML;
+            i++;
+        } else {
+            i++;
+        }
+    }
+    while(document.getElementById("G" + i) != null)
+
+    console.log(guess);
+    return guess;
+}
 
 function getGuessImage() {
     var user = getUser();
