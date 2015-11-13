@@ -19,6 +19,25 @@
             <img src="img/logo.png">
         </div>
         <br><br>
+        <p>
+            <span class="boxed" id="G1" onclick="boxClick(this)">H</span>
+            <span class="boxed" id="G2" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="G3" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="G4" onclick="boxClick(this)">_</span>
+        </p>
+        <p>
+            <span class="boxed" id="1" onclick="boxClick(this)">H</span>
+            <span class="boxed" id="2" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="3" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="4" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="del" onclick="boxClick(this)">[<-]</span>
+        </p>
+        <p>
+            <span class="boxed" id="7" onclick="boxClick(this)">H</span>
+            <span class="boxed" id="8" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="9" onclick="boxClick(this)">_</span>
+            <span class="boxed" id="10" onclick="boxClick(this)">_</span>
+        </p>
         <form onsubmit="event.preventDefault()">
             <div style="text-align:center;">
                 <input type="text" name="username" placeholder="Username">
@@ -74,6 +93,12 @@
         setSpinnerVisibility(true);
         var signUpView = new SignUpView();
         signUpView.backToLogin();
+    }
+
+    function boxClick(elt) {
+        var letter = elt.innerHTML;
+        showAlert("Letter is: " + letter);
+        elt.innerHTML = "Q";
     }
 </script>
 
