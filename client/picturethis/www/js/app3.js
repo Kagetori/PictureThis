@@ -29,6 +29,7 @@ service.initialize().done(function () {
 		$('#main_page').html(new WaitingView(service).render().$el);
 	} else if (!isPhotographer && isTurn){
 		$('#main_page').html(new GuessView(service).render().$el);
+		addLetters();
         getGuessImage();
 	}
 });
@@ -49,5 +50,6 @@ service.initialize().done(function () {
 		}, false);
 
     /* ---------------------------------- Local Functions ---------------------------------- */
+
 
 }());

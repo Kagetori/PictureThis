@@ -1,8 +1,10 @@
 var GuessView = function (service) {
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
+        console.log("Initialized GuessView");
         this.$el = $('<div/>');
         this.render();
+
     };
 
     this.render = function() {
@@ -73,6 +75,17 @@ var GuessView = function (service) {
 
     this.initialize();
 }
+
+function addLetters() {
+    console.log("got to AddLetters");
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+
+    for(i = 0; i < currentWord.length; i++) {
+        var letter = currentWord.charAt(i);
+        document.getElementById(i).innerHTML = letter.toUpperCase();
+    }
+};
 
 function getGuessImage() {
     var user = getUser();
