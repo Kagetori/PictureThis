@@ -100,14 +100,20 @@
         var letter = elt.innerHTML;
         //find id of first unoccupied guess box
         var gid = getFirstBlankId();
-        document.getElementById(gid).innerHTML = letter;
+        if (gid != null) {
+            document.getElementById(gid).innerHTML = letter;
+        }
     }
 
     function deleteLastLetter(){
         var gid = getFirstBlankId();
-        var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
-        var lastLetterId = "G" + lastLetterNum;
-        document.getElementById(lastLetterId).innerHTML = "_";
+        if (gid != null) {
+            var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
+            var lastLetterId = "G" + lastLetterNum;
+            document.getElementById(lastLetterId).innerHTML = "_";
+        } else {
+            document.getElementById("G4").innerHTML = "_";
+        }
     }
 
     function clearAllLetters(){
