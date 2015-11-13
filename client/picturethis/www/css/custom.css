@@ -230,4 +230,8 @@ li button {
     margin-top: -2px;
 }
 
-
+.boxed {
+  width: 25px;
+  border: 2px solid grey ;
+  padding:6px;
+}
