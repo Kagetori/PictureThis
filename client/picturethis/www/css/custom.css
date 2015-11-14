@@ -231,13 +231,14 @@ li button {
 }
 
 .boxed {
-  width: 1em; 
-  height: 1em;
+  width: 1.5em; 
+  height: 1.5em;
   border: 2px solid grey ;
-  padding: 2px;
+  padding: 5px 2px 0 2px;
   font-family: Arial;
   background-color: #ff9932;
   color: white;
   border-radius: 5px;
   font-size: 1em;
+  display: inline-block;
 }
