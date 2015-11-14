@@ -123,11 +123,19 @@ function getGuessImage() {
 
 function populateGuessBlocks(word) {
     console.log("populating guess blocks for " + word);
-        
-    for (i=0; i<word.length; i++) {
-        var block = document.createElement("div");
-        block.className = "guess_box";
-        block.id = "G" + String(i+1);
+    var blocksList = document.getElementById("guess_blocks")
 
+    if (word.length != 0) {
+        var tableul = document.createElement('ul');
+        tableul.className = "blocks_list";
+
+        for (i=0; i<word.length; i++) {
+            var block = document.createElement("li");
+            block.className = "guess_box";
+            block.id = "G" + String(i+1);
+            tableul.appendChild(block);
+        }
+        blocksList.appendChild(tableul);
     }
+    console.log($("#guess_blocks").html());
 }

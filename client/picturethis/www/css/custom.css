@@ -257,5 +257,6 @@ button.play_button {
   border-radius: 5px;
   font-size: 1em;
   display: inline-block;
+  margin: 2px;
 }
 

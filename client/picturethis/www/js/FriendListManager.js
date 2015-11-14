@@ -45,6 +45,7 @@
 
     console.log(getFriends());
 
+    // TODO: add seperate lists for active/inactive games
     function populateTable() {
         var friends = getFriends();
         var friendlist = document.getElementById("friendlist-tpl");
