@@ -2,40 +2,41 @@
 (function () {
 
     /* ---------------------------------- Local Variables ---------------------------------- */
-var service = new PictureThisService();
+    var service = new PictureThisService();
 
-var retrievedGame =  window.localStorage.getItem('activeGame');
-var parsedGame = JSON.parse(retrievedGame);
+    var retrievedGame =  window.localStorage.getItem('activeGame');
+    var parsedGame = JSON.parse(retrievedGame);
 
-var isPhotographer = parsedGame.is_photographer;
-var isTurn = parsedGame.is_turn;
-var currentWord = parsedGame.curr_word; //here's the word to display
+    var isPhotographer = parsedGame.is_photographer;
+    var isTurn = parsedGame.is_turn;
+    var currentWord = parsedGame.curr_word; //here's the word to display
 
-TakePictureView.prototype.template = Handlebars.compile($("#takepicture-tpl").html());
-WaitingView.prototype.template = Handlebars.compile($("#waiting-tpl").html());
-GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
-var word = ({word: currentWord});
-service.initialize().done(function () {
-	if (isPhotographer && isTurn){
-//		$('#main_page').html(new TakePictureView(word).render().$el); //for no routing
-			router.addRoute('', function () {
-        		$('#main_page').html(new TakePictureView(word).render().$el);
-        	});
-        	router.addRoute('wait view', function () {
-        		$('#main_page').html(new WaitingView(service).render().$el);
-        	});
-        	router.start();
-	} else if (!isTurn) {
-		$('#main_page').html(new WaitingView(service).render().$el);
-	} else if (!isPhotographer && isTurn){
-		$('#main_page').html(new GuessView(service).render().$el);
-		addLetters();
-        getGuessImage();
-	}
-});
+    TakePictureView.prototype.template = Handlebars.compile($("#takepicture-tpl").html());
+    WaitingView.prototype.template = Handlebars.compile($("#waiting-tpl").html());
+    GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
+    var word = ({word: currentWord});
+    service.initialize().done(function () {
+    	if (isPhotographer && isTurn){
+    //		$('#main_page').html(new TakePictureView(word).render().$el); //for no routing
+    			router.addRoute('', function () {
+            		$('#main_page').html(new TakePictureView(word).render().$el);
+            	});
+            	router.addRoute('wait view', function () {
+            		$('#main_page').html(new WaitingView(service).render().$el);
+            	});
+            	router.start();
+    	} else if (!isTurn) {
+    		$('#main_page').html(new WaitingView(service).render().$el);
+    	} else if (!isPhotographer && isTurn){
+    		$('#main_page').html(new GuessView(service).render().$el);
+    		addLetters();
+            getGuessImage();
+            populateGuessBlocks(currentWord);
+    	}
+    });
 
     /* --------------------------------- Event Registration -------------------------------- */
-// note: it may be easier to make nagivator.notification a seperate function
+    // note: it may be easier to make nagivator.notification a seperate function
 		document.addEventListener('deviceready', function () {
 			if (navigator.notification) { // Override default HTML alert with native dialog
 				window.alert = function (message) {
@@ -50,6 +51,5 @@ service.initialize().done(function () {
 		}, false);
 
     /* ---------------------------------- Local Functions ---------------------------------- */
-
 
 }());

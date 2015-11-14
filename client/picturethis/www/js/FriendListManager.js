@@ -50,23 +50,23 @@
         var friendlist = document.getElementById("friendlist-tpl");
         if (friends.length != 0) {
             var tableul = document.createElement('ul');
-            tableul.className = "table-view";
+            tableul.className = "friends_list";
             for (i = 0; i < friends.length; i++) {
-                var tableli = document.createElement("LI");
-                tableli.className = "table-view-cell";
+                var f = document.createElement("LI");
+                f.className = "friend_element";
                 friendUserName = friends[i].username;
                 var tabletext = document.createTextNode(friendUserName);
                 var tablebutton = document.createElement("BUTTON");
-                tablebutton.className = "btn btn-primary";
+                tablebutton.className = "play_button";
 
                 //have to use username for now since id is undefined
                 var friendId = friends[i].user_id;
                 tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
                 var buttontext = document.createTextNode("PLAY");
                 tablebutton.appendChild(buttontext);
-                tableli.appendChild(tabletext);
-                tableli.appendChild(tablebutton);
-                tableul.appendChild(tableli);
+                f.appendChild(tabletext);
+                f.appendChild(tablebutton);
+                tableul.appendChild(f);
             }
             friendlist.appendChild(tableul);
         }

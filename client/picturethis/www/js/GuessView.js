@@ -120,3 +120,14 @@ function getGuessImage() {
         document.getElementById('guess_img').src = result;
     }, null, null);
 }
+
+function populateGuessBlocks(word) {
+    console.log("populating guess blocks for " + word);
+        
+    for (i=0; i<word.length; i++) {
+        var block = document.createElement("div");
+        block.className = "guess_box";
+        block.id = "G" + String(i+1);
+
+    }
+}
