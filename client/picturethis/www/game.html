@@ -47,34 +47,33 @@
         <img src="" id="guess_img" alt="" style="width:304px;height:228px;">
         <br><br><br>
 
-        <!-- TODO: change span to div -->
         <p>
-            <div class="boxed" id="G1" > </div>
-            <div class="boxed" id="G2" > </div>
-            <div class="boxed" id="G3" > </div>
-            <div class="boxed" id="G4" > </div>
-            <div class="boxed" id="G5" > </div>
-            <div class="boxed" id="G6" > </div>
-            <div class="boxed" id="G7" > </div>
-            <div class="boxed" id="G8" > </div>
+            <div class="guess_box" id="G1" ></div>
+            <div class="guess_box" id="G2" ></div>
+            <div class="guess_box" id="G3" ></div>
+            <div class="guess_box" id="G4" ></div>
+            <div class="guess_box" id="G5" ></div>
+            <div class="guess_box" id="G6" ></div>
+            <div class="guess_box" id="G7" ></div>
+            <div class="guess_box" id="G8" ></div>
         </p>
         <p>
-            <div class="boxed" id="0" onclick="boxClick(this)">P</div>
-            <div class="boxed" id="1" onclick="boxClick(this)">P</div>
-            <div class="boxed" id="2" onclick="boxClick(this)">U</div>
-            <div class="boxed" id="3" onclick="boxClick(this)">R</div>
-            <div class="boxed" id="4" onclick="boxClick(this)">P</div>
-            <div class="boxed" id="5" onclick="boxClick(this)">L</div>
-            <div class="boxed" id="del" onclick="deleteLastLetter()">[<-]</div>
+            <button class="guess_letter" id="0" onclick="boxClick(this)">P</button>
+            <button class="guess_letter" id="1" onclick="boxClick(this)">P</button>
+            <button class="guess_letter" id="2" onclick="boxClick(this)">U</button>
+            <button class="guess_letter" id="3" onclick="boxClick(this)">R</button>
+            <button class="guess_letter" id="4" onclick="boxClick(this)">P</button>
+            <button class="guess_letter" id="5" onclick="boxClick(this)">L</button>
+            <button class="guess_letter" id="del" onclick="deleteLastLetter()">[<-]</button>
         </p>
         <p>
-            <div class="boxed" id="6" onclick="boxClick(this)">E</div>
-            <div class="boxed" id="7" onclick="boxClick(this)">C</div>
-            <div class="boxed" id="8" onclick="boxClick(this)">A</div>
-            <div class="boxed" id="9" onclick="boxClick(this)">M</div>
-            <div class="boxed" id="10" onclick="boxClick(this)">E</div>
-            <div class="boxed" id="11" onclick="boxClick(this)">L</div>
-            <div class="boxed" id="clear" onclick="clearAllLetters()">[X]</div>
+            <button class="guess_letter" id="6" onclick="boxClick(this)">E</button>
+            <button class="guess_letter" id="7" onclick="boxClick(this)">C</button>
+            <button class="guess_letter" id="8" onclick="boxClick(this)">A</button>
+            <button class="guess_letter" id="9" onclick="boxClick(this)">M</button>
+            <button class="guess_letter" id="10" onclick="boxClick(this)">E</button>
+            <button class="guess_letter" id="11" onclick="boxClick(this)">L</button>
+            <button class="guess_letter" id="clear" onclick="clearAllLetters()">[X]</button>
         </p>
         <input type="text" name="guess" placeholder="Input your guess" 
                 onkeydown="if (event.keyCode == 13) document.getElementById('guessButton').click()">
@@ -106,7 +105,7 @@
         takePicture();
     }
 
-        function boxClick(elt) {
+    function boxClick(elt) {
         var letter = elt.innerHTML;
         //find id of first unoccupied guess box
         var gid = getFirstBlankId();
@@ -120,15 +119,15 @@
         if (gid != null) {
             var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
             var lastLetterId = "G" + lastLetterNum;
-            document.getElementById(lastLetterId).innerHTML = "_";
+            document.getElementById(lastLetterId).innerHTML = "";
         } else {
-            document.getElementById("G8").innerHTML = "_"; //hardcoded
+            document.getElementById("G8").innerHTML = ""; //hardcoded
         }
     }
 
     function clearAllLetters(){
         for (i = 1; i < 9; i++) { //hardcoded
-            document.getElementById("G" + i).innerHTML = "_";
+            document.getElementById("G" + i).innerHTML = "";
         }
     }
 
@@ -136,7 +135,7 @@
     function getFirstBlankId() {
         for (i = 1; i < 9; i++) { //hardcoded
             var id = "G" + i;
-            if (document.getElementById(id).innerHTML == "_"){
+            if (document.getElementById(id).innerHTML == ""){
                 return id;
             }
         }
