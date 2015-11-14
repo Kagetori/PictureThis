@@ -260,3 +260,8 @@ button.play_button {
   margin: 2px;
 }
 
+img.photo {
+    width: 100%; /*only for testing; should be deleted once image sending/receiving works*/
+    vertical-align: middle;
+    border: 1px solid black;
+}
