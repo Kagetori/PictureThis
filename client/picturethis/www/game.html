@@ -100,37 +100,58 @@
         var letter = elt.innerHTML;
         //find id of first unoccupied guess box
         var gid = getFirstBlankId();
-        if (gid != null) {
+        if (gid !== "full") {
+            console.log(gid);
             document.getElementById(gid).innerHTML = letter;
         }
     }
 
     function deleteLastLetter(){
         var gid = getFirstBlankId();
-        if (gid != null) {
+        if (gid == "G1") { // first block is blank
+            //do nothing
+        }
+        else if (gid === "full") { // no blank blocks
+            var i = 1;
+            var lastLetterId = "G" + i;
+            while (document.getElementById(lastLetterId) !== null) {
+                i++;
+                lastLetterId = "G" + i;
+            }
+            lastLetterId = "G" + (i-1);
+            document.getElementById(lastLetterId).innerHTML = "";
+        }
+        else if (gid !== null) {
             var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
             var lastLetterId = "G" + lastLetterNum;
             document.getElementById(lastLetterId).innerHTML = "";
-        } else {
-            document.getElementById("G8").innerHTML = ""; //hardcoded
-        }
+        } 
     }
 
     function clearAllLetters(){
-        for (i = 1; i < 9; i++) { //hardcoded
+        var i = 1;
+        while (document.getElementById("G" + i) !== null) {
             document.getElementById("G" + i).innerHTML = "";
+            i++;
         }
     }
 
     //returns element id of first blank guess box
     function getFirstBlankId() {
-        for (i = 1; i < 9; i++) { //hardcoded
-            var id = "G" + i;
-            if (document.getElementById(id).innerHTML == ""){
-                return id;
+        var i = 1;
+        var id = "G" + i;
+        while (document.getElementById(id).innerHTML !== "") {
+            id = "G" + i;
+            if (document.getElementById(id) === null) {
+                return "full";
+            } else {
+                i++;
             }
         }
+        return id;
     }
+
+
 </script>
 
 <script src="lib/handlebars.js"></script>
