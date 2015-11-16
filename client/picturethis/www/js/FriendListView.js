@@ -87,7 +87,7 @@ var getFriendListObjects = function(friendTpl){
                     var friendId = activeFriends[i].friend_id;
                     tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
                     var buttontext;
-                    if (activeFriends[i].is_photographer == true) {
+                    if (activeFriends[i].is_photographer == true && activeFriends[i].is_turn == true) {
                         tablebutton.className = "play_button snap";
                         buttontext = document.createTextNode("Snap!");
                     }
