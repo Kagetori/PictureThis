@@ -4,9 +4,11 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
-    populateTable();
-    getFriendListObjects();
+    var friendTpl = document.getElementById("friendlist-tpl");
 
+    getFriendListObjects(friendTpl);
+
+    setTimeout(function(){
     FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
     AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
     service.initialize().done(function () {
@@ -26,6 +28,8 @@
 
     });
 
+    }, 1000);
+
         /* --------------------------------- Event Registration -------------------------------- */
     // note: it may be easier to make nagivator.notification a seperate function
             document.addEventListener('deviceready', function () {
@@ -42,42 +46,5 @@
             }, false);
 
         /* ---------------------------------- Local Functions ---------------------------------- */
-
-    console.log(getFriends());
-
-    // TODO: add seperate lists for active/inactive games
-    function populateTable() {
-        var friends = getFriends();
-        var friendlist = document.getElementById("friendlist-tpl");
-        if (friends.length != 0) {
-            var tableul = document.createElement('ul');
-            tableul.className = "friends_list";
-            for (i = 0; i < friends.length; i++) {
-                var f = document.createElement("LI");
-                f.className = "friend_element";
-                friendUserName = friends[i].username;
-                var tabletext = document.createTextNode(friendUserName);
-                var tablebutton = document.createElement("BUTTON");
-                tablebutton.className = "play_button";
-
-                //have to use username for now since id is undefined
-                var friendId = friends[i].user_id;
-                tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
-                var buttontext = document.createTextNode("PLAY");
-                tablebutton.appendChild(buttontext);
-                f.appendChild(tabletext);
-                f.appendChild(tablebutton);
-                tableul.appendChild(f);
-            }
-            friendlist.appendChild(tableul);
-        }
-        console.log($("#friendlist-tpl").html());
-
-    }
-
-    function getFriends(){
-        var user = getUser();
-        return user.friends;
-    }
 
 }());
