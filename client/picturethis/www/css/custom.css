@@ -207,7 +207,7 @@ ul.friends_list {
     padding: 0;
     width: 100%;
     padding-bottom: 0.5px;
-    margin-top: 20px;
+    /* margin-top: 10px; */
 }
 
 li.friend_element {
@@ -216,19 +216,6 @@ li.friend_element {
     padding: 5px 10px 5px 10px;
     list-style: none;
     font-size: 20px;
-}
-
-button.play_button {
-    float: right;
-    font-family: Arial;
-    width: 5em;
-    background-color: #ff9932;
-    text-decoration: none;
-    padding: 5px;
-    border: none;
-    font-size: 16px;
-    color: white;
-    margin-top: -2px;
 }
 
 .guess_letter {
@@ -264,4 +251,48 @@ img.photo {
     width: 100%; /*only for testing; should be deleted once image sending/receiving works*/
     vertical-align: middle;
     border: 1px solid black;
+}
+
+li.inactive_friends {
+    font-family: Arial;
+    font-size: 1em;
+    background-color: blue;
+    color: white;
+    text-align: center;
+}
+
+li.active_friends {
+    font-family: Arial;
+    font-size: 1em;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+button.play_button {
+    float: right;
+    font-family: Arial;
+    width: 5em;
+    text-decoration: none;
+    padding: 5px;
+    border: none;
+    font-size: 16px;
+    color: white;
+    margin-top: -2px;
+}
+
+button.snap {
+    background-color: #ff9932;
+}
+
+button.guess {
+    background-color: blue;
+}
+
+button.new_game {
+    background-color: orange;
+}
+
+button.waiting {
+    background-color: grey;
 }
