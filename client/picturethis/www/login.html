@@ -14,18 +14,18 @@
     <div class="fullscreen" id="main_page">
 
     <script id="login-tpl" type="text/template">
-        <br><br>
+        <br>
         <div style="text-align:center;">
-            <img src="img/logo.png">
+            <img src="img/logo-large.png">
         </div>
-        <br><br>
+        <br>
         <form onsubmit="event.preventDefault()">
             <div style="text-align:center;">
                 <input type="text" name="username" placeholder="Username">
                 <br><br>
                 <input type="password" name="password" placeholder="Password">
                 <br><br><br>
-                <button class="big_button" type="submit" onclick="userLogin()">Login</button>
+                <button id="login" class="big_button" type="submit" onclick="userLogin()">Login</button>
                 </form>
                 <br>
                 <a href="#sign up">Create a new account</a>

@@ -1,4 +1,3 @@
-
 div.fullscreen {
     position: absolute;
     width: 100%;
@@ -115,7 +114,7 @@ header {
     font-size: 1.25em;
     display: block;
     color: white;
-    background-color: #009900; 
+    background-color: #01A7EF; 
 }  
 
 h1.title {
@@ -259,6 +258,7 @@ li.inactive_friends {
     background-color: blue;
     color: white;
     text-align: center;
+    padding: 2px;
 }
 
 li.active_friends {
@@ -267,6 +267,7 @@ li.active_friends {
     background-color: red;
     color: white;
     text-align: center;
+    padding: 2px;
 }
 
 button.play_button {
