@@ -76,7 +76,7 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
     round_num = game.curr_round
 
     try:
-        turn = Turn.objects.get(turn_num=round_num, game=game)
+        turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
 
         turn.picture_added = True
         turn.save()
@@ -187,7 +187,7 @@ def validate_guess(user_id, game_id, guess, path='/var/www/picturethis/media/'):
         raise RemoteException("Game does not exist")
 
     try:
-        current_turn = Turn.objects.get(turn_num=game.curr_round, game=game)
+        current_turn = Turn.objects.get(turn_num=game.curr_round, game_id=game_id)
     except Turn.DoesNotExist:
         raise RemoteException("Turn does not exist")
 
@@ -200,8 +200,13 @@ def validate_guess(user_id, game_id, guess, path='/var/www/picturethis/media/'):
     if is_photographer:
         raise RemoteException("Not this user's turn to guess")
 
-    current_word = current_turn.word_prompt.word
-    if (guess.strip() == current_word):
+    current_word_id = current_turn.word_prompt_id
+    try:
+        current_word = WordPrompt.objects.get(id=current_word_id).word
+    except WordPrompt.DoesNotExist:
+        raise RemoteException('Word does not exist.')
+
+    if (guess.strip().lower() == current_word.lower()):
 
         current_turn.guessed = True
         current_turn.save()
@@ -314,21 +319,25 @@ def _start_new_round(user_id, game_id):
 
     round_num = game.curr_round + 1
 
-    turn = Turn.objects.create(turn_num=round_num, game=game, word_prompt=new_word)
+    turn = Turn.objects.create(turn_num=round_num, game_id=game_id, word_prompt_id=new_word.id)
     turn.save()
 
     game.curr_round = round_num
     game.save()
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
-def _get_words_played(game_model):
+def _get_words_played(game_id):
 
-    turns = Turn.objects.filter(game=game_model).order_by('turn_num')
+    turns = Turn.objects.filter(game_id=game_id).order_by('turn_num')
 
     words_played = []
 
     for t in turns:
-        word = t.word_prompt.word
+        word_id = t.word_prompt_id
+        try:
+            word = WordPrompt.objects.get(id=word_id).word
+        except WordPrompt.DoesNotExist:
+            raise RemoteException('Error: unable to find words')
         words_played.append(word)
     return words_played
 
@@ -377,10 +386,10 @@ def _get_remote_game(user_id, friend_id, game_model):
 
     words_seen = []
     curr_word = None
-    words_played = _get_words_played(game_model)
+    words_played = _get_words_played(game_model.id)
 
     try:
-        current_turn = Turn.objects.get(turn_num=game_model.curr_round, game=game_model)
+        current_turn = Turn.objects.get(turn_num=game_model.curr_round, game_id=game_model.id)
 
         is_turn = (is_photographer != current_turn.picture_added)
 

@@ -37,10 +37,9 @@ class WordPrompt(models.Model):
     """
     A word prompt given to the user
     """
-    word = models.CharField(max_length=255, unique=True)
+    word = models.CharField(max_length=31, unique=True)
     word_class = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
-
 
 class Game(models.Model):
     """
@@ -55,7 +54,6 @@ class Game(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     last_move_date = models.DateTimeField(auto_now=True)
     game_type = models.IntegerField(default=config.GAME_TYPE_NORMAL)
-    words_seen = models.ManyToManyField(WordPrompt, through='Turn')
 
     class Meta:
         index_together = ('user_id1', 'user_id2', 'active')
@@ -65,10 +63,12 @@ class Turn(models.Model):
     Defines a turn in the game
     """
     turn_num = models.IntegerField()
-    game = models.ForeignKey(Game, null=True, on_delete=models.SET_NULL)
-    word_prompt = models.ForeignKey(WordPrompt, null=True, on_delete=models.SET_NULL)
+    game_id = models.IntegerField()
+    word_prompt_id = models.IntegerField();
     guessed = models.BooleanField(default=False)
     picture_added = models.BooleanField(default=False)
     picture_seen = models.BooleanField(default=False)
     picture_seen_date = models.DateTimeField(null=True)
-    picture_url = models.CharField(max_length=512)
+
+    class Meta:
+        index_together = ('game_id', 'turn_num')
