@@ -28,6 +28,9 @@ def add_to_bank(user_id, stars):
     try:
         bank = Bank.objects.get(user_id=user_id)
 
+        if bank.stars + stars < 0:
+            raise RemoteException('Unable to subtract %d stars: not enough balance.' % (-1 * stars))
+
         bank.stars += stars
         bank.save()
 
