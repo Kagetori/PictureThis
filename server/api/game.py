@@ -123,7 +123,7 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
     round_num = game.curr_round
 
     try:
-        turn = Turn.objects.get(turn_num=round_num, game=game)
+        turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
         if not turn.picture_seen:
             turn.picture_seen = True
             turn.picture_seen_date = datetime.datetime.now()
