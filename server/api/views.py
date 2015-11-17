@@ -85,8 +85,8 @@ def bank__get_user_bank(request):
 def poll__update(request):
     params = _params(request)
 
-    # if not _authenticate(params):
-    #     return JsonResponse(RemoteException('Not authenticated').ret_dict())
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
     user_id = _get_param(params, 'user_id', 0)
 
