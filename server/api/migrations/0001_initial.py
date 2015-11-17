@@ -11,6 +11,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Bank',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('user_id', models.IntegerField(unique=True, db_index=True)),
+                ('stars', models.BigIntegerField(default=0)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Friend',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -67,16 +75,16 @@ class Migration(migrations.Migration):
                 ('category', models.CharField(max_length=255)),
             ],
         ),
-        migrations.AlterIndexTogether(
+        migrations.AlterUniqueTogether(
             name='turn',
-            index_together=set([('game_id', 'turn_num')]),
+            unique_together=set([('game_id', 'turn_num')]),
         ),
         migrations.AlterIndexTogether(
             name='game',
             index_together=set([('user_id1', 'user_id2', 'active')]),
         ),
-        migrations.AlterIndexTogether(
+        migrations.AlterUniqueTogether(
             name='friend',
-            index_together=set([('user_id1', 'user_id2')]),
+            unique_together=set([('user_id1', 'user_id2')]),
         ),
     ]

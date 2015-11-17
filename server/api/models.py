@@ -31,7 +31,7 @@ class Friend(models.Model):
     relation = models.IntegerField(default=config.FRIEND_STATUS_REMOVED)
 
     class Meta:
-        index_together = ('user_id1', 'user_id2')
+        unique_together = ('user_id1', 'user_id2')
 
 class WordPrompt(models.Model):
     """
@@ -71,7 +71,7 @@ class Turn(models.Model):
     picture_seen_date = models.DateTimeField(null=True)
 
     class Meta:
-        index_together = ('game_id', 'turn_num')
+        unique_together = ('game_id', 'turn_num')
 
 class Bank(models.Model):
     """
