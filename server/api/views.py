@@ -66,6 +66,19 @@ def login__login(request):
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
 
+# BANK API
+
+@csrf_exempt
+def bank__get_user_bank(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', 0)
+
+    return _response(bank.get_user_bank, user_id=user_id)
+
 # POLL API
 
 @csrf_exempt

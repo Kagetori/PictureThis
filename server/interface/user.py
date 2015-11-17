@@ -26,7 +26,7 @@ class FriendUser(User):
         User.__init__(self, username, user_id)
 
 class LoginUser(User):
-    def __init__(self, username, user_id, auth_token, friends, games):
+    def __init__(self, username, user_id, auth_token, friends, games, stars):
         """
         username
             username of user
@@ -38,9 +38,11 @@ class LoginUser(User):
             list of user's friends
         games
             list of user's games
+        stars
+            number of stars the user has
         """
         User.__init__(self, username=username, user_id=user_id)
         self.auth_token = auth_token
         self.friends = friends
         self.games = games
-
+        self.stars = stars

@@ -27,6 +27,9 @@ urlpatterns = [
     url(r'^login/create_user', views.login__create_user, name='login__create_user'),
     url(r'^login/login', views.login__login, name='login__login'),
 
+    # BANK API
+    url(r'^bank/get_user_bank', views.bank__get_user_bank, name='bank__get_user_bank'),
+
     # SEARCH API
     url(r'^search/find_user', views.search__find_user, name='search__find_user'),
 

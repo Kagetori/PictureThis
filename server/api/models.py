@@ -72,3 +72,10 @@ class Turn(models.Model):
 
     class Meta:
         index_together = ('game_id', 'turn_num')
+
+class Bank(models.Model):
+    """
+    Defines in-game currency for users
+    """
+    user_id = models.IntegerField(unique=True, db_index=True)
+    stars = models.BigIntegerField(default=0)
