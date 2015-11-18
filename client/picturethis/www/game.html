@@ -46,22 +46,22 @@
 
         <div id="guess_blocks"> </div>
         <p>
-            <button class="guess_letter" id="0" onclick="boxClick(this)">P</button>
-            <button class="guess_letter" id="1" onclick="boxClick(this)">P</button>
-            <button class="guess_letter" id="2" onclick="boxClick(this)">U</button>
-            <button class="guess_letter" id="3" onclick="boxClick(this)">R</button>
-            <button class="guess_letter" id="4" onclick="boxClick(this)">P</button>
-            <button class="guess_letter" id="5" onclick="boxClick(this)">L</button>
-            <button id="delete" onclick="deleteLastLetter()">[<-]</button>
+            <button class="guess_letter" id="0" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="1" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="2" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="3" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="4" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="5" onclick="boxClick(this)"></button>
+            <button class="backspace" onclick="deleteLastLetter()">[<-]</button>
         </p>
         <p>
-            <button class="guess_letter" id="6" onclick="boxClick(this)">E</button>
-            <button class="guess_letter" id="7" onclick="boxClick(this)">C</button>
-            <button class="guess_letter" id="8" onclick="boxClick(this)">A</button>
-            <button class="guess_letter" id="9" onclick="boxClick(this)">M</button>
-            <button class="guess_letter" id="10" onclick="boxClick(this)">E</button>
-            <button class="guess_letter" id="11" onclick="boxClick(this)">L</button>
-            <button id="clear" onclick="clearAllLetters()">[X]</button>
+            <button class="guess_letter" id="6" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="7" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="8" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="9" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="10" onclick="boxClick(this)"></button>
+            <button class="guess_letter" id="11" onclick="boxClick(this)"></button>
+            <button class="clear" onclick="clearAllLetters()">[X]</button>
         </p>
 
         <br><br>
@@ -70,6 +70,8 @@
 </script>
 
 <script>
+    var input = [];
+
     function backToMain() {
         window.location="friends.html";
     }
@@ -97,10 +99,9 @@
         //find id of first unoccupied guess box
         var gid = getFirstBlankId();
         if (gid !== "full") {
-            console.log(gid);
             document.getElementById(gid).innerHTML = letter;
             elt.classList.toggle('hide');
-            console.log(elt);
+            input.push(elt.id);
         }
     }
 
@@ -118,11 +119,15 @@
             }
             lastLetterId = "G" + (i-1);
             document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            input.pop();
         }
         else if (gid !== null) {
             var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
             var lastLetterId = "G" + lastLetterNum;
             document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            input.pop();
         } 
     }
 
@@ -136,6 +141,7 @@
         for (var i = hidden.length-1; i >= 0; i--) {
             hidden[i].classList.toggle("hide");
         }
+        input = [];
     }
 
     //returns element id of first blank guess box
