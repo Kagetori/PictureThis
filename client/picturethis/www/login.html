@@ -43,18 +43,33 @@
                 <input type="text" name="username" placeholder="Username">
                 <br><br>
                 <input type="password" name="password" placeholder="Password">
-                <br><br><br>
-                <button class="big_button" type="submit" onclick="makeAccount()">Create Account</button>
+                <br><br>
+                <input type="password" name="password_confirm" placeholder="Retype your password">
+                <br><br>
+                <button class="big_button" type="submit" onclick="newAccount()">Create Account</button>
             </form>
         </div>
     </script>
 
 <script>
+    function newAccount() {
+        if (confirmPassword()){
+            makeAccount();
+        } else {
+            window.alert("Passwords don't match");
+        }
+    }
+
+    function confirmPassword() {
+        var password = $("[name='password']").val();
+        var password_confirm = $("[name='password_confirm']").val();
+        return (password === password_confirm);
+    }
+
     function makeAccount() {
         setSpinnerVisibility(true);
         var username = $("[name='username']").val();
         var password = $("[name='password']").val();
-
         var signUpView = new SignUpView();
         signUpView.createAccount(username,password);
     }
