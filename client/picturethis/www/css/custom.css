@@ -251,6 +251,7 @@ img.photo {
     max-width: 500px;
     vertical-align: middle;
     border: none;
+    text-align: center;
 }
 
 li.inactive_friends {
