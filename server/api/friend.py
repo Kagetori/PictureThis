@@ -52,10 +52,14 @@ def _set_friendship(user_id, friend_id, relation):
     if friendship.relation == config.FRIEND_STATUS_BLOCKED:
         raise RemoteException('Invalid user id.')
 
-    # Otherwise, do as normal
-    friendship.relation = relation
+    # Otherwise, do as normal for the reverse relation
+    if relation == config.FRIEND_STATUS_BLOCKED:
+        friendship.relation = config.FRIEND_STATUS_REMOVED
+    else:
+        friendship.relation = relation
     friendship.save()
 
+    # This relation is a straightforward assignment
     friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=friend_id)
     friendship.relation = relation
     friendship.save()
