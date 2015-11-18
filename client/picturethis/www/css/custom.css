@@ -233,7 +233,8 @@ li.friend_element {
 }
 
 .hide {
-    display:none;
+    /*display:none;*/
+    visibility: hidden;
 }
 
 .guess_box {
