@@ -6,29 +6,29 @@
 
     var friendTpl = document.getElementById("friendlist-tpl");
 
-    getFriendListObjects(friendTpl);
+    getFriendListObjects(friendTpl, function(){
 
-    setTimeout(function(){
-    FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
-    AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
-    service.initialize().done(function () {
-    //    renderLoginView();
+        FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
+        AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
 
-        router.addRoute('', function () {
-            $('#main_page').html(new FriendListView(service).render().$el);
-        });
-        router.addRoute('add friend', function () {
-            $('#main_page').html(new AddFriendView(service).render().$el);
-        });
-        router.addRoute('main', function () {
-            $('#main_page').html(new FriendListView(service).render().$el);
-        });
+        service.initialize().done(function () {
+        //    renderLoginView();
 
-        router.start();
+            router.addRoute('', function () {
+                $('#main_page').html(new FriendListView(service).render().$el);
+            });
+            router.addRoute('add friend', function () {
+                $('#main_page').html(new AddFriendView(service).render().$el);
+            });
+            router.addRoute('main', function () {
+                $('#main_page').html(new FriendListView(service).render().$el);
+            });
+
+            router.start();
+
+        });
 
     });
-
-    }, 1000);
 
         /* --------------------------------- Event Registration -------------------------------- */
     // note: it may be easier to make nagivator.notification a seperate function

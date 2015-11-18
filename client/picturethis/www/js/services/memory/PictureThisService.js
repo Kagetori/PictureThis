@@ -6,5 +6,4 @@ var PictureThisService = function() {
         deferred.resolve();
         return deferred.promise();
     }
-	
 }
