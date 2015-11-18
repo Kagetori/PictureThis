@@ -89,8 +89,6 @@ function addLetters() {
         var letter = wordScramble.charAt(i);
         document.getElementById(i).innerHTML = letter.toUpperCase();
     }
-
-
 }
 
 //returns guess as a string
