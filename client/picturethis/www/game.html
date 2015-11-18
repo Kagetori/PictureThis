@@ -52,7 +52,7 @@
             <button class="guess_letter" id="3" onclick="boxClick(this)">R</button>
             <button class="guess_letter" id="4" onclick="boxClick(this)">P</button>
             <button class="guess_letter" id="5" onclick="boxClick(this)">L</button>
-            <button class="guess_letter" id="del" onclick="deleteLastLetter()">[<-]</button>
+            <button id="delete" onclick="deleteLastLetter()">[<-]</button>
         </p>
         <p>
             <button class="guess_letter" id="6" onclick="boxClick(this)">E</button>
@@ -61,10 +61,9 @@
             <button class="guess_letter" id="9" onclick="boxClick(this)">M</button>
             <button class="guess_letter" id="10" onclick="boxClick(this)">E</button>
             <button class="guess_letter" id="11" onclick="boxClick(this)">L</button>
-            <button class="guess_letter" id="clear" onclick="clearAllLetters()">[X]</button>
+            <button id="clear" onclick="clearAllLetters()">[X]</button>
         </p>
-        <input type="text" name="guess" placeholder="Input your guess" 
-                onkeydown="if (event.keyCode == 13) document.getElementById('guessButton').click()">
+
         <br><br>
         <button class="big_button" onclick="sendAnswer()">Guess!</button>
     </div>
@@ -100,6 +99,8 @@
         if (gid !== "full") {
             console.log(gid);
             document.getElementById(gid).innerHTML = letter;
+            elt.classList.toggle('hide');
+            console.log(elt);
         }
     }
 
@@ -130,6 +131,21 @@
         while (document.getElementById("G" + i) !== null) {
             document.getElementById("G" + i).innerHTML = "";
             i++;
+        }
+        // var hidden = document.getElementsByClassName("hide");
+        // console.log(hidden);
+        var hidden = document.querySelectorAll(".hide");
+        console.log(hidden);
+        // while(hidden[0] !== null) {
+        //     hidden[0].classList.toggle("hide");
+        // }
+        // for (var i=0, i<hidden.length, i++) {
+        //     hidden[i].classList.toggle("hide");
+        // }
+        for (var i = hidden.length-1; i >= 0; i--) {
+            // console.log(hidden.length);
+            // console.log(hidden[i]);
+            hidden[i].classList.toggle("hide");
         }
     }
 

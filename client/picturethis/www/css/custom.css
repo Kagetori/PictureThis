@@ -232,6 +232,10 @@ li.friend_element {
   text-decoration:none;
 }
 
+.hide {
+    display:none;
+}
+
 .guess_box {
   width: 1em; 
   height: 1em;
