@@ -79,13 +79,18 @@ var GuessView = function (service) {
 
 function addLetters() {
     console.log("got to AddLetters");
+    var totalLetters = 12;
     var currentGame = getActiveGame();
     var currentWord = currentGame.curr_word;
+    var extraLetters = randomLetters(totalLetters-currentWord.length);
+    var wordScramble = shuffleLetters(currentWord + extraLetters);
 
-    for(i = 0; i < currentWord.length; i++) {
-        var letter = currentWord.charAt(i);
+    for(i = 0; i < totalLetters; i++) {
+        var letter = wordScramble.charAt(i);
         document.getElementById(i).innerHTML = letter.toUpperCase();
     }
+
+
 }
 
 //returns guess as a string
@@ -138,4 +143,27 @@ function populateGuessBlocks(word) {
         blocksList.appendChild(tableul);
     }
     console.log($("#guess_blocks").html());
+}
+
+function randomLetters(numLetters)
+{
+    var letters = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    for (var i=0; i<numLetters; i++)
+        letters += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return letters;
+}
+
+function shuffleLetters(text)
+{
+    var textArray = text.split("");
+    for (var i=text.length-1; i>0; i--) {
+        var j = Math.floor(Math.random() * (i+1));
+        var tmp = textArray[i];
+        textArray[i] = textArray[j];
+        textArray[j] = tmp;
+    }
+    return textArray.join("");
 }
