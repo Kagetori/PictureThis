@@ -58,6 +58,9 @@ def friend__get_friends(request):
 
 @csrf_exempt
 def login__create_user(request):
+    """
+    Call is not authenticated, since it's a login call essentially
+    """
     params = _params(request)
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
@@ -68,6 +71,9 @@ def login__create_user(request):
 
 @csrf_exempt
 def login__login(request):
+    """
+    Call is not authenticated, since it's a login call
+    """
     params = _params(request)
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
@@ -76,6 +82,17 @@ def login__login(request):
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
+@csrf_exempt
+def login__update_password(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(NotAuthenticatedException().ret_dict())
+
+    user_id = _get_param(params, 'user_id', 0)
+    new_password = _get_param(params, 'new_password', None)
+
+    return _response(login.update_password, user_id=user_id, new_password=new_password)
 
 # BANK API
 
