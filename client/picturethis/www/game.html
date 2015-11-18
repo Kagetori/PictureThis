@@ -70,6 +70,8 @@
 </script>
 
 <script>
+    var input = [];
+
     function backToMain() {
         window.location="friends.html";
     }
@@ -97,10 +99,9 @@
         //find id of first unoccupied guess box
         var gid = getFirstBlankId();
         if (gid !== "full") {
-            console.log(gid);
             document.getElementById(gid).innerHTML = letter;
             elt.classList.toggle('hide');
-            console.log(elt);
+            input.push(elt.id);
         }
     }
 
@@ -118,11 +119,15 @@
             }
             lastLetterId = "G" + (i-1);
             document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            input.pop();
         }
         else if (gid !== null) {
             var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
             var lastLetterId = "G" + lastLetterNum;
             document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            input.pop();
         } 
     }
 
@@ -136,6 +141,7 @@
         for (var i = hidden.length-1; i >= 0; i--) {
             hidden[i].classList.toggle("hide");
         }
+        input = [];
     }
 
     //returns element id of first blank guess box
