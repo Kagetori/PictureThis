@@ -23,7 +23,7 @@ var FriendListView = function (service) {
 }
 
 // returns parsed friendListObjects
-var getFriendListObjects = function(friendTpl, callback) {
+var getFriendListObjects = function(friendListWrapper, callback) {
     var user = getUser();
     var api = 'poll/update';
     var params = new Array();
@@ -130,7 +130,11 @@ var getFriendListObjects = function(friendTpl, callback) {
                         }
                     }
 
-                 friendTpl.appendChild(tableul);
+                if (friendListWrapper.hasChildNodes()) {
+                    friendListWrapper.removeChild(friendListWrapper.childNodes[0]);
+                }
+
+                friendListWrapper.appendChild(tableul);
             }
         } else {
             //shows exception message

@@ -4,27 +4,34 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
-    var friendTpl = document.getElementById("friendlist-tpl");
+    FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
+    AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
 
-    getFriendListObjects(friendTpl, function(){
+    service.initialize().done(function () {
+    //    renderLoginView();
 
-        FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
-        AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
+        router.addRoute('', function () {
+            $('#main_page').html(new FriendListView(service).render().$el);
+        });
+        router.addRoute('add friend', function () {
+            $('#main_page').html(new AddFriendView(service).render().$el);
+        });
+        router.addRoute('main', function () {
+            $('#main_page').html(new FriendListView(service).render().$el);
+        });
 
-        service.initialize().done(function () {
-        //    renderLoginView();
+        router.start();
 
-            router.addRoute('', function () {
-                $('#main_page').html(new FriendListView(service).render().$el);
-            });
-            router.addRoute('add friend', function () {
-                $('#main_page').html(new AddFriendView(service).render().$el);
-            });
-            router.addRoute('main', function () {
-                $('#main_page').html(new FriendListView(service).render().$el);
-            });
+        var friendListWrapper = document.getElementById("friend_list_wrapper");
 
-            router.start();
+        getFriendListObjects(friendListWrapper, function(){
+            setSpinnerVisibility(false);
+
+            // Start update in background
+            // Make a poll call every 15 seconds
+            setInterval(function() {
+                getFriendListObjects(friendListWrapper, null);
+            }, 15000);
 
         });
 
