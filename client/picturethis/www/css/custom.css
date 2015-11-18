@@ -247,9 +247,10 @@ li.friend_element {
 }
 
 img.photo {
-    width: 100%; /*only for testing; should be deleted once image sending/receiving works*/
+    width: 100%; 
+    max-width: 500px;
     vertical-align: middle;
-    border: 1px solid black;
+    border: none;
 }
 
 li.inactive_friends {
