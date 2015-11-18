@@ -303,3 +303,33 @@ button.new_game {
 button.waiting {
     background-color: grey;
 }
+
+button.backspace {
+  border: 2px solid grey;
+  padding: 0.5em 0.75em 0.5em 0.75em;
+  font-family: Arial;
+  background-color: grey;
+  color: white;
+  border-radius: 5px;
+  font-size: 1em;
+  display: inline;
+  margin-left: auto;
+  margin-right: auto;
+  text-align:center;
+  text-decoration:none;
+}
+
+button.clear {
+  border: 2px solid grey;
+  padding: 0.5em 0.75em 0.5em 0.75em;
+  font-family: Arial;
+  background-color: grey;
+  color: white;
+  border-radius: 5px;
+  font-size: 1em;
+  display: inline;
+  margin-left: auto;
+  margin-right: auto;
+  text-align:center;
+  text-decoration:none;
+}
