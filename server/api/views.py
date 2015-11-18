@@ -34,6 +34,17 @@ def friend__remove_friend(request):
     return _response(friend.remove_friend, user_id=user_id, friend_id=friend_id)
 
 @csrf_exempt
+def friend__block_friend(request):
+    params = _params(request)
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', 0)
+    friend_id = _get_param(params, 'friend_id', 0)
+
+    return _response(friend.block_friend, user_id=user_id, friend_id=friend_id)
+
+@csrf_exempt
 def friend__get_friends(request):
     params = _params(request)
     if not _authenticate(params):

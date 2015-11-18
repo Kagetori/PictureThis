@@ -12,18 +12,17 @@ class User(RemoteObject):
         self.user_id = user_id
 
 class FriendUser(User):
-    def __init__(self, username, user_id):
+    def __init__(self, username, user_id, relation):
         """
         username
             username of friend
         user_id
             friend's user id
-        active_game
-            whether or not there is an active game with the friend
-        game_id
-            if user has an active game, the game_id
+        relation
+            friend relation (e.g. friend, blocked)
         """
         User.__init__(self, username, user_id)
+        self.relation = relation
 
 class LoginUser(User):
     def __init__(self, username, user_id, auth_token, friends, games, stars):

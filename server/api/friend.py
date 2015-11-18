@@ -14,6 +14,9 @@ def add_friend(user_id, friend_id):
 def remove_friend(user_id, friend_id):
     return _set_friendship(user_id=user_id, friend_id=friend_id, relation=config.FRIEND_STATUS_REMOVED)
 
+def block_friend(user_id, friend_id):
+    return _set_friendship(user_id=user_id, friend_id=friend_id, relation=config.FRIEND_STATUS_BLOCKED)
+
 def get_friend_status(user_id1, user_id2):
     try:
         return Friend.objects.get(user_id1=user_id1, user_id2=user_id2).relation
@@ -30,7 +33,7 @@ def get_user_friends(user_id):
 
         friend_user = User.objects.get(obfuscated_id=friend_user_id)
 
-        result.append(FriendUser(username=friend_user.name, user_id=friend_user.obfuscated_id))
+        result.append(FriendUser(username=friend_user.name, user_id=friend_user.obfuscated_id, relation=config.FRIEND_STATUS_FRIEND))
 
     return FriendPacket(result)
 
@@ -44,11 +47,16 @@ def _set_friendship(user_id, friend_id, relation):
     if user_id == friend_id:
         raise RemoteException('Cannot set friendship between two identical users')
 
-    friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=friend_id)
+    # If friend_id has blocked user_id, return invalid user id
+    friendship, _ = Friend.objects.get_or_create(user_id1=friend_id, user_id2=user_id)
+    if friendship.relation == config.FRIEND_STATUS_BLOCKED:
+        raise RemoteException('Invalid user id.')
+
+    # Otherwise, do as normal
     friendship.relation = relation
     friendship.save()
 
-    friendship, _ = Friend.objects.get_or_create(user_id1=friend_id, user_id2=user_id)
+    friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=friend_id)
     friendship.relation = relation
     friendship.save()
 

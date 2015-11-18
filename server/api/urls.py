@@ -21,6 +21,7 @@ urlpatterns = [
     # FRIEND API
     url(r'^friend/add_friend', views.friend__add_friend, name='friend__add_friend'),
     url(r'^friend/remove_friend', views.friend__remove_friend, name='friend__remove_friend'),
+    url(r'^friend/block_friend', views.friend__block_friend, name='friend__block_friend'),
     url(r'^friend/get_friends', views.friend__get_friends, name='friend__get_friends'),
 
     # LOGIN API
