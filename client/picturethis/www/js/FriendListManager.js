@@ -4,13 +4,9 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
-    var friendTpl = document.getElementById("friendlist-tpl");
-
-    getFriendListObjects(friendTpl);
-
-    setTimeout(function(){
     FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
     AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
+
     service.initialize().done(function () {
     //    renderLoginView();
 
@@ -26,9 +22,20 @@
 
         router.start();
 
-    });
+        var friendListWrapper = document.getElementById("friend_list_wrapper");
 
-    }, 1000);
+        getFriendListObjects(friendListWrapper, function(){
+            setSpinnerVisibility(false);
+
+            // Start update in background
+            // Make a poll call every 15 seconds
+            setInterval(function() {
+                getFriendListObjects(friendListWrapper, null);
+            }, 15000);
+
+        });
+
+    });
 
         /* --------------------------------- Event Registration -------------------------------- */
     // note: it may be easier to make nagivator.notification a seperate function
