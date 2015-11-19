@@ -167,3 +167,19 @@ function shuffleLetters(text)
     }
     return textArray.join("");
 }
+
+//score starts at 200 when user enters the guessView. Have to save score either in local storage or in server
+var score = 200;
+
+var counter = setInterval(countdown, 500);
+
+function countdown()
+{
+    score = score - 1;
+    if (score < 50)
+    {
+        clearInterval(counter);
+        return;
+    }
+    document.getElementById("countdown").innerHTML="Score: "+score;
+}
