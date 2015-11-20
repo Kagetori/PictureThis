@@ -46,5 +46,5 @@ urlpatterns = [
     url(r'^game/get_game_status', views.game__get_game_status, name='game__get_game_status'),
 
     # WORD_PROMPT API
-    url(r'^word_prompt/get_word_prompt', views.word_prompt__get_word_prompt, name='word_prompt__get_word_prompt'),
+    url(r'^word_prompt/request_hint', views.word_prompt__request_hint, name='word_prompt__request_hint'),
 ]

@@ -200,12 +200,16 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
-def word_prompt__get_word_prompt(request):
+def word_prompt__request_hint(request):
     params = _params(request)
 
-    word = _get_param(params, 'word', None)
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
 
-    return _response(word_prompt.get_word_prompt, word=word)
+    word = _get_param(params, 'word', None)
+    user_id = _get_param(params, 'user_id', None)
+
+    return _response(word_prompt.request_hint, word=word, user_id=user_id)
 
 # HELPER FUNCTIONS
 
