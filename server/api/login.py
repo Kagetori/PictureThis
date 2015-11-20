@@ -77,5 +77,11 @@ def login(username, password, client_version=1, device_id=None):
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, games=games, stars=bank_account.stars)
 
+def update_password(user_id, new_password):
+    """
+    API Function to change a user's password
+    """
+    raise RemoteException('Not implemented.')
+
 def _encrypt_password(password, salt):
     return make_password(password=password, salt=salt, hasher='sha1')
