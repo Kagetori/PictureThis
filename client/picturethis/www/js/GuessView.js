@@ -156,6 +156,21 @@ function shuffleLetters(text)
     return textArray.join("");
 }
 
+function destroyLetters(letters) {
+    console.log("called destroyLetters");
+    console.log(letters);
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var randomLetters = stringDiff(currentWord, letters);
+    var destroyed = "";
+    for (var i=0; i<4; i++) {
+        var j = Math.floor((Math.random()*randomLetters.length));
+        destroyed = destroyed + randomLetters[j];
+        randomLetters[j] = "";
+    }
+    return destroyed;
+}
+
 function getWordClass() {
     console.log("called getWordClass");
     var user = getUser();
@@ -184,4 +199,11 @@ function getWordCategory() {
 
     serverCaller(api, params, HintParser, null, null);
     //TODO finish this function
+}
+
+function stringDiff(shortString, longString) {
+    for (var i=0; i<shortString.length; i++) {
+        longString.replace(shortString[i], "");
+    }
+    return longString;
 }

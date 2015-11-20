@@ -43,7 +43,7 @@
         <br>
         <img src="" id="guess_img" alt="" class="photo">
         <br><br>
-        <button onclick="getHint()">Get a hint</button>
+        <button onclick="getHint(this)">Get a hint</button>
         <br>
 
         <div id="guess_blocks"> </div>
@@ -162,18 +162,32 @@
         return id;
     }
 
-    function getHint() {
+    function getHint(elt) {
         if (hints_used == 0) {
             hints_used++;
+            clearAllLetters();
+            var letters = getAllLetters();
+            var toDestroy = destroyLetters(letters);
+            console.log(toDestroy);
+            //TODO: assign letters that have been destroyed to destroyed class
+
         } else if (hints_used == 1) {
             hints_used++;
             getWordClass();
         } else if (hints_used == 2) {
             hints_used++;
             getWordCategory();
+            elt.classList.toggle("hide");
         }
     }
 
+    function getAllLetters() {
+        letters = "";
+        for (var i=0; i<12; i++) {
+            letters = letters + document.getElementById(i).innerHTML;
+        }
+        return letters;
+    }
 
 </script>
 

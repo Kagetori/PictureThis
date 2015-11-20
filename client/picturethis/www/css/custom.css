@@ -237,6 +237,10 @@ li.friend_element {
     visibility: hidden;
 }
 
+.destoryed {
+  display: none;
+}
+
 .guess_box {
   width: 1em; 
   height: 1em;
