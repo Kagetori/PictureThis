@@ -63,7 +63,7 @@ var GuessView = function (service) {
             showNotification('Would you like to start a new game?',onConfirm,'Game Finished!',['Yes','No']);
         }
     }
-    
+
     this.initialize();
 }
 
@@ -79,8 +79,6 @@ function addLetters() {
         var letter = wordScramble.charAt(i);
         document.getElementById(i).innerHTML = letter.toUpperCase();
     }
-
-
 }
 
 //returns guess as a string
@@ -159,6 +157,7 @@ function shuffleLetters(text)
 }
 
 function getWordClass() {
+    console.log("called getWordClass");
     var user = getUser();
     var user_id = user.id;
     var currentGame = getActiveGame();
@@ -173,6 +172,7 @@ function getWordClass() {
 }
 
 function getWordCategory() {
+    console.log("called getWordCategory");
     var user = getUser();
     var user_id = user.id;
     var currentGame = getActiveGame();
