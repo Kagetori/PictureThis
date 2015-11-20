@@ -63,17 +63,7 @@ var GuessView = function (service) {
             showNotification('Would you like to start a new game?',onConfirm,'Game Finished!',['Yes','No']);
         }
     }
-
-    this.getHint = function() {
-        var currentGame = getActiveGame();
-        var currentWord = currentGame.curr_word;
-        var params = new Array();
-        var api = 'word_prompt/get_word_prompt';
-        params['word'] = currentWord;
-
-        serverCaller(api, params, HintParser, null, null);
-    }
-
+    
     this.initialize();
 }
 
@@ -166,4 +156,32 @@ function shuffleLetters(text)
         textArray[j] = tmp;
     }
     return textArray.join("");
+}
+
+function getWordClass() {
+    var user = getUser();
+    var user_id = user.id;
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var params = new Array();
+    var api = 'word_prompt/request_hint';
+    params['word'] = currentWord;
+    params['user_id'] = user_id;
+
+    serverCaller(api, params, HintParser, null, null);
+    //TODO finish this function
+}
+
+function getWordCategory() {
+    var user = getUser();
+    var user_id = user.id;
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var params = new Array();
+    var api = 'word_prompt/request_hint';
+    params['word'] = currentWord;
+    params['user_id'] = user_id;
+
+    serverCaller(api, params, HintParser, null, null);
+    //TODO finish this function
 }
