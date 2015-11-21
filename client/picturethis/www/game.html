@@ -44,6 +44,7 @@
     <div style="text-align:center;" class="under_navbar">
         <br>
         <img src="" id="guess_img" alt="an image to be guessed" class="photo blur">
+        <button onclick="unblurPic()">Unblur!</button>
         <br><br>
         <button onclick="getHint(this)">Get a hint</button>
         <br>
@@ -200,6 +201,10 @@
                 }
             }
         }
+    }
+
+    function unblurPic(){
+        document.getElementById("guess_img").classList.add("blur-change");
     }
 
 </script>

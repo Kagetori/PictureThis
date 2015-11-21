@@ -343,11 +343,11 @@ button.clear {
 img.blur {
   -webkit-filter: blur(20px);
   filter: blur(15px);
-  transition: all 5s ease-in-out;
+  transition: all 3s ease-in-out;
 }
 
-img.blur:hover {
-	-webkit-filter: blur(0px);
-	filter: blur(0px);
-	filter: none;
+img.blur-change {
+  -webkit-filter: blur(0px);
+  filter: blur(0px);
+  filter: none;
 }
