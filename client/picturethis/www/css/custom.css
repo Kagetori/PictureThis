@@ -349,5 +349,5 @@ img.blur {
 img.blur-change {
   -webkit-filter: blur(0px);
   filter: blur(0px);
-  filter: none;
+  //filter: none;
 }

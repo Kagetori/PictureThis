@@ -4,7 +4,6 @@ var GuessView = function (service) {
         console.log("Initialized GuessView");
         this.$el = $('<div/>');
         this.render();
-
     };
 
     this.render = function() {
@@ -111,7 +110,6 @@ function getGuessImage() {
 
     serverCaller('game/get_picture', params, function(result) {
         document.getElementById('guess_img').src = result;
-        document.getElementById('guess_img').addClass = 'blur-change';
     }, null, null);
 }
 
@@ -242,4 +240,16 @@ function stringDiff(shortString, longString) {
     }
     return longString;
 
+}
+
+function startGuessConfirmation() {
+    function onConfirm(buttonIndex) {
+        if(buttonIndex === 1) {
+            document.getElementById('guess_img').click();
+        } else {
+            window.location="friends.html"
+            //setSpinnerVisibility(false);
+        }
+    }
+    showNotification('Are you ready to begin?',onConfirm,'Guessing',['Yes','No']);
 }
