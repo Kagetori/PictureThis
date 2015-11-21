@@ -174,6 +174,15 @@ function countdown()
 
 function destroyLetters(letters) {
     console.log("called destroyLetters");
+    // Deduct a star
+    var user = getUser();
+    var user_id = user.id;
+    var params = new Array();
+    var api = 'bank/decrement_bank';
+    params['user_id'] = user_id;
+    serverCaller(api, params, BankParser, null, null);
+    //TODO check that user has enough stars for a hint
+
     var currentGame = getActiveGame();
     var currentWord = currentGame.curr_word;
     var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
@@ -194,7 +203,6 @@ function destroyLetters(letters) {
         }
     }
     return destroyed;
-    //TODO deduct a star 
 }
 
 function getWordClass() {
