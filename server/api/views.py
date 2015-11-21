@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from api import friend, game, login, poll, search, word_prompt
+from api import friend, game, login, poll, search, word_prompt, bank
 from models import User
 
 from interface.exception import RemoteException, NotAuthenticatedException
@@ -228,6 +228,7 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
+@csrf_exempt
 def word_prompt__request_hint(request):
     params = _params(request)
 
@@ -238,6 +239,17 @@ def word_prompt__request_hint(request):
     user_id = _get_param(params, 'user_id', None)
 
     return _response(word_prompt.request_hint, word=word, user_id=user_id)
+
+@csrf_exempt
+def bank__decrement_bank(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+
+    return _response(bank.decrement_bank, user_id=user_id)
 
 # HELPER FUNCTIONS
 
