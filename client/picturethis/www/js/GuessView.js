@@ -158,17 +158,27 @@ function shuffleLetters(text)
 
 function destroyLetters(letters) {
     console.log("called destroyLetters");
-    console.log(letters);
     var currentGame = getActiveGame();
     var currentWord = currentGame.curr_word;
-    var randomLetters = stringDiff(currentWord, letters);
+    var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
+    // get four unique random indexes
+    var indexes = []
     var destroyed = "";
-    for (var i=0; i<4; i++) {
-        var j = Math.floor((Math.random()*randomLetters.length));
-        destroyed = destroyed + randomLetters[j];
-        randomLetters[j] = "";
+    while(indexes.length < 4){
+        var randomIndex = Math.floor((Math.random()*randomLetters.length));
+        var found = false;
+        for(var i=0; i<indexes.length; i++){
+            if(indexes[i] === randomIndex){
+                found = true; 
+                break;
+            }
+        } if(!found) {
+            indexes.push(randomIndex);
+            destroyed = destroyed + randomLetters[randomIndex];
+        }
     }
     return destroyed;
+    //TODO deduct a star 
 }
 
 function getWordClass() {
@@ -203,7 +213,7 @@ function getWordCategory() {
 
 function stringDiff(shortString, longString) {
     for (var i=0; i<shortString.length; i++) {
-        longString.replace(shortString[i], "");
+        longString = longString.replace(shortString[i], "");
     }
     return longString;
 }

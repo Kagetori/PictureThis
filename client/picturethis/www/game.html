@@ -166,11 +166,7 @@
         if (hints_used == 0) {
             hints_used++;
             clearAllLetters();
-            var letters = getAllLetters();
-            var toDestroy = destroyLetters(letters);
-            console.log(toDestroy);
-            //TODO: assign letters that have been destroyed to destroyed class
-
+            destroy();
         } else if (hints_used == 1) {
             hints_used++;
             getWordClass();
@@ -187,6 +183,21 @@
             letters = letters + document.getElementById(i).innerHTML;
         }
         return letters;
+    }
+
+    function destroy() {
+        var letters = getAllLetters();
+        var toDestroy = destroyLetters(letters);
+
+        for (var i=0; i<letters.length; i++) {
+            for (var j=0; j<toDestroy.length; j++) {
+                if (letters[i] === toDestroy[j]) {
+                    document.getElementById(i).classList.toggle("destroyed");
+                    toDestroy = toDestroy.slice(0, j) + toDestroy.slice(j+1);
+                    break;
+                }
+            }
+        }
     }
 
 </script>

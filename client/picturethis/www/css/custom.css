@@ -237,8 +237,9 @@ li.friend_element {
     visibility: hidden;
 }
 
-.destoryed {
-  display: none;
+.destroyed {
+  /*display: none;*/
+  visibility: hidden;
 }
 
 .guess_box {
