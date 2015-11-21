@@ -51,5 +51,6 @@ urlpatterns = [
     url(r'^word_prompt/request_hint', views.word_prompt__request_hint, name='picturethis__word_prompt__request_hint'),
 
     # BANK API
-    url(r'^bank/decrement_bank', views.bank__decrement_bank, name='bank__decrement_bank');
+    url(r'^bank/get_user_bank', views.bank__get_user_bank, name='bank__get_user_bank'),
+    url(r'^bank/decrement_bank', views.bank__decrement_bank, name='bank__decrement_bank'),
 ]

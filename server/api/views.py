@@ -241,6 +241,17 @@ def word_prompt__request_hint(request):
     return _response(word_prompt.request_hint, word=word, user_id=user_id)
 
 @csrf_exempt
+def bank__get_user_bank(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+
+    return _response(bank.get_user_bank, user_id=user_id)
+
+@csrf_exempt
 def bank__decrement_bank(request):
     params = _params(request)
 
