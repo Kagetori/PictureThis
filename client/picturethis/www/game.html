@@ -44,7 +44,9 @@
     <div style="text-align:center;" class="under_navbar">
         <br>
         <img src="" id="guess_img" alt="" class="photo">
-        <br><br><br>
+        <br><br>
+        <button onclick="getHint(this)">Get a hint</button>
+        <br>
 
         <div id="guess_blocks"> </div>
         <p>
@@ -73,6 +75,7 @@
 
 <script>
     var input = [];
+    var hints_used = 0;
 
     function backToMain() {
         window.location="friends.html";
@@ -161,6 +164,43 @@
         return id;
     }
 
+    function getHint(elt) {
+        if (hints_used == 0) {
+            hints_used++;
+            clearAllLetters();
+            destroy();
+        } else if (hints_used == 1) {
+            hints_used++;
+            getWordClass();
+        } else if (hints_used == 2) {
+            hints_used++;
+            getWordCategory();
+            elt.classList.toggle("hide");
+        }
+    }
+
+    function getAllLetters() {
+        letters = "";
+        for (var i=0; i<12; i++) {
+            letters = letters + document.getElementById(i).innerHTML;
+        }
+        return letters;
+    }
+
+    function destroy() {
+        var letters = getAllLetters();
+        var toDestroy = destroyLetters(letters);
+
+        for (var i=0; i<letters.length; i++) {
+            for (var j=0; j<toDestroy.length; j++) {
+                if (letters[i] === toDestroy[j]) {
+                    document.getElementById(i).classList.toggle("destroyed");
+                    toDestroy = toDestroy.slice(0, j) + toDestroy.slice(j+1);
+                    break;
+                }
+            }
+        }
+    }
 
 </script>
 
@@ -181,6 +221,7 @@
 <script src="js/ServerCaller.js"></script>
 <script src="js/UserParser.js"></script>
 <script src="js/GamesParser.js"></script>
+<script src="js/HintParser.js"></script>
 
 <script src="js/GameManager.js"></script>
 

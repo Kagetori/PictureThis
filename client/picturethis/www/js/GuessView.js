@@ -64,16 +64,6 @@ var GuessView = function (service) {
         }
     }
 
-    this.getHint = function() {
-        var currentGame = getActiveGame();
-        var currentWord = currentGame.curr_word;
-        var params = new Array();
-        var api = 'word_prompt/get_word_prompt';
-        params['word'] = currentWord;
-
-        serverCaller(api, params, HintParser, null, null);
-    }
-
     this.initialize();
 }
 
@@ -89,8 +79,6 @@ function addLetters() {
         var letter = wordScramble.charAt(i);
         document.getElementById(i).innerHTML = letter.toUpperCase();
     }
-
-
 }
 
 //returns guess as a string
@@ -182,4 +170,67 @@ function countdown()
         return;
     }
     document.getElementById("countdown").innerHTML="Score: "+score;
+    }
+
+function destroyLetters(letters) {
+    console.log("called destroyLetters");
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
+    // get four unique random indexes
+    var indexes = []
+    var destroyed = "";
+    while(indexes.length < 4){
+        var randomIndex = Math.floor((Math.random()*randomLetters.length));
+        var found = false;
+        for(var i=0; i<indexes.length; i++){
+            if(indexes[i] === randomIndex){
+                found = true; 
+                break;
+            }
+        } if(!found) {
+            indexes.push(randomIndex);
+            destroyed = destroyed + randomLetters[randomIndex];
+        }
+    }
+    return destroyed;
+    //TODO deduct a star 
+}
+
+function getWordClass() {
+    console.log("called getWordClass");
+    var user = getUser();
+    var user_id = user.id;
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var params = new Array();
+    var api = 'word_prompt/request_hint';
+    params['word'] = currentWord;
+    params['user_id'] = user_id;
+
+    serverCaller(api, params, HintParser, null, null);
+    //TODO finish this function
+}
+
+function getWordCategory() {
+    console.log("called getWordCategory");
+    var user = getUser();
+    var user_id = user.id;
+    var currentGame = getActiveGame();
+    var currentWord = currentGame.curr_word;
+    var params = new Array();
+    var api = 'word_prompt/request_hint';
+    params['word'] = currentWord;
+    params['user_id'] = user_id;
+
+    serverCaller(api, params, HintParser, null, null);
+    //TODO finish this function
+}
+
+function stringDiff(shortString, longString) {
+    for (var i=0; i<shortString.length; i++) {
+        longString = longString.replace(shortString[i], "");
+    }
+    return longString;
+
 }
