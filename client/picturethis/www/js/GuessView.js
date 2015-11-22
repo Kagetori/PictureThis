@@ -241,16 +241,3 @@ function stringDiff(shortString, longString) {
     return longString;
 
 }
-
-//setInterval(startGuessConfirmation, 3000);
-function startGuessConfirmation() {
-    function onConfirm(buttonIndex) {
-        if(buttonIndex === 1) {
-            document.getElementById('guess_img').click();
-        } else {
-            window.location="friends.html"
-            //setSpinnerVisibility(false);
-        }
-    }
-    showNotification('Are you ready to begin?',onConfirm,'Guessing',['Yes','No']);
-}
