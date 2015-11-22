@@ -340,7 +340,7 @@ button.clear {
   text-decoration:none;
 }
 
-@keyframes deblurring {
+@-webkit-keyframes deblurring {
     from {-webkit-filter: blur(20px);}
     to {-webkit-filter: blur(0px);}
 }
@@ -360,11 +360,6 @@ img.deblur {
 
 img.opaque {
     opacity:0;
-    animation-name: fadein;
-    animation-duration: 20s;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-
     -webkit-animation-name: fadein;
     -webkit-animation-duration: 20s;
     -webkit-animation-timing-function: linear;
