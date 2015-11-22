@@ -347,8 +347,26 @@ button.clear {
 
 img.deblur {
     -webkit-filter: blur(20px);
-    animation-name: deblurring;
-    animation-duration: 3s;
+    -webkit-animation-name: deblurring;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadein {
+    from {opacity:0;}
+    to {opacity:100;}
+}
+
+img.opaque {
+    opacity:0;
+    animation-name: fadein;
+    animation-duration: 20s;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
+
+    -webkit-animation-name: fadein;
+    -webkit-animation-duration: 20s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-fill-mode: forwards;
 }
