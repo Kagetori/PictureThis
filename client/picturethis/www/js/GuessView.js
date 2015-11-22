@@ -242,6 +242,7 @@ function stringDiff(shortString, longString) {
 
 }
 
+//setInterval(startGuessConfirmation, 3000);
 function startGuessConfirmation() {
     function onConfirm(buttonIndex) {
         if(buttonIndex === 1) {
