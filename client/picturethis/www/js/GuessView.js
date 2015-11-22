@@ -17,7 +17,8 @@ var GuessView = function (service) {
         console.log(currentWord);
         var guess = parseGuess();
         var cleanGuess = guess.trim().toLowerCase();
-        if (currentWord != cleanGuess) {
+        var cleanCurrentWord = currentWord.trim().toLowerCase();
+        if (cleanCurrentWord != cleanGuess) {
             showAlert("Your guess is incorrect. Try again.");
         } else {
             showAlert("Your guess is correct! Continue!");
