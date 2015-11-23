@@ -4,7 +4,11 @@ function serverCaller(api, params, parser, callback, unusedParam) {
     // there is this unusedParam; all calls to serverCaller currently
     // send null to this. If you ever need to send a new param to serverCaller,
     // you can change the name of this and use it.
-    var serverURL = "http://picturethis.brianchau.ca/api/";
+
+    // IF you are testing on your VM, change the link to not have
+    // HTTPS. Use HTTP only since the VM has no SSL certificate installed
+    // eg var serverURL = "http://192.168.56.110/api/";
+    var serverURL = "https://picturethis.brianchau.ca/api/";
 
     if (api.substring(0, 6) != "login/") {
         params['auth_token'] = getUser().auth_token;
