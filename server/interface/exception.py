@@ -5,9 +5,9 @@ from remote_object import RemoteObject
 class RemoteException(RemoteObject):
     def __init__(self, exception, force_logout=False):
         """
-        exception
+        exception:
             Description of exception
-        force_logout
+        force_logout:
             Whether the client should be forced to log out
         """
         self.exception = exception
@@ -16,6 +16,9 @@ class RemoteException(RemoteObject):
 class NotAuthenticatedException(RemoteException):
     """
     Exception specifying that the call is not authenticated
+
+    exception:
+        Description of exception
     """
-    def __init__(self):
-        RemoteException.__init__(self, 'Not authenticated.', True)
+    def __init__(self, exception):
+        RemoteException.__init__(self, exception, True)

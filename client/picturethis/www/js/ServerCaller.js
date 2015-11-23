@@ -14,6 +14,11 @@ function serverCaller(api, params, parser, callback, unusedParam) {
         params['auth_token'] = getUser().auth_token;
     }
 
+    // Arbitrarily setting up a Client Version so the server can reject
+    // calls from old clients in the future. For now it's set to 1, we can
+    // increment this value eventually
+    params['client_version'] = 1;
+
     debugAlert("called ServerCaller!");
     var xmlhttp;
     if (window.XMLHttpRequest){
