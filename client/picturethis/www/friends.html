@@ -34,18 +34,17 @@
             <br><br><br>
             <input type="text" name="username" id="friend_search" placeholder="Find Username">
             <br><br><br>
-            <button type="submit" onclick="findFriend()" class="big_button">Search</button>
+            <button type="submit" onclick="findUser()" class="big_button">Search</button>
         </form>
     </div>
 </script>
 
 <script>
-    function findFriend() {
+    function findUser() {
         setSpinnerVisibility(true);
         var username = $("[name='username']").val();
 
-        var addFriendView = new AddFriendView();
-        addFriendView.findFriend(username);
+        findFriend(username);
     }
 
     function backToMain() {
@@ -72,6 +71,7 @@
 
 <script src="js/User.js"></script>
 <script src="js/Game.js"></script>
+<script src="js/Friend.js"></script>
 <script src="js/FriendListObject.js"></script>
 <script src="js/ShowAlert.js"></script>
 <script src="js/ServerCaller.js"></script>

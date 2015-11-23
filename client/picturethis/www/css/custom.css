@@ -348,7 +348,7 @@ button.clear {
 img.deblur {
     -webkit-filter: blur(20px);
     -webkit-animation-name: deblurring;
-    -webkit-animation-duration: 3s;
+    -webkit-animation-duration: 10s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-fill-mode: forwards;
 }
