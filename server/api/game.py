@@ -6,6 +6,7 @@ from models import Game, User, Turn, WordPrompt
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
 from interface.packets import GamePacket
+from interface.image import Image as RemoteImage
 
 import base64
 import string
@@ -133,7 +134,7 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
-                return _encode_file_to_64(f)
+                return RemoteImage(dataURL=_encode_file_to_64(f))
         else:
             raise RemoteException("Cannot find image")
 

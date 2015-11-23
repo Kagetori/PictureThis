@@ -175,10 +175,7 @@ def game__get_picture(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
 
-    try:
-        return HttpResponse(game.get_picture(user_id=user_id, game_id=game_id), content_type='image/jpeg')
-    except RemoteException as e:
-        return JsonResponse(e.ret_dict())
+    return _response(game.get_picture, user_id=user_id, game_id=game_id)
 
 @csrf_exempt
 def game__end_game(request):
