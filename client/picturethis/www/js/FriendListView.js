@@ -12,13 +12,6 @@ var FriendListView = function (service) {
         return this;
     };
 
-    this.logout = function() {
-//      var nullUser = new User("","","","","","");
-//      window.localStorage.setItem('userObject', nullUser);
-        window.localStorage.clear();
-        window.location="login.html";
-    }
-
     this.initialize();
 }
 
@@ -30,8 +23,7 @@ var getFriendListObjects = function(friendListWrapper, callback) {
     params['user_id'] = user.id;
     var friendList = [];
 
-    var friendListObjectParser = function(result) {
-        var obj = JSON.parse(result);
+    var friendListObjectParser = function(obj) {
 
         if (typeof obj.exception === "undefined") {
             //var friendList = [];

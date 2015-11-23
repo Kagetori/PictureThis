@@ -1,6 +1,5 @@
-var BankParser = function(result) {
+var BankParser = function(obj) {
     debugAlert("Called BankParser!");
-    var obj = JSON.parse(result);
 
     if (typeof obj.exception === "undefined") {
         var stars = obj.stars;

@@ -110,7 +110,7 @@ function getGuessImage() {
     params['game_id'] = game_id;
 
     serverCaller('game/get_picture', params, function(result) {
-        document.getElementById('guess_img').src = result;
+        document.getElementById('guess_img').src = result.dataURL;
     }, null, null);
 }
 

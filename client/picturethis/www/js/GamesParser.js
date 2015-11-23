@@ -1,7 +1,6 @@
 // parses all games in list and saves it in games field in user
-var GamesParser = function(result) {
+var GamesParser = function(obj) {
     debugAlert("Called GamesParser!");
-    var obj = JSON.parse(result);
 
     if (typeof obj.exception === "undefined") {
         var user = getUser();
@@ -24,9 +23,9 @@ var GamesParser = function(result) {
  };
 
 // parses one game and adds it to the games field in user
- var GameParser = function(result) {
+ var GameParser = function(obj) {
     debugAlert("Called GameParser!");
-    var obj = JSON.parse(result);
+
     if (typeof obj.exception === "undefined") {
         var game = makeGame(obj);
         var user = getUser();

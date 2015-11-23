@@ -20,3 +20,11 @@ var setFriends = function(friends){
     parsedUser.friends = friends;
     window.localStorage.setItem('userObject', JSON.stringify(parsedUser));
 }
+
+var logout = function() {
+//      var nullUser = new User("","","","","","");
+//      window.localStorage.setItem('userObject', nullUser);
+    setSpinnerVisibility(true);
+    window.localStorage.clear();
+    window.location="login.html";
+}

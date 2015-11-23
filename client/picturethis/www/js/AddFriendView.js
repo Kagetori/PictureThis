@@ -22,8 +22,7 @@ var AddFriendView = function (service) {
         params['user_id'] = user_id;
         params['username'] = username;
 
-        var searchParser = function(result) {
-           var obj = JSON.parse(result);
+        var searchParser = function(obj) {
             if (typeof obj.exception === "undefined") {
                 var friendUsername = obj.username;
                 var friend_id = obj.user_id;
@@ -59,8 +58,7 @@ var AddFriendView = function (service) {
         params['user_id'] = user_id;
         params['friend_id'] = friend_id;
 
-        var addFriendParser = function(result) {
-            var obj = JSON.parse(result);
+        var addFriendParser = function(obj) {
             if (typeof obj.exception === "undefined") {
                 setFriends(obj.friends);
                 showAlert("Friend added!");

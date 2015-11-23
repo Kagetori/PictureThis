@@ -1,6 +1,5 @@
-var HintParser = function(result) {
+var HintParser = function(obj) {
     debugAlert("Called HintParser!");
-    var obj = JSON.parse(result);
 
     if (typeof obj.exception === "undefined") {
         var word_class = obj.word_class;

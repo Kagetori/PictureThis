@@ -107,6 +107,28 @@ def bank__get_user_bank(request):
 
     return _response(bank.get_user_bank, user_id=user_id)
 
+@csrf_exempt
+def bank__get_user_bank(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+
+    return _response(bank.get_user_bank, user_id=user_id)
+
+@csrf_exempt
+def bank__decrement_bank(request):
+    params = _params(request)
+
+    if not _authenticate(params):
+        return JsonResponse(RemoteException('Not authenticated').ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+
+    return _response(bank.decrement_bank, user_id=user_id)
+
 # POLL API
 
 @csrf_exempt
@@ -225,6 +247,8 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
+# WORD PROMPT API
+
 @csrf_exempt
 def word_prompt__request_hint(request):
     params = _params(request)
@@ -236,28 +260,6 @@ def word_prompt__request_hint(request):
     user_id = _get_param(params, 'user_id', None)
 
     return _response(word_prompt.request_hint, word=word, user_id=user_id)
-
-@csrf_exempt
-def bank__get_user_bank(request):
-    params = _params(request)
-
-    if not _authenticate(params):
-        return JsonResponse(RemoteException('Not authenticated').ret_dict())
-
-    user_id = _get_param(params, 'user_id', None)
-
-    return _response(bank.get_user_bank, user_id=user_id)
-
-@csrf_exempt
-def bank__decrement_bank(request):
-    params = _params(request)
-
-    if not _authenticate(params):
-        return JsonResponse(RemoteException('Not authenticated').ret_dict())
-
-    user_id = _get_param(params, 'user_id', None)
-
-    return _response(bank.decrement_bank, user_id=user_id)
 
 # HELPER FUNCTIONS
 

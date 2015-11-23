@@ -32,7 +32,16 @@ function serverCaller(api, params, parser, callback, unusedParam) {
             // do something with the results
             if (xmlhttp.responseText != "undefined"){
                 debugAlert(xmlhttp.responseText);
-                parser(xmlhttp.responseText);
+                var json_response = JSON.parse(xmlhttp.responseText);
+
+                if ((typeof json_response.force_logout != "undefined") && (json_response.force_logout)) {
+                    showAlert(json_response.exception, "Logging out");
+                    logout();
+                    return;
+                }
+
+                if (parser) parser(json_response);
+
                 if (callback) callback();
             }
         } else {

@@ -41,9 +41,8 @@ function hasOngoingGame(friendId, callback) {
     params['user_id'] = userId;
     params['friend_id'] = friendId;
 
-    var checkParser = function(result) {
-        debugAlert("Called GameParser!");
-        var obj = JSON.parse(result);
+    var checkParser = function(obj) {
+        debugAlert("Called checkParser!");
         if (typeof obj.exception === "undefined") {
             var game = makeGame(obj);
             var user = getUser();
