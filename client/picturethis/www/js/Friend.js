@@ -36,6 +36,33 @@ function findFriend(username) {
 
 };
 
+//adds a friend
+function addFriend(friend_id) {
+    friendService(friend_id,'add_friend');
+};
+
+//blocks a friend
+function blockFriend(friend_id) {
+    friendService(friend_id,'block_friend');
+};
+
+//removes a friend
+function removeFriend(friend_id) {
+    friendService(friend_id,'remove_friend');
+};
+
+//general method for doing stuff to friend. Takes friend id and an action (ex. 'add_friend')
+function friendService(friend_id, action) {
+    var user = getUser();
+    var user_id = user.id;
+    var api = 'friend/' + action;
+    var params = new Array();
+    params['user_id'] = user_id;
+    params['friend_id'] = friend_id;
+
+    serverCaller(api, params, friendParser, null, null);
+};
+
 //parses friend list and updates friends field for user
 var friendParser = function(obj) {
     if (typeof obj.exception === "undefined") {
@@ -49,40 +76,3 @@ var friendParser = function(obj) {
         setSpinnerVisibility(false);
     }
 };
-
-//adds a friend
-function addFriend(friend_id) {
-    var user = getUser();
-    var user_id = user.id;
-    var api = 'friend/add_friend';
-    var params = new Array();
-    params['user_id'] = user_id;
-    params['friend_id'] = friend_id;
-
-    serverCaller(api, params, friendParser, null, null);
-};
-
-//blocks a friend
-function blockFriend(friend_id) {
-    var user = getUser();
-    var user_id = user.id;
-    var api = 'friend/block_friend';
-    var params = new Array();
-    params['user_id'] = user_id;
-    params['friend_id'] = friend_id;
-
-    serverCaller(api, params, friendParser, null, null);
-};
-
-//removes a friend
-function removeFriend(friend_id) {
-    var user = getUser();
-    var user_id = user.id;
-    var api = 'friend/remove_friend';
-    var params = new Array();
-    params['user_id'] = user_id;
-    params['friend_id'] = friend_id;
-
-    serverCaller(api, params, friendParser, null, null);
-};
-
