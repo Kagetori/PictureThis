@@ -15,9 +15,8 @@ import urllib
 def friend__add_friend(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -31,7 +30,7 @@ def friend__remove_friend(request):
     params = _params(request)
 
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -45,7 +44,7 @@ def friend__block_friend(request):
     params = _params(request)
 
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -59,7 +58,7 @@ def friend__get_friends(request):
     params = _params(request)
 
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -75,6 +74,12 @@ def login__create_user(request):
     Call is not authenticated, since it's a login call essentially
     """
     params = _params(request)
+
+    try:
+        _check_blocking(params, authenticate=False)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
     client_version = _get_param(params, 'client_version', 0)
@@ -88,6 +93,12 @@ def login__login(request):
     Call is not authenticated, since it's a login call
     """
     params = _params(request)
+
+    try:
+        _check_blocking(params, authenticate=False)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
     username = _get_param(params, 'username', None)
     password = _get_param(params, 'password', None)
     client_version = _get_param(params, 'client_version', 0)
@@ -99,9 +110,8 @@ def login__login(request):
 def login__update_password(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -116,9 +126,8 @@ def login__update_password(request):
 def bank__get_user_bank(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -130,9 +139,8 @@ def bank__get_user_bank(request):
 def bank__get_user_bank(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -144,9 +152,8 @@ def bank__get_user_bank(request):
 def bank__decrement_bank(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -160,9 +167,8 @@ def bank__decrement_bank(request):
 def poll__update(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -176,9 +182,8 @@ def poll__update(request):
 def search__find_user(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -194,9 +199,8 @@ def search__find_user(request):
 def game__start_new_game(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -209,9 +213,8 @@ def game__start_new_game(request):
 def game__send_picture(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -228,9 +231,8 @@ def game__send_picture(request):
 def game__get_picture(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -243,9 +245,8 @@ def game__get_picture(request):
 def game__end_game(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -258,9 +259,8 @@ def game__end_game(request):
 def game__validate_guess(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -274,9 +274,8 @@ def game__validate_guess(request):
 def game__get_user_games(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -288,9 +287,8 @@ def game__get_user_games(request):
 def game__get_game_status(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -305,9 +303,8 @@ def game__get_game_status(request):
 def word_prompt__request_hint(request):
     params = _params(request)
 
-
     try:
-        _authenticate(params)
+        _check_blocking(params)
     except NotAuthenticatedException as e:
         return JsonResponse(e.ret_dict())
 
@@ -336,20 +333,21 @@ def _response(fn, **kwargs):
     except RemoteException as e:
         return JsonResponse(e.ret_dict())
 
-def _authenticate(params):
+def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
 
     if client_version < config.MIN_CLIENT_VERSION:
         raise NotAuthenticatedException('Please upgrade your app.')
 
-    auth_token = _get_param(params, 'auth_token')
-    user_id = _get_param(params, 'user_id')
-    if auth_token is None or user_id is None:
-        raise NotAuthenticatedException('Not authenticated.')
-    try:
-        user = User.objects.get(obfuscated_id=user_id)
-        if not user.authenticate(auth_token):
+    if authenticate:
+        auth_token = _get_param(params, 'auth_token')
+        user_id = _get_param(params, 'user_id')
+        if auth_token is None or user_id is None:
             raise NotAuthenticatedException('Not authenticated.')
+        try:
+            user = User.objects.get(obfuscated_id=user_id)
+            if not user.authenticate(auth_token):
+                raise NotAuthenticatedException('Not authenticated.')
 
-    except User.DoesNotExist:
-        raise NotAuthenticatedException('User does not exist.')
+        except User.DoesNotExist:
+            raise NotAuthenticatedException('User does not exist.')
