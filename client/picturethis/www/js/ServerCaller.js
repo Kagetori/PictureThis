@@ -40,8 +40,12 @@ function serverCaller(api, params, parser, callback, unusedParam) {
                 var json_response = JSON.parse(xmlhttp.responseText);
 
                 if ((typeof json_response.force_logout != "undefined") && (json_response.force_logout)) {
-                    showAlert(json_response.exception, "Logging out");
-                    logout();
+                    showAlert(json_response.exception, "");
+                    if (api.substring(0, 6) != "login/") {
+                        logout();
+                    } else {
+                        setSpinnerVisibility(false);
+                    }
                     return;
                 }
 
