@@ -27,7 +27,9 @@ urlpatterns = [
     # LOGIN API
     url(r'^login/create_user', views.login__create_user, name='picturethis__login__create_user'),
     url(r'^login/login', views.login__login, name='picturethis__login__login'),
-    url(r'^login/update_password', views.login__update_password, name='picturethis__login__update_password'),
+
+    # USER API
+    url(r'^user/update_password', views.user__update_password, name='picturethis__user__update_password'),
 
     # BANK API
     url(r'^bank/get_user_bank', views.bank__get_user_bank, name='picturethis__bank__get_user_bank'),

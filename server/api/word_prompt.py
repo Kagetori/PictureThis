@@ -12,7 +12,7 @@ def request_hint(user_id, word):
     except WordPrompt.DoesNotExist:
         raise RemoteException("Word not in database")
     try:
-        user = User.objects.get(user_id=user_id)
+        user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         raise RemoteException("User does not exist")
     try: 

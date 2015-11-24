@@ -106,8 +106,11 @@ def login__login(request):
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
+# USER API
+# NOTE: THIS API RESIDES IN LOGIN.PY for code reuse purposes.
+
 @csrf_exempt
-def login__update_password(request):
+def user__update_password(request):
     params = _params(request)
 
     try:
