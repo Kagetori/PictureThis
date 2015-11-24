@@ -1,5 +1,6 @@
 from models import WordPrompt, User
 
+from interface.exception import RemoteException
 from interface.word_prompt import WordPrompt as RemoteWord
 
 import bank
