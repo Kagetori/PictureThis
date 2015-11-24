@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from models import User, Friend, Bank
 
 from interface.exception import RemoteException
+from interface.packets import SuccessPacket
 from interface.user import LoginUser
 
 import friend, game, bank, config
@@ -81,7 +82,21 @@ def update_password(user_id, new_password):
     """
     API Function to change a user's password
     """
-    raise RemoteException('Not implemented.')
+    user = None
+
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException('Username password combination not valid.')
+
+    if user is None:
+        raise RemoteException('Username password combination not valid.')
+
+    salt = ''.join(random.choice(string.ascii_letters + string.digits + '!@#%^&*()_+-={}[]|,.<>?~') for _ in range(16))
+
+    user.password = _encrypt_password(password=new_password, salt=salt)
+
+    return SuccessPacket()
 
 def _encrypt_password(password, salt):
     return make_password(password=password, salt=salt, hasher='sha1')

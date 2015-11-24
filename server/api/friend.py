@@ -1,7 +1,7 @@
 from models import User, Friend
 
 from interface.exception import RemoteException
-from interface.packets import FriendPacket
+from interface.packets import FriendPacket, SuccessPacket
 from interface.user import FriendUser
 
 import config
@@ -64,4 +64,4 @@ def _set_friendship(user_id, friend_id, relation):
     friendship.relation = relation
     friendship.save()
 
-    return get_user_friends(user_id)
+    return SuccessPacket()
