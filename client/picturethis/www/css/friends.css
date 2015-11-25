@@ -1,0 +1,43 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+#menu, #right {
+    display:inline;
+}
+
+#menu li a {
+    padding: 10px;
+    display: block;
+    color: white;
+    text-decoration: none;
+}
+
+#right {
+    width:100%;
+    background-color: #fff;
+    z-index: 5;
+    position: fixed;
+    left: 0px;
+    height: 100%;
+    -webkit-box-shadow:  -5px 0px 4px 0px rgba(0, 0, 0, 0.2);
+        moz-box-shadow:  -5px 0px 4px 0px rgba(0, 0, 0, 0.2);
+          o-box-shadow:  -5px 0px 4px 0px rgba(0, 0, 0, 0.2);
+            box-shadow:  -5px 0px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+#right p {
+    padding: 10px;
+}
+
+#menu {
+    float:left;
+    width: 350px;
+    height: 100%;
+}
+
+#menu li {
+    background-color:blue;
+    border-bottom: 1px solid #888;
+}
