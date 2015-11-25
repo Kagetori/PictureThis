@@ -93,6 +93,7 @@ var getFriendListObjects = function(friendListWrapper, callback) {
                             buttontext = document.createTextNode("Waiting...");
                         }
                         tablebutton.appendChild(buttontext);
+
                         tableli.appendChild(tabletext);
                         tableli.appendChild(tablebutton);
                         tableul.appendChild(tableli);
