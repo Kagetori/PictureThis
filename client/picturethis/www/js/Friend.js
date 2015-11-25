@@ -39,16 +39,21 @@ function findFriend(username) {
 //adds a friend
 function addFriend(friend_id) {
     friendService(friend_id,'add_friend');
+    showAlert("Friend added!");
+
+    document.getElementById("friend_search").value = "";
 };
 
 //blocks a friend
 function blockFriend(friend_id) {
     friendService(friend_id,'block_friend');
+    showAlert("Friend blocked!");
 };
 
 //removes a friend
 function removeFriend(friend_id) {
     friendService(friend_id,'remove_friend');
+    showAlert("Friend removed!");
 };
 
 //general method for doing stuff to friend. Takes friend id and an action (ex. 'add_friend')
@@ -61,8 +66,6 @@ function friendService(friend_id, action) {
     params['friend_id'] = friend_id;
 
     serverCaller(api, params, friendParser, null, null);
-    showAlert("Friend added!");
-    document.getElementById("friend_search").value = "";
 };
 
 //parses friend list and updates friends field for user
