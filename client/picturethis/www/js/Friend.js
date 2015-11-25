@@ -61,18 +61,15 @@ function friendService(friend_id, action) {
     params['friend_id'] = friend_id;
 
     serverCaller(api, params, friendParser, null, null);
+    showAlert("Friend added!");
+    document.getElementById("friend_search").value = "";
 };
 
 //parses friend list and updates friends field for user
 var friendParser = function(obj) {
-    if (typeof obj.exception === "undefined") {
-        setFriends(obj.friends);
-        showAlert("Friend added!");
-        document.getElementById("friend_search").value = "";
-        setSpinnerVisibility(false);
-    } else {
+    if (typeof obj.exception != "undefined") {
         //shows exception message
         showAlert(obj.exception);
-        setSpinnerVisibility(false);
     }
+    setSpinnerVisibility(false);
 };
