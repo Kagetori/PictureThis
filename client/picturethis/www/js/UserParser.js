@@ -8,6 +8,7 @@ var UserParser = function(obj) {
         myUser.id = obj.user_id;
         myUser.friends = obj.friends;
         myUser.auth_token = obj.auth_token;
+        myUser.stars = obj.stars;
         myUser.games = [];
 
         if (typeof obj.games != "undefined") {
@@ -20,6 +21,10 @@ var UserParser = function(obj) {
                 parsedGames.push(newGame);
             }
         }
+
+        if (typeof obj.score != "undefined") {
+            myUser.score = obj.score;
+            }
 
         window.localStorage.clear();
         window.localStorage.setItem('userObject', JSON.stringify(myUser));
