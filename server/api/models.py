@@ -79,3 +79,10 @@ class Bank(models.Model):
     """
     user_id = models.IntegerField(unique=True, db_index=True)
     stars = models.BigIntegerField(default=0)
+
+class Score(models.Model):
+    """
+    Defines in-game score for users
+    """
+    user_id = models.IntegerField(unique=True, db_index=True)
+    points = models.BigIntegerField(default=0)

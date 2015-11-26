@@ -1,11 +1,13 @@
 //definition of the User class
-var User = function(username, password, id, friends, games, auth_token) {
+var User = function(username, password, id, friends, games, auth_token, stars, score) {
     this.username = username;       //string
     this.password = password;       //string
     this.id = id;                   //int
     this.friends = friends;         //list of user
     this.games = games;             //list of games
     this.auth_token = auth_token;   //string
+    this.stars = stars;
+    this.score = score;
 };
 
 //gets the user from localstorage and returns an user object

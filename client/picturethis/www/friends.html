@@ -6,15 +6,30 @@
     <meta http-equiv="refresh" content="1500; url=friends.html" >
     <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
-
+    <link href="css/friends.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div class="fullscreen" id="main_page">
 
+<script src="js/User.js"></script>
+
 <script id="friendlist-tpl" type="text/template">
+
+    <div id="menu">
+        <br><br><br>
+        <ul>
+            <li><a onclick="hideMenu()">Hide Menu</a></li>
+            <li><a onclick="logout()">Logout</a></li>
+            <li><a onclick="location.href = '#add friend';">Add Friend</a></li>
+            <li><a onclick="location.href = '#remove friend';">Remove Friend</a></li>
+        </ul>
+    </div>
+
+    <div id="right">
     <header class="navigation_bar">
-        <button onclick="logout()" class="navigation_button float-left">Logout</button>
+        <button onclick="showMenu()" class="navigation_button float-left">Menu</button>
+        <!--<button onclick="logout()" class="navigation_button float-left">Logout</button>-->
         <button onclick="location.href = '#add friend';" class="navigation_button float-right">
             Add Friend
         </button>
@@ -22,6 +37,7 @@
     </header>
     <br><br><br>
     <div id="friend_list_wrapper"></div>
+    </div>
 </script>
 
 <script id="add-friend-tpl" type="text/template">
@@ -39,7 +55,24 @@
     </div>
 </script>
 
+<script id="remove-friend-tpl" type="text/template">
+    <header class="navigation_bar">
+    <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+    <div style="text-align:center;"><h1 class="title">Remove Friend</h1></div>
+    </header>
+    <br><br><br>
+    <div id="remove_friend_wrapper"></div>
+</script>
+
 <script>
+    function showMenu() {
+        $('#right').animate({ left: 250 }, 'slow');
+    }
+
+    function hideMenu() {
+        $('#right').animate({ left: 0 }, 'slow');
+    }
+
     function findUser() {
         setSpinnerVisibility(true);
         var username = $("[name='username']").val();
@@ -58,6 +91,49 @@
         console.log("startGame");
         playGame(friendId);
     }
+
+    function populateRemoveTable(friends) {
+        var friendListRemoveWrapper = document.getElementById("remove_friend_wrapper");
+        if (friends.length != 0) {
+            var tableul = document.createElement('ul');
+            tableul.className = "friends_list";
+            for (i = 0; i < friends.length; i++) {
+                var tableli = document.createElement("li");
+                tableli.className = "friend_element";
+                friendUserName = friends[i].username;
+                var tabletext = document.createTextNode(friendUserName);
+                var friendId = friends[i].user_id;
+                console.log(friendUserName);
+                console.log(friendId);
+                var removebutton = document.createElement("button");
+                var removetext = document.createTextNode("Remove");
+                removebutton.setAttribute("onClick", "removeF("+friendId.toString()+");");
+                var blockbutton = document.createElement("button");
+                var blocktext = document.createTextNode("Block");
+                blockbutton.setAttribute("onClick", "blockF("+friendId.toString()+");");
+
+                removebutton.appendChild(removetext);
+                blockbutton.appendChild(blocktext);
+
+                tableli.appendChild(tabletext);
+                tableli.appendChild(removebutton);
+                tableli.appendChild(blockbutton);
+                tableul.appendChild(tableli);
+            }
+        }
+        if (friendListRemoveWrapper.hasChildNodes()) {
+            friendListRemoveWrapper.removeChild(friendListRemoveWrapper.childNodes[0]);
+        }
+        friendListRemoveWrapper.appendChild(tableul);
+    }
+
+    function removeF(friendId){
+        removeFriend(friendId);
+    }
+
+    function blockF(friendId){
+        blockFriend(friendId);
+    }
 </script>
 
 <script src="cordova.js"></script>
@@ -67,9 +143,9 @@
 <script src="js/services/memory/PictureThisService.js"></script>
 <script src="js/spinner.js"></script>
 <script src="js/FriendListView.js"></script>
+<script src="js/RemoveFriendView.js"></script>
 <script src="js/AddFriendView.js"></script>
 
-<script src="js/User.js"></script>
 <script src="js/Game.js"></script>
 <script src="js/Friend.js"></script>
 <script src="js/FriendListObject.js"></script>

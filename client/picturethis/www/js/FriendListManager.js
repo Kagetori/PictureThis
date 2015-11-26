@@ -4,8 +4,11 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
+    var friends = getUser().friends;
+
     FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
     AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
+    RemoveFriendView.prototype.template = Handlebars.compile($("#remove-friend-tpl").html());
 
     service.initialize().done(function () {
     //    renderLoginView();
@@ -15,6 +18,10 @@
         });
         router.addRoute('add friend', function () {
             $('#main_page').html(new AddFriendView(service).render().$el);
+        });
+        router.addRoute('remove friend', function () {
+            $('#main_page').html(new RemoveFriendView(service).render().$el);
+            populateRemoveTable(friends);
         });
         router.addRoute('main', function () {
             $('#main_page').html(new FriendListView(service).render().$el);
@@ -34,6 +41,17 @@
             }, 15000);
 
         });
+
+//        getFriendListObjectsToRemove(friendListRemoveWrapper, function(){
+//            setSpinnerVisibility(false);
+//
+//            // Start update in background
+//            // Make a poll call every 15 seconds
+//            setInterval(function() {
+//                getFriendListObjectsToRemove(friendListRemoveWrapper, null);
+//            }, 15000);
+//
+//        });
 
     });
 

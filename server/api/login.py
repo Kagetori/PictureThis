@@ -1,12 +1,12 @@
 from django.contrib.auth.hashers import check_password, make_password
 
-from models import User, Friend, Bank
+from models import User, Friend, Bank, Score
 
 from interface.exception import RemoteException
 from interface.packets import SuccessPacket
 from interface.user import LoginUser
 
-import friend, game, bank, config
+import friend, game, bank, config, score
 
 import random
 import string
@@ -39,11 +39,14 @@ def create_user(username, password, client_version=1, device_id=None):
     # Create bank account for user
     bank_account = Bank.objects.create(user_id=user.obfuscated_id, stars=config.DEFAULT_STARS)
 
+    # Create score for user
+    score_account = Score.objects.create(user_id=user.obfuscated_id, points=0)
+
     # New user should not have friends or games
     friends = []
     games = []
 
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends, games=games, stars=bank_account.stars)
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends, games=games, stars=bank_account.stars, points=score_account.points)
 
 def login(username, password, client_version=1, device_id=None):
     """
@@ -68,6 +71,9 @@ def login(username, password, client_version=1, device_id=None):
     # Get user bank account
     bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
 
+    # Get user score
+    score_account = score.get_user_score(user_id=user.obfuscated_id)
+
     # Create new auth token
     auth_token = uuid.uuid4()
     user.auth_token = auth_token
@@ -76,7 +82,7 @@ def login(username, password, client_version=1, device_id=None):
     friends = friend.get_user_friends(user_id=user.obfuscated_id).friends
     games = game.get_user_games(user_id=user.obfuscated_id).games
 
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, games=games, stars=bank_account.stars)
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, games=games, stars=bank_account.stars, points=score_account.points)
 
 def update_password(user_id, new_password):
     """

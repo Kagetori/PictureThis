@@ -39,16 +39,21 @@ function findFriend(username) {
 //adds a friend
 function addFriend(friend_id) {
     friendService(friend_id,'add_friend');
+    showAlert("Friend added!");
+
+    document.getElementById("friend_search").value = "";
 };
 
 //blocks a friend
 function blockFriend(friend_id) {
     friendService(friend_id,'block_friend');
+    showAlert("Friend blocked!");
 };
 
 //removes a friend
 function removeFriend(friend_id) {
     friendService(friend_id,'remove_friend');
+    showAlert("Friend removed!");
 };
 
 //general method for doing stuff to friend. Takes friend id and an action (ex. 'add_friend')
@@ -65,14 +70,9 @@ function friendService(friend_id, action) {
 
 //parses friend list and updates friends field for user
 var friendParser = function(obj) {
-    if (typeof obj.exception === "undefined") {
-        setFriends(obj.friends);
-        showAlert("Friend added!");
-        document.getElementById("friend_search").value = "";
-        setSpinnerVisibility(false);
-    } else {
+    if (typeof obj.exception != "undefined") {
         //shows exception message
         showAlert(obj.exception);
-        setSpinnerVisibility(false);
     }
+    setSpinnerVisibility(false);
 };
