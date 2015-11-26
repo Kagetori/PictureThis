@@ -9,7 +9,7 @@ var showAlert = function (message, title) {
 
 var debugAlert = function (message, title) {
     // change this to false if want all debug alerts to be disabled
-    var ENABLE_DEBUG_ALERTS = false;
+    var ENABLE_DEBUG_ALERTS = true;
 
     if (ENABLE_DEBUG_ALERTS) {
         showAlert(message, title);

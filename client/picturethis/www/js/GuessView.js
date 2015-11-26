@@ -184,13 +184,13 @@ function countdown()
 function destroyLetters(letters) {
     console.log("called destroyLetters");
     // Deduct a star
-    var user = getUser();
-    var user_id = user.id;
-    var params = new Array();
-    var api = 'bank/decrement_bank';
-    params['user_id'] = user_id;
-    serverCaller(api, params, BankParser, null, null);
     if (enoughStars(1)) {
+        var user = getUser();
+        var user_id = user.id;
+        var params = new Array();
+        var api = 'bank/decrement_bank';
+        params['user_id'] = user_id;
+        serverCaller(api, params, BankParser, null, null);
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
         var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
@@ -219,32 +219,56 @@ function destroyLetters(letters) {
 
 function getWordClass() {
     console.log("called getWordClass");
-    var user = getUser();
-    var user_id = user.id;
-    var currentGame = getActiveGame();
-    var currentWord = currentGame.curr_word;
-    var params = new Array();
-    var api = 'word_prompt/request_hint';
-    params['word'] = currentWord;
-    params['user_id'] = user_id;
+    if (enoughStars(1)) {
+        var user = getUser();
+        var user_id = user.id;
+        var params = new Array();
+        var api = 'bank/decrement_bank';
+        params['user_id'] = user_id;
+        serverCaller(api, params, BankParser, null, null);
 
-    serverCaller(api, params, HintParser, null, null);
-    //TODO finish this function
+        var currentGame = getActiveGame();
+        var currentWord = currentGame.curr_word;
+        var params = new Array();
+        var api = 'word_prompt/request_hint';
+        params['word'] = currentWord;
+        params['user_id'] = user_id;
+
+        serverCaller(api, params, HintParser, null, null);
+        var retrievedWordClass = window.localStorage.getItem('wordClass');
+        debugAlert("Hint 1: This word is a " + retrievedWordClass);
+        console.log("Hint 1: This word is a " + retrievedWordClass);
+    } else {
+        debugAlert("not enough stars!");
+        return "";
+    }
 }
 
 function getWordCategory() {
     console.log("called getWordCategory");
-    var user = getUser();
-    var user_id = user.id;
-    var currentGame = getActiveGame();
-    var currentWord = currentGame.curr_word;
-    var params = new Array();
-    var api = 'word_prompt/request_hint';
-    params['word'] = currentWord;
-    params['user_id'] = user_id;
+    if (enoughStars(1)) {
+        var user = getUser();
+        var user_id = user.id;
+        var params = new Array();
+        var api = 'bank/decrement_bank';
+        params['user_id'] = user_id;
+        serverCaller(api, params, BankParser, null, null);
 
-    serverCaller(api, params, HintParser, null, null);
-    //TODO finish this function
+        var currentGame = getActiveGame();
+        var currentWord = currentGame.curr_word;
+        var params = new Array();
+        var api = 'word_prompt/request_hint';
+        params['word'] = currentWord;
+        params['user_id'] = user_id;
+
+        serverCaller(api, params, HintParser, null, null);
+        var retrievedWordCategory = window.localStorage.getItem('wordCategory');
+        debugAlert("Hint 2: This word is related to " + retrievedWordCategory);
+        console.log("Hint 2: This word is related to " + retrievedWordCategory);
+    } else {
+        debugAlert("not enough stars!");
+        return "";
+    }
 }
 
 function stringDiff(shortString, longString) {
@@ -256,6 +280,14 @@ function stringDiff(shortString, longString) {
 }
 
 function enoughStars(cost) {
+    var user = getUser();
+    var user_id = user.id;
+    var params = new Array();
+    params['user_id'] = user_id;
+    var api = 'bank/get_user_bank';
+    serverCaller(api, params, BankParser, null, null);
+
     var bank = getBankInfo();
-    return (bank >= cost);
+    debugAlert("bank: " + bank);
+    return (parseInt(bank) >= cost);
 }

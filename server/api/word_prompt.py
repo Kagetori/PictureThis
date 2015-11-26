@@ -16,10 +16,6 @@ def request_hint(user_id, word):
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
         raise RemoteException("User does not exist")
-    try: 
-        add_to_bank(user_id, -1)
-    except RemoteException:
-        raise RemoteException("Deducting stars failed")
 
     word_class = word_prompt.word_class
     word_category = word_prompt.category

@@ -2,10 +2,14 @@ var HintParser = function(obj) {
     debugAlert("Called HintParser!");
 
     if (typeof obj.exception === "undefined") {
-        var word_class = obj.word_class;
-        var word_category = obj.word_category;
-        debugAlert(word_class);
-        debugAlert(word_category);
+        var wordClass = obj.word_class;
+        var wordCategory = obj.word_category;
+
+        window.localStorage.removeItem('wordClass');
+        window.localStorage.setItem('wordClass', JSON.stringify(wordClass));
+
+        window.localStorage.removeItem('wordCategory');
+        window.localStorage.setItem('wordCategory', JSON.stringify(wordCategory));
     } else {
         showAlert(obj.exception);
         setSpinnerVisibility(false);
