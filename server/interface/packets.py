@@ -8,7 +8,7 @@ class FriendPacket(SuccessPacket):
     def __init__(self, friends):
         """
         friends
-            List of User objects
+            List of FriendUser objects
         """
         self.friends = friends
 
@@ -19,11 +19,3 @@ class GamePacket(SuccessPacket):
             List of Game objects
         """
         self.games = games
-
-class PollPacket(SuccessPacket):
-    def __init__(self, polls):
-        """
-        polls
-            List of Poll objects
-        """
-        self.polls = polls

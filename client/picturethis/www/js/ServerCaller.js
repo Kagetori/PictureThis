@@ -59,6 +59,8 @@ function serverCaller(api, params, parser, callback, unusedParam) {
                         return;
                     }
 
+                    hooks(json_response);
+
                     if (parser) parser(json_response);
 
                     if (callback) callback();

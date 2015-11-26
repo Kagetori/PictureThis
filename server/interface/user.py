@@ -12,7 +12,7 @@ class User(RemoteObject):
         self.user_id = user_id
 
 class FriendUser(User):
-    def __init__(self, username, user_id, relation):
+    def __init__(self, username, user_id, relation, has_active_game=None, is_turn=None, is_photographer=None):
         """
         username
             username of friend
@@ -20,12 +20,21 @@ class FriendUser(User):
             friend's user id
         relation
             friend relation (e.g. friend, blocked)
+        has_active_game
+            if True: currently an active game between 
+        is_turn
+            if True: currently user's turn
+        is_photographer
+            if True: user is the photographer for this turn
         """
         User.__init__(self, username, user_id)
         self.relation = relation
+        self.has_active_game = has_active_game
+        self.is_turn = is_turn
+        self.is_photographer = is_photographer
 
 class LoginUser(User):
-    def __init__(self, username, user_id, auth_token, friends, games, stars, points):
+    def __init__(self, username, user_id, auth_token, friends, bank_account, score):
         """
         username
             username of user
@@ -35,16 +44,13 @@ class LoginUser(User):
             user's authentication token
         friends
             list of user's friends
-        games
-            list of user's games
-        stars
-            number of stars the user has
-        points
-            number of points the user has
+        bank_account
+            user's bank account
+        score
+            user's score
         """
         User.__init__(self, username=username, user_id=user_id)
         self.auth_token = auth_token
         self.friends = friends
-        self.games = games
-        self.stars = stars
-        self.points = points
+        self.bank_account = bank_account
+        self.score = score

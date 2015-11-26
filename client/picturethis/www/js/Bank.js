@@ -3,6 +3,14 @@ var Bank = function(stars) {
 };
 
 var getBankInfo = function() {
-    var retrievedBank = window.localStorage.getItem('bank');
-    return retrievedBank;
+    return JSON.parse(window.localStorage.getItem('bank'));
+};
+
+var getStars = function() {
+    return getBankInfo().stars;
+};
+
+var setBankInfo = function(bank) {
+    window.localStorage.removeItem('bank');
+    window.localStorage.setItem('bank',JSON.stringify(bank));
 };

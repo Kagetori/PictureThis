@@ -46,7 +46,7 @@ def create_user(username, password, client_version=1, device_id=None):
     friends = []
     games = []
 
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends, games=games, stars=bank_account.stars, points=score_account.points)
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), friends=friends, bank_account=bank_account, score=score_account)
 
 def login(username, password, client_version=1, device_id=None):
     """
@@ -82,7 +82,7 @@ def login(username, password, client_version=1, device_id=None):
     friends = friend.get_user_friends(user_id=user.obfuscated_id).friends
     games = game.get_user_games(user_id=user.obfuscated_id).games
 
-    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, games=games, stars=bank_account.stars, points=score_account.points)
+    return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, bank_account=bank_account, score=score_account)
 
 def update_password(user_id, new_password):
     """

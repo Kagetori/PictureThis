@@ -282,4 +282,4 @@ class PollTests(TestCase):
         friend.add_friend(user_id=user0_id, friend_id=user3_id)
         friend.add_friend(user_id=user4_id, friend_id=user0_id)
 
-        self.assertEqual(len(poll.update(user0_id).polls), 4)
+        self.assertEqual(len(poll.update(user0_id).friends), 4)

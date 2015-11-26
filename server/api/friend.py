@@ -4,7 +4,7 @@ from interface.exception import RemoteException
 from interface.packets import FriendPacket, SuccessPacket
 from interface.user import FriendUser
 
-import config
+import config, game
 
 # Friend api
 
@@ -23,6 +23,23 @@ def get_friend_status(user_id1, user_id2):
     except Friend.DoesNotExist:
         return config.FRIEND_STATUS_REMOVED
 
+def get_friend_details(user_id, friend_id):
+    friend_user = User.objects.get(obfuscated_id=friend_id)
+
+    game_obj = None
+
+    try:
+        game_obj = game.get_game_status(user_id=user_id, friend_id=friend_id)
+    except RemoteException:
+        pass
+
+    friend_status = get_friend_status(user_id1=user_id, user_id2=friend_id)
+
+    if game_obj is None or not game_obj.active:
+        return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=False)
+    else:
+        return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=True, is_turn=game_obj.is_turn, is_photographer=game_obj.is_photographer)
+
 def get_user_friends(user_id):
     friends = Friend.objects.filter(user_id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
 
@@ -31,9 +48,7 @@ def get_user_friends(user_id):
     for f in friends:
         friend_user_id = f.user_id2
 
-        friend_user = User.objects.get(obfuscated_id=friend_user_id)
-
-        result.append(FriendUser(username=friend_user.name, user_id=friend_user.obfuscated_id, relation=config.FRIEND_STATUS_FRIEND))
+        result.append(get_friend_details(user_id=user_id, friend_id=friend_user_id))
 
     return FriendPacket(result)
 

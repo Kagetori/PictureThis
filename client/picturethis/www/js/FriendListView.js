@@ -26,15 +26,15 @@ var getFriendListObjects = function(friendListWrapper, callback) {
     var friendListObjectParser = function(obj) {
 
         //var friendList = [];
-        var objects = obj.polls;
+        var objects = obj.friends;
 
         for (var i = 0; i < objects.length; i++) {
             var friendListObject = new FriendListObject();
             var object = objects[i];
 
-            friendListObject.friend_username = object.friend_username;
-            friendListObject.friend_id = object.friend_id;
-            friendListObject.active_game = object.active_game;
+            friendListObject.friend_username = object.username;
+            friendListObject.friend_id = object.user_id;
+            friendListObject.active_game = object.has_active_game;
             friendListObject.is_turn = object.is_turn;
             friendListObject.is_photographer = object.is_photographer;
 

@@ -2,10 +2,9 @@ from models import User, Friend, Game
 
 from interface.exception import RemoteException
 from interface.poll import Poll
-from interface.packets import PollPacket
 
 import config
-import game
+import friend, bank, score
 
 # Poll api
 
@@ -21,23 +20,9 @@ def update(user_id):
     except User.DoesNotExist:
         raise RemoteException("User doesn't exist")
 
-    friends = Friend.objects.filter(user_id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
+    friends = friend.get_user_friends(user_id=user_id).friends
 
-    result = []
+    bank_account = bank.get_user_bank(user_id=user_id)
+    score_account = score.get_user_score(user_id=user_id)
 
-    for f in friends:
-        friend_id = f.user_id2
-
-        result.append(_get_poll(user_id=user_id, friend_id=friend_id))
-
-    return PollPacket(result)
-
-def _get_poll(user_id, friend_id):
-    friend_user = User.objects.get(obfuscated_id=friend_id)
-
-    try:
-        game_obj = game.get_game_status(user_id=user_id, friend_id=friend_id)
-    except RemoteException:
-        return Poll(user_id=user_id, friend_id=friend_id, friend_username=friend_user.name, active_game=False, is_turn=None, is_photographer=None)
-
-    return Poll(user_id=user_id, friend_id=friend_id, friend_username=friend_user.name, active_game=game_obj.active, is_turn=game_obj.is_turn, is_photographer=game_obj.is_photographer)
+    return Poll(friends=friends, bank_account=bank_account, score=score_account)
