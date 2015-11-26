@@ -32,6 +32,7 @@
     		addLetters();
             getGuessImage();
             populateGuessBlocks(currentWord);
+            numStars();
     	}
     });
 

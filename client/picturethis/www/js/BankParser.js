@@ -3,7 +3,7 @@ var BankParser = function(obj) {
 
     if (typeof obj.exception === "undefined") {
         var stars = obj.stars;
-        debugAlert("You have " + stars + " stars");
+        console.log("BankParser: " + stars + " stars");
 
         window.localStorage.removeItem('bank');
         window.localStorage.setItem('bank',JSON.stringify(stars));

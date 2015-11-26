@@ -63,17 +63,19 @@ var GuessView = function (service) {
             showNotification('Would you like to start a new game?',onConfirm,'Game Finished!',['Yes','No']);
         }
     }
-
-    this.numStars = function() {
-        var user = getUser();
-        var user_id = user.id;
-        var api = 'bank/get_user_bank';
-        params['user_id'] = user_id;
-
-        serverCaller(api, params, BankParser, null, null);
-    }
-
     this.initialize();
+}
+
+function numStars() {
+    var user = getUser();
+    var user_id = user.id;
+    var api = 'bank/get_user_bank';
+    var params = new Array();
+    params['user_id'] = user_id;
+    serverCaller(api, params, BankParser, null, null);
+    var numStars = getBankInfo();
+    console.log("numStars: " + numStars + " stars");
+    document.getElementById('num_stars').innerHTML = numStars;
 }
 
 function addLetters() {
@@ -184,19 +186,26 @@ function countdown()
 function destroyLetters(letters) {
     console.log("called destroyLetters");
     // Deduct a star
-    if (enoughStars(1)) {
-        var user = getUser();
-        var user_id = user.id;
-        var params = new Array();
-        var api = 'bank/decrement_bank';
-        params['user_id'] = user_id;
+    var destroyed = "";
+
+    var user = getUser();
+    var user_id = user.id;
+    var params = new Array();
+    params['user_id'] = user_id;
+    var api = 'bank/get_user_bank';
+    serverCaller(api, params, BankParser, null, null);
+
+    var numStars = getBankInfo();
+
+    if (numStars > 0) {
+        api = 'bank/decrement_bank';
         serverCaller(api, params, BankParser, null, null);
+
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
         var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
         // get four unique random indexes
-        var indexes = []
-        var destroyed = "";
+        var indexes = [];
         while(indexes.length < 4){
             var randomIndex = Math.floor((Math.random()*randomLetters.length));
             var found = false;
@@ -210,22 +219,31 @@ function destroyLetters(letters) {
                 destroyed = destroyed + randomLetters[randomIndex];
             }
         }
-        return destroyed;
+        console.log("destroyLetters: " + numStars - 1 + " stars");
+        document.getElementById('num_stars').innerHTML = numStars - 1;
     } else {
         debugAlert("not enough stars!");
-        return "";
     }
+    
+    return destroyed;
 }
 
 function getWordClass() {
     console.log("called getWordClass");
-    if (enoughStars(1)) {
-        var user = getUser();
-        var user_id = user.id;
-        var params = new Array();
-        var api = 'bank/decrement_bank';
-        params['user_id'] = user_id;
+
+    var user = getUser();
+    var user_id = user.id;
+    var params = new Array();
+    params['user_id'] = user_id;
+    var api = 'bank/get_user_bank';
+    serverCaller(api, params, BankParser, null, null);
+
+    var numStars = getBankInfo();
+
+    if (numStars > 0) {
+        api = 'bank/decrement_bank';
         serverCaller(api, params, BankParser, null, null);
+        console.log("getWordClass: " + numStars + " stars");
 
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
@@ -238,6 +256,9 @@ function getWordClass() {
         var retrievedWordClass = window.localStorage.getItem('wordClass');
         debugAlert("Hint 1: This word is a " + retrievedWordClass);
         console.log("Hint 1: This word is a " + retrievedWordClass);
+
+        console.log("getWordClass: " + numStars - 1 + " stars");
+        document.getElementById('num_stars').innerHTML = numStars - 1;
     } else {
         debugAlert("not enough stars!");
         return "";
@@ -246,13 +267,20 @@ function getWordClass() {
 
 function getWordCategory() {
     console.log("called getWordCategory");
-    if (enoughStars(1)) {
-        var user = getUser();
-        var user_id = user.id;
-        var params = new Array();
-        var api = 'bank/decrement_bank';
-        params['user_id'] = user_id;
+
+    var user = getUser();
+    var user_id = user.id;
+    var params = new Array();
+    params['user_id'] = user_id;
+    var api = 'bank/get_user_bank';
+    serverCaller(api, params, BankParser, null, null);
+
+    var numStars = getBankInfo();
+
+    if (numStars > 0) {
+        api = 'bank/decrement_bank';
         serverCaller(api, params, BankParser, null, null);
+        console.log("getWordCategory: " + numStars + " stars");
 
         var currentGame = getActiveGame();
         var currentWord = currentGame.curr_word;
@@ -265,6 +293,9 @@ function getWordCategory() {
         var retrievedWordCategory = window.localStorage.getItem('wordCategory');
         debugAlert("Hint 2: This word is related to " + retrievedWordCategory);
         console.log("Hint 2: This word is related to " + retrievedWordCategory);
+
+        console.log("getWordClass: " + numStars - 1 + " stars");
+        document.getElementById('num_stars').innerHTML = numStars - 1;
     } else {
         debugAlert("not enough stars!");
         return "";
@@ -277,17 +308,4 @@ function stringDiff(shortString, longString) {
     }
     return longString;
 
-}
-
-function enoughStars(cost) {
-    var user = getUser();
-    var user_id = user.id;
-    var params = new Array();
-    params['user_id'] = user_id;
-    var api = 'bank/get_user_bank';
-    serverCaller(api, params, BankParser, null, null);
-
-    var bank = getBankInfo();
-    debugAlert("bank: " + bank);
-    return (parseInt(bank) >= cost);
 }
