@@ -14,6 +14,8 @@ var LoginView = function (service) {
 
     //logs user in
     this.userLogin = function(username,password) {
+        window.localStorage.clear();
+
         var api = 'login/login';
         var params = new Array();
         params['username'] = username;

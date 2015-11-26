@@ -16,119 +16,95 @@ var FriendListView = function (service) {
 }
 
 // returns parsed friendListObjects
-var getFriendListObjects = function(friendListWrapper, callback) {
-    var user = getUser();
-    var api = 'poll/update';
-    var params = new Array();
-    params['user_id'] = user.id;
-    var friendList = [];
+var setFriendView = function(friendListWrapper) {
 
-    var friendListObjectParser = function(obj) {
+    var friendList = getFriendListObjects();
 
-        //var friendList = [];
-        var objects = obj.friends;
+    var activeFriends = [];
+    var inactiveFriends = [];
 
-        for (var i = 0; i < objects.length; i++) {
-            var friendListObject = new FriendListObject();
-            var object = objects[i];
-
-            friendListObject.friend_username = object.username;
-            friendListObject.friend_id = object.user_id;
-            friendListObject.active_game = object.has_active_game;
-            friendListObject.is_turn = object.is_turn;
-            friendListObject.is_photographer = object.is_photographer;
-
-            friendList.push(friendListObject);
+    if (friendList.length != 0) {
+        for (i=0; i<friendList.length; i++) {
+            if (friendList[i].active_game==false) {
+                inactiveFriends.push(friendList[i]);
+            }
+            else {
+                activeFriends.push(friendList[i]);
+            }
         }
+    }
 
-        //console.log(JSON.stringify(friendList));
+    console.log("active: " + activeFriends.length);
+    console.log("inactive: " + inactiveFriends.length);
 
-        var activeFriends = [];
-        var inactiveFriends = [];
+    if (friendList.length != 0) {
+        var tableul = document.createElement('ul');
+        tableul.className = "friends_list";
 
-        if (friendList.length != 0) {
-            for (i=0; i<friendList.length; i++) {
-                if (friendList[i].active_game==false) {
-                    inactiveFriends.push(friendList[i]);
+        if (activeFriends.length != 0) {
+            var activeHeader = document.createElement("li");
+            activeHeader.className = "active_friends";
+            var activeHeaderText = document.createTextNode("Active");
+            activeHeader.appendChild(activeHeaderText);
+            tableul.appendChild(activeHeader);
+            for (i = 0; i < activeFriends.length; i++) {
+                var tableli = document.createElement("li");
+                tableli.className = "friend_element";
+                friendUserName = activeFriends[i].friend_username;
+                var tabletext = document.createTextNode(friendUserName);
+                var tablebutton = document.createElement("button");
+
+                var friendId = activeFriends[i].friend_id;
+                tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
+                var buttontext;
+                if (activeFriends[i].is_photographer == true && activeFriends[i].is_turn == true) {
+                    tablebutton.className = "play_button snap";
+                    buttontext = document.createTextNode("Snap!");
+                }
+                else if (activeFriends[i].is_photographer == false && activeFriends[i].is_turn == true) {
+                    tablebutton.className = "play_button guess";
+                    buttontext = document.createTextNode("Guess!");
                 }
                 else {
-                    activeFriends.push(friendList[i]);
+                    tablebutton.className = "play_button waiting";
+                    buttontext = document.createTextNode("Waiting...");
                 }
+                tablebutton.appendChild(buttontext);
+
+                tableli.appendChild(tabletext);
+                tableli.appendChild(tablebutton);
+                tableul.appendChild(tableli);
             }
         }
-        console.log(activeFriends.length);
-        console.log(inactiveFriends.length);
 
-        if (friendList.length != 0) {
-            var tableul = document.createElement('ul');
-            tableul.className = "friends_list";
+        if (inactiveFriends.length != 0) {
+            var inactiveHeader = document.createElement("li");
+            inactiveHeader.className = "inactive_friends";
+            var inactiveHeaderText = document.createTextNode("Inactive");
+            inactiveHeader.appendChild(inactiveHeaderText);
+            tableul.appendChild(inactiveHeader);
+            for (i = 0; i < inactiveFriends.length; i++) {
+                var tableli = document.createElement("li");
+                tableli.className = "friend_element";
+                friendUserName = inactiveFriends[i].friend_username;
+                var tabletext = document.createTextNode(friendUserName);
+                var tablebutton = document.createElement("button");
+                tablebutton.className = "play_button new_game";
 
-            if (activeFriends.length != 0) {
-                var activeHeader = document.createElement("li");
-                activeHeader.className = "active_friends";
-                var activeHeaderText = document.createTextNode("Active");
-                activeHeader.appendChild(activeHeaderText);
-                tableul.appendChild(activeHeader);
-                for (i = 0; i < activeFriends.length; i++) {
-                    var tableli = document.createElement("li");
-                    tableli.className = "friend_element";
-                    friendUserName = activeFriends[i].friend_username;
-                    var tabletext = document.createTextNode(friendUserName);
-                    var tablebutton = document.createElement("button");
-
-                    var friendId = activeFriends[i].friend_id;
-                    tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
-                    var buttontext;
-                    if (activeFriends[i].is_photographer == true && activeFriends[i].is_turn == true) {
-                        tablebutton.className = "play_button snap";
-                        buttontext = document.createTextNode("Snap!");
-                    }
-                    else if (activeFriends[i].is_photographer == false && activeFriends[i].is_turn == true) {
-                        tablebutton.className = "play_button guess";
-                        buttontext = document.createTextNode("Guess!");
-                    }
-                    else {
-                        tablebutton.className = "play_button waiting";
-                        buttontext = document.createTextNode("Waiting...");
-                    }
-                    tablebutton.appendChild(buttontext);
-
-                    tableli.appendChild(tabletext);
-                    tableli.appendChild(tablebutton);
-                    tableul.appendChild(tableli);
-                }
+                var friendId = inactiveFriends[i].friend_id;
+                tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
+                var buttontext = document.createTextNode("Start!");
+                tablebutton.appendChild(buttontext);
+                tableli.appendChild(tabletext);
+                tableli.appendChild(tablebutton);
+                tableul.appendChild(tableli);
             }
-            if (inactiveFriends.length != 0) {
-                var inactiveHeader = document.createElement("li");
-                inactiveHeader.className = "inactive_friends";
-                var inactiveHeaderText = document.createTextNode("Inactive");
-                inactiveHeader.appendChild(inactiveHeaderText);
-                tableul.appendChild(inactiveHeader);
-                for (i = 0; i < inactiveFriends.length; i++) {
-                    var tableli = document.createElement("li");
-                    tableli.className = "friend_element";
-                    friendUserName = inactiveFriends[i].friend_username;
-                    var tabletext = document.createTextNode(friendUserName);
-                    var tablebutton = document.createElement("button");
-                    tablebutton.className = "play_button new_game";
-
-                    var friendId = inactiveFriends[i].friend_id;
-                    tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
-                    var buttontext = document.createTextNode("Start!");
-                    tablebutton.appendChild(buttontext);
-                    tableli.appendChild(tabletext);
-                    tableli.appendChild(tablebutton);
-                    tableul.appendChild(tableli);
-                    }
-                }
-
-            if (friendListWrapper.hasChildNodes()) {
-                friendListWrapper.removeChild(friendListWrapper.childNodes[0]);
-            }
-
-            friendListWrapper.appendChild(tableul);
         }
-    };
 
-    serverCaller(api, params, friendListObjectParser, callback, null);
+        if (friendListWrapper.hasChildNodes()) {
+            friendListWrapper.removeChild(friendListWrapper.childNodes[0]);
+        }
+
+        friendListWrapper.appendChild(tableul);
+    }
 }

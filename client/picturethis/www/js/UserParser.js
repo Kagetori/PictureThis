@@ -8,6 +8,6 @@ var UserParser = function(obj) {
     myUser.friends = obj.friends;
     myUser.auth_token = obj.auth_token;
 
-    window.localStorage.clear();
+    window.localStorage.removeItem('userObject');
     window.localStorage.setItem('userObject', JSON.stringify(myUser));
 }

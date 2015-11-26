@@ -31,28 +31,18 @@
 
         var friendListWrapper = document.getElementById("friend_list_wrapper");
 
-        getFriendListObjects(friendListWrapper, function(){
-            setSpinnerVisibility(false);
+        setFriendView(friendListWrapper);
 
-            // Start update in background
-            // Make a poll call every 15 seconds
-            setInterval(function() {
-                getFriendListObjects(friendListWrapper, null);
-            }, 15000);
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
 
-        });
-
-//        getFriendListObjectsToRemove(friendListRemoveWrapper, function(){
-//            setSpinnerVisibility(false);
-//
-//            // Start update in background
-//            // Make a poll call every 15 seconds
-//            setInterval(function() {
-//                getFriendListObjectsToRemove(friendListRemoveWrapper, null);
-//            }, 15000);
-//
-//        });
-
+        setInterval(function() {
+            serverCaller("poll/update", params, null, function() {
+                setFriendView(friendListWrapper)
+            }, null);
+        }, 15000);
     });
 
         /* --------------------------------- Event Registration -------------------------------- */

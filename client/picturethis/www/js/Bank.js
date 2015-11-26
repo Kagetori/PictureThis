@@ -11,6 +11,7 @@ var getStars = function() {
 };
 
 var setBankInfo = function(bank) {
+    console.log("Updating bank.");
     window.localStorage.removeItem('bank');
     window.localStorage.setItem('bank',JSON.stringify(bank));
 };

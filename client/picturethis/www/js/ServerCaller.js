@@ -1,10 +1,6 @@
 //Takes a custom url and parser. Then it calls the server using the url and gives the result to the parser
 
-function serverCaller(api, params, parser, callback, unusedParam) {
-    // there is this unusedParam; all calls to serverCaller currently
-    // send null to this. If you ever need to send a new param to serverCaller,
-    // you can change the name of this and use it.
-
+function serverCaller(api, params, parser, callback, exceptionHandler) {
     // IF you are testing on your VM, change the link to not have
     // HTTPS. Use HTTP only since the VM has no SSL certificate installed
     // eg var serverURL = "http://192.168.56.110/api/";
@@ -43,27 +39,29 @@ function serverCaller(api, params, parser, callback, unusedParam) {
                     var json_response = JSON.parse(xmlhttp.responseText);
 
                     if (json_response.hasOwnProperty('exception')) {
-                        // Exception.
-                        // Show the alert
+                        // Exception. If there is a specific callback, use the
+                        // exceptionhandler to handle it. Otherwise use default exception
+                        // handling of showing an alert
 
-                        showAlert(json_response.exception, '');
-
-                        if (json_response.hasOwnProperty('force_logout') && json_response.force_logout && !isLoginCall) {
-                            logout();
+                        if (exceptionHandler) {
+                            exceptionHandler();
                         } else {
-                            setSpinnerVisibility(false);
+                            showAlert(json_response.exception, '');
                         }
 
-                        // don't bother parsing or calling callbacks
-                        // if there is an exception
-                        return;
+                        if (json_response.hasOwnProperty('force_logout') && json_response.force_logout && !isLoginCall) {
+                            return;
+                        }
+
+                    } else {
+                        hooks(json_response);
+
+                        if (parser) parser(json_response);
+
+                        if (callback) callback();
                     }
 
-                    hooks(json_response);
-
-                    if (parser) parser(json_response);
-
-                    if (callback) callback();
+                    setSpinnerVisibility(false);
                 }
             } else {
                 showAlert("Server call failed. Please try again. Error " + xmlhttp.status, '');

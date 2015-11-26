@@ -12,6 +12,8 @@ var SignUpView = function (service) {
 
     //creates new account with username and password
     this.createAccount = function(username, password) {
+        window.localStorage.clear();
+
         var api = 'login/create_user';
         var params = new Array();
         params['username'] = username;

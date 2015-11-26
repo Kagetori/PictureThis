@@ -45,9 +45,6 @@ function hasOngoingGame(friendId, callback) {
         debugAlert("Called checkParser!");
         var game = makeGame(obj);
         var user = getUser();
-        var userGames = user.games;
-        userGames.push(game);
-        user.games = userGames;
 
         window.localStorage.removeItem('activeGame');
         window.localStorage.setItem('activeGame',JSON.stringify(game));
@@ -55,7 +52,9 @@ function hasOngoingGame(friendId, callback) {
         callback(true);
     };
 
-    serverCaller(api, params, checkParser, null, null);
+    serverCaller(api, params, checkParser, null, function() {
+        callback(false);
+    });
 
 };
 
