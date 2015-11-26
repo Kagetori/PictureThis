@@ -11,29 +11,21 @@ function findFriend(username) {
     params['username'] = username;
 
     var searchParser = function(obj) {
-        if (typeof obj.exception === "undefined") {
-            var friendUsername = obj.username;
-            var friend_id = obj.user_id;
-            //asks if they want to add the user
-            function onConfirm(buttonIndex) {
-                if(buttonIndex === 1) {
-                    addFriend(friend_id);
-                } else {
-                    setSpinnerVisibility(false);
-                }
+        var friendUsername = obj.username;
+        var friend_id = obj.user_id;
+        //asks if they want to add the user
+        var onConfirm = function(buttonIndex) {
+            if (buttonIndex === 1) {
+                addFriend(friend_id);
+            } else {
+                setSpinnerVisibility(false);
             }
-            showNotification("Would you like to add " + friendUsername + " as a friend?",onConfirm,
-            friendUsername + " has been found!",['Yes','No']);
-
-        } else {
-            //shows exception message
-            showAlert(obj.exception);
-            setSpinnerVisibility(false);
-        }
+        };
+        showNotification("Would you like to add " + friendUsername + " as a friend?", onConfirm,
+        friendUsername + " has been found!",['Yes','No']);
     };
 
     serverCaller(api, params, searchParser, null, null);
-
 };
 
 //adds a friend
@@ -69,10 +61,7 @@ function friendService(friend_id, action) {
 };
 
 //parses friend list and updates friends field for user
+// TODO?
 var friendParser = function(obj) {
-    if (typeof obj.exception != "undefined") {
-        //shows exception message
-        showAlert(obj.exception);
-    }
     setSpinnerVisibility(false);
 };

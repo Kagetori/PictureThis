@@ -18,7 +18,7 @@ function playGame(friendId){
             continueGame(friendId);
         } else {
             function onConfirm(buttonIndex) {
-                if(buttonIndex === 1) {
+                if (buttonIndex === 1) {
                     startNewGame(friendId);
                 } else {
                     setSpinnerVisibility(false);
@@ -43,20 +43,16 @@ function hasOngoingGame(friendId, callback) {
 
     var checkParser = function(obj) {
         debugAlert("Called checkParser!");
-        if (typeof obj.exception === "undefined") {
-            var game = makeGame(obj);
-            var user = getUser();
-            var userGames = user.games;
-            userGames.push(game);
-            user.games = userGames;
+        var game = makeGame(obj);
+        var user = getUser();
+        var userGames = user.games;
+        userGames.push(game);
+        user.games = userGames;
 
-            window.localStorage.removeItem('activeGame');
-            window.localStorage.setItem('activeGame',JSON.stringify(game));
+        window.localStorage.removeItem('activeGame');
+        window.localStorage.setItem('activeGame',JSON.stringify(game));
 
-            callback(true);
-        } else {
-            callback(false);
-        }
+        callback(true);
     };
 
     serverCaller(api, params, checkParser, null, null);

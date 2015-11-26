@@ -10,7 +10,9 @@ function serverCaller(api, params, parser, callback, unusedParam) {
     // eg var serverURL = "http://192.168.56.110/api/";
     var serverURL = "https://picturethis.brianchau.ca/api/";
 
-    if (api.substring(0, 6) != "login/") {
+    var isLoginCall = (api.substring(0, 6) == "login/");
+
+    if (!isLoginCall) {
         params['auth_token'] = getUser().auth_token;
     }
 
@@ -33,25 +35,37 @@ function serverCaller(api, params, parser, callback, unusedParam) {
     xmlhttp.open('POST', serverURL + api, true);
 
     xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            // do something with the results
-            if (xmlhttp.responseText != "undefined"){
-                debugAlert(xmlhttp.responseText);
-                var json_response = JSON.parse(xmlhttp.responseText);
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+                // do something with the results
+                if (xmlhttp.responseText != "undefined"){
+                    debugAlert(xmlhttp.responseText);
+                    var json_response = JSON.parse(xmlhttp.responseText);
 
-                if ((typeof json_response.force_logout != "undefined") && (json_response.force_logout)) {
-                    showAlert(json_response.exception, "");
-                    if (api.substring(0, 6) != "login/") {
-                        logout();
-                    } else {
-                        setSpinnerVisibility(false);
+                    if (json_response.hasOwnProperty('exception')) {
+                        // Exception.
+                        // Show the alert
+
+                        showAlert(json_response.exception, '');
+
+                        if (json_response.hasOwnProperty('force_logout') && json_response.force_logout && !isLoginCall) {
+                            logout();
+                        } else {
+                            setSpinnerVisibility(false);
+                        }
+
+                        // don't bother parsing or calling callbacks
+                        // if there is an exception
+                        return;
                     }
-                    return;
+
+                    if (parser) parser(json_response);
+
+                    if (callback) callback();
                 }
-
-                if (parser) parser(json_response);
-
-                if (callback) callback();
+            } else {
+                showAlert("Server call failed. Please try again. Error " + xmlhttp.status, '');
+                setSpinnerVisibility(false);
             }
         } else {
             // wait for the call to complete

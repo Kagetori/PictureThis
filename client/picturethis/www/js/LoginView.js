@@ -7,7 +7,6 @@ var LoginView = function (service) {
         this.render();
     };
     
-//  this.initialize();
     this.render = function() {
         this.$el.html(this.template());
         return this;

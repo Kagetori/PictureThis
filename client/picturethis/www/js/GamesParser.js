@@ -2,45 +2,33 @@
 var GamesParser = function(obj) {
     debugAlert("Called GamesParser!");
 
-    if (typeof obj.exception === "undefined") {
-        var user = getUser();
+    var user = getUser();
 
-        var parsedGames = [];
-        var games = obj.games;
+    var parsedGames = [];
+    var games = obj.games;
 
-        for (var i = 0; i < games.length; i++) {
-            var game = games[i];
-            var newGame = makeGame(game);
-            parsedGames.push(newGame);
-        }
-
-        user.games = parsedGames;
-
-    } else {
-        showAlert(obj.exception);
-        setSpinnerVisibility(false);
+    for (var i = 0; i < games.length; i++) {
+        var game = games[i];
+        var newGame = makeGame(game);
+        parsedGames.push(newGame);
     }
+
+    user.games = parsedGames;
  };
 
 // parses one game and adds it to the games field in user
  var GameParser = function(obj) {
     debugAlert("Called GameParser!");
 
-    if (typeof obj.exception === "undefined") {
-        var game = makeGame(obj);
-        var user = getUser();
-        var userGames = user.games;
-        debugAlert(userGames);
-        userGames.push(game);
-        user.games = userGames;
+    var game = makeGame(obj);
+    var user = getUser();
+    var userGames = user.games;
+    debugAlert(userGames);
+    userGames.push(game);
+    user.games = userGames;
 
-        window.localStorage.removeItem('activeGame');
-        window.localStorage.setItem('activeGame',JSON.stringify(game));
-
-    } else {
-        showAlert(obj.exception);
-        setSpinnerVisibility(false);
-    }
+    window.localStorage.removeItem('activeGame');
+    window.localStorage.setItem('activeGame',JSON.stringify(game));
 };
 
 // returns a game object
@@ -53,15 +41,15 @@ var makeGame = function(obj) {
     game.curr_round = obj.curr_round;
     game.words_seen = obj.words_seen;
 
-    if (typeof obj.is_turn != "undefined") {
+    if (obj.hasOwnProperty('is_turn')) {
         game.is_turn = obj.is_turn;
     }
 
-    if (typeof obj.curr_word != "undefined") {
+    if (obj.hasOwnProperty('curr_word')) {
         game.curr_word = obj.curr_word;
     }
 
-    if (typeof obj.is_photographer != "undefined") {
+    if (obj.hasOwnProperty('is_photographer')) {
         game.is_photographer = obj.is_photographer;
     }
 
