@@ -21,11 +21,6 @@ var GamesParser = function(obj) {
     debugAlert("Called GameParser!");
 
     var game = makeGame(obj);
-    var user = getUser();
-    var userGames = user.games;
-    debugAlert(userGames);
-    userGames.push(game);
-    user.games = userGames;
 
     window.localStorage.removeItem('activeGame');
     window.localStorage.setItem('activeGame',JSON.stringify(game));

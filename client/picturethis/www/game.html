@@ -79,7 +79,14 @@
     var hints_used = 0;
 
     function backToMain() {
-        window.location="friends.html";
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
+
+        serverCaller("poll/update", params, null, function() {
+            window.location="friends.html";
+        }, null);
     }
 
     function toWaitingView() {

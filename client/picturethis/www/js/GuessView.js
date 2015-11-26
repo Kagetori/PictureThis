@@ -175,7 +175,7 @@ function countdown()
         return;
     }
     document.getElementById("countdown").innerHTML="Score: "+score;
-    }
+}
 
 function destroyLetters(letters) {
     console.log("called destroyLetters");

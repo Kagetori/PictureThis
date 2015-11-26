@@ -44,7 +44,6 @@ function hasOngoingGame(friendId, callback) {
     var checkParser = function(obj) {
         debugAlert("Called checkParser!");
         var game = makeGame(obj);
-        var user = getUser();
 
         window.localStorage.removeItem('activeGame');
         window.localStorage.setItem('activeGame',JSON.stringify(game));
