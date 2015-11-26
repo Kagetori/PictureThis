@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^game/get_picture', views.game__get_picture, name='picturethis__game__get_picture'),
     url(r'^game/end_game', views.game__end_game, name='picturethis__game__end_game'),
     url(r'^game/validate_guess', views.game__validate_guess, name='picturethis__game__validate_guess'),
+    url(r'^game/give_up_turn', views.game__give_up_turn, name='picturethis__game__give_up_turn'),
     url(r'^game/get_user_games', views.game__get_user_games, name='picturethis__game__get_user_games'),
     url(r'^game/get_game_status', views.game__get_game_status, name='picturethis__game__get_game_status'),
 

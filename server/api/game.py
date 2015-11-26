@@ -170,7 +170,7 @@ def end_game(user_id, game_id):
 
 def validate_guess(user_id, game_id, guess, path='/var/www/picturethis/media/'):
     """
-    Checks if guess is correct. Return a sucess packet if guess matches latest word prompt
+    Checks if guess is correct.
     """
     game = None
 
@@ -225,6 +225,12 @@ def validate_guess(user_id, game_id, guess, path='/var/www/picturethis/media/'):
             return _start_new_round(user_id=user_id, game_id=game_id)
     else:
         raise RemoteException("Guess is incorrect")
+
+def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
+    """
+    Give up on the current turn
+    """
+    return RemoteException('Not implemented!')
 
 def get_user_games(user_id):
     """

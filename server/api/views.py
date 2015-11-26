@@ -274,6 +274,20 @@ def game__validate_guess(request):
     return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess)
 
 @csrf_exempt
+def game__give_up_turn(request):
+    params = _params(request)
+
+    try:
+        _check_blocking(params)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+    game_id = _get_param(params, 'game_id', None)
+
+    return _response(game.give_up_turn, user_id=user_id, game_id=game_id)
+
+@csrf_exempt
 def game__get_user_games(request):
     params = _params(request)
 
