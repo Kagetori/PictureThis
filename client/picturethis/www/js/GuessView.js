@@ -64,6 +64,15 @@ var GuessView = function (service) {
         }
     }
 
+    this.numStars = function() {
+        var user = getUser();
+        var user_id = user.id;
+        var api = 'bank/get_user_bank';
+        params['user_id'] = user_id;
+
+        serverCaller(api, params, BankParser, null, null);
+    }
+
     this.initialize();
 }
 
@@ -181,28 +190,31 @@ function destroyLetters(letters) {
     var api = 'bank/decrement_bank';
     params['user_id'] = user_id;
     serverCaller(api, params, BankParser, null, null);
-    //TODO check that user has enough stars for a hint
-
-    var currentGame = getActiveGame();
-    var currentWord = currentGame.curr_word;
-    var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
-    // get four unique random indexes
-    var indexes = []
-    var destroyed = "";
-    while(indexes.length < 4){
-        var randomIndex = Math.floor((Math.random()*randomLetters.length));
-        var found = false;
-        for(var i=0; i<indexes.length; i++){
-            if(indexes[i] === randomIndex){
-                found = true; 
-                break;
+    if (enoughStars(1)) {
+        var currentGame = getActiveGame();
+        var currentWord = currentGame.curr_word;
+        var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
+        // get four unique random indexes
+        var indexes = []
+        var destroyed = "";
+        while(indexes.length < 4){
+            var randomIndex = Math.floor((Math.random()*randomLetters.length));
+            var found = false;
+            for(var i=0; i<indexes.length; i++){
+                if(indexes[i] === randomIndex){
+                    found = true; 
+                    break;
+                }
+            } if(!found) {
+                indexes.push(randomIndex);
+                destroyed = destroyed + randomLetters[randomIndex];
             }
-        } if(!found) {
-            indexes.push(randomIndex);
-            destroyed = destroyed + randomLetters[randomIndex];
         }
+        return destroyed;
+    } else {
+        debugAlert("not enough stars!");
+        return "";
     }
-    return destroyed;
 }
 
 function getWordClass() {
@@ -241,4 +253,9 @@ function stringDiff(shortString, longString) {
     }
     return longString;
 
+}
+
+function enoughStars(cost) {
+    var bank = getBankInfo();
+    return (bank >= cost);
 }
