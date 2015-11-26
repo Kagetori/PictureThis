@@ -19,5 +19,7 @@ def request_hint(user_id, word):
 
     word_class = word_prompt.word_class
     word_category = word_prompt.category
+
+    bank_account = bank.decrement_bank(user_id=user_id)
     
-    return RemoteWord(word=word, word_class=word_class, word_category=word_category)
+    return RemoteWord(word=word, word_class=word_class, word_category=word_category, bank_account=bank_account)

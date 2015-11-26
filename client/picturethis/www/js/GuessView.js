@@ -185,33 +185,37 @@ function destroyLetters(letters) {
     var numStars = getStars();
 
     if (numStars > 0) {
-        api = 'bank/decrement_bank';
-        serverCaller(api, params, BankParser, null, null);
-
-        var currentGame = getActiveGame();
-        var currentWord = currentGame.curr_word;
-        var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
-        // get four unique random indexes
-        var indexes = [];
-        while(indexes.length < 4){
-            var randomIndex = Math.floor((Math.random()*randomLetters.length));
-            var found = false;
-            for(var i=0; i<indexes.length; i++){
-                if(indexes[i] === randomIndex){
-                    found = true; 
-                    break;
+        var user = getUser();
+        var user_id = user.id;
+        var params = new Array();
+        var api = 'bank/decrement_bank';
+        params['user_id'] = user_id;
+        serverCaller(api, params, null, function() {
+            var currentGame = getActiveGame();
+            var currentWord = currentGame.curr_word;
+            var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
+            // get four unique random indexes
+            var indexes = [];
+            while(indexes.length < 4){
+                var randomIndex = Math.floor((Math.random()*randomLetters.length));
+                var found = false;
+                for(var i=0; i<indexes.length; i++){
+                    if(indexes[i] === randomIndex){
+                        found = true; 
+                        break;
+                    }
+                } if(!found) {
+                    indexes.push(randomIndex);
+                    destroyed = destroyed + randomLetters[randomIndex];
                 }
-            } if(!found) {
-                indexes.push(randomIndex);
-                destroyed = destroyed + randomLetters[randomIndex];
             }
-        }
-        console.log("destroyLetters: " + numStars - 1 + " stars");
-        document.getElementById('num_stars').innerHTML = numStars - 1;
+            console.log("destroyLetters: " + numStars - 1 + " stars");
+            document.getElementById('num_stars').innerHTML = numStars - 1;
+        }, null);
     } else {
         showAlert("Not enough stars!");
     }
-    
+
     return destroyed;
 }
 
@@ -221,8 +225,6 @@ function getWordClass() {
     var numStars = getStars();
 
     if (numStars > 0) {
-        api = 'bank/decrement_bank';
-        serverCaller(api, params, BankParser, null, null);
         console.log("getWordClass: " + numStars + " stars");
 
         var currentGame = getActiveGame();
@@ -234,13 +236,14 @@ function getWordClass() {
         params['word'] = currentWord;
         params['user_id'] = user_id;
 
-        serverCaller(api, params, HintParser, null, null);
-        var retrievedWordClass = window.localStorage.getItem('wordClass');
-        debugAlert("Hint 1: This word is a " + retrievedWordClass);
-        console.log("Hint 1: This word is a " + retrievedWordClass);
+        serverCaller(api, params, HintParser, function() {
+            var retrievedWordClass = window.localStorage.getItem('wordClass');
+            debugAlert("Hint 1: This word is a " + retrievedWordClass);
+            console.log("Hint 1: This word is a " + retrievedWordClass);
 
-        console.log("getWordClass: " + numStars - 1 + " stars");
-        document.getElementById('num_stars').innerHTML = numStars - 1;
+            console.log("getWordClass: " + numStars - 1 + " stars");
+            document.getElementById('num_stars').innerHTML = numStars - 1;
+        }, null);
     } else {
         showAlert("Not enough stars!");
     }
@@ -252,8 +255,6 @@ function getWordCategory() {
     var numStars = getStars();
 
     if (numStars > 0) {
-        api = 'bank/decrement_bank';
-        serverCaller(api, params, BankParser, null, null);
         console.log("getWordCategory: " + numStars + " stars");
 
         var currentGame = getActiveGame();
@@ -265,13 +266,14 @@ function getWordCategory() {
         params['word'] = currentWord;
         params['user_id'] = user_id;
 
-        serverCaller(api, params, HintParser, null, null);
-        var retrievedWordCategory = window.localStorage.getItem('wordCategory');
-        debugAlert("Hint 2: This word is related to " + retrievedWordCategory);
-        console.log("Hint 2: This word is related to " + retrievedWordCategory);
+        serverCaller(api, params, HintParser, function() {
+            var retrievedWordCategory = window.localStorage.getItem('wordCategory');
+            debugAlert("Hint 2: This word is related to " + retrievedWordCategory);
+            console.log("Hint 2: This word is related to " + retrievedWordCategory);
 
-        console.log("getWordClass: " + numStars - 1 + " stars");
-        document.getElementById('num_stars').innerHTML = numStars - 1;
+            console.log("getWordClass: " + numStars - 1 + " stars");
+            document.getElementById('num_stars').innerHTML = numStars - 1;
+        }, null);
     } else {
         showAlert("Not enough stars!");
     }
@@ -282,5 +284,4 @@ function stringDiff(shortString, longString) {
         longString = longString.replace(shortString[i], "");
     }
     return longString;
-
 }
