@@ -8,15 +8,11 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-theme.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
-
 </head>
 
 <body>
-
-    <div class="fullscreen" id="main_page">
-
+<div class="fullscreen" id="main_page">
     <script id="login-tpl" type="text/template">
-
         <div class="container">
             <br>
             <div class="row">
@@ -26,19 +22,13 @@
             </div>
             <br>
             <form onsubmit="event.preventDefault()">
-
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="username" placeholder="Username">
-                        </div>
-
-                        <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                        <br>
-
-
-
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2">
                         <button id="login" class="btn btn-block big_button" type="submit" onclick="userLogin()">Log In!</button>
@@ -46,42 +36,35 @@
                     </div>
                 </div>
             </form>
-                <div class="text-center">
-                    <a href="#sign up" >Create a new account</a>
-                </div>
-                <br><br>
+
+            <div class="text-center">
+                <a href="#sign up" >Create a new account</a>
+            </div>
+            <br><br>
         </div>
 
     </script>
-
     <script id="signup-tpl" type="text/template">
         <div class="container">
             <br>
-           <button onclick="backToLogin()" class="btn  navigation_button">Back</button>
-           <h1 class="title">Create your account</h1>
+            <button onclick="backToLogin()" class="btn  navigation_button">Back</button>
+            <h1 class="title">Create your account</h1>
 
             <form onsubmit="event.preventDefault()">
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password_confirm" placeholder="Retype your password">
+                    <br><br>
+                </div>
 
-                        <br>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="username" placeholder="Username">
-
-                        </div>
-
-                        <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-
-                        </div>
-
-                        <div class="form-group">
-                            <input type="password" class="form-control" name="password_confirm" placeholder="Retype your password">
-                            <br><br>
-                        </div>
-
-
-                        <button class="big_button" type="submit" onclick="newAccount()">Create Account</button>
-                        <br><br><br>
-
+                <button class="big_button" type="submit" onclick="newAccount()">Create Account</button>
+                <br><br><br>
 
             </form>
         </div>
