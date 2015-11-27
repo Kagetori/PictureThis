@@ -12,6 +12,7 @@ class User(models.Model):
     password = models.CharField(max_length=512)
     obfuscated_id = models.PositiveIntegerField(null=True)
     auth_token = models.UUIDField()
+    login_token = models.CharField(max_length=136, null=True)
 
     def __str__(self):
         return 'name %s obfuscated_id %d auth_token %s' % (self.name, self.obfuscated_id, str(self.auth_token))
