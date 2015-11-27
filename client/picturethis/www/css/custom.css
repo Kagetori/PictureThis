@@ -141,28 +141,18 @@ div.under_navbar {
 
 input[type="text"] {
     font-size: 1.25em;
-    margin: 0;
-    width: 76%;
-    height: 20%;
     font-family: Arial;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-left: 2%;
-    padding-right: 2%;
     border: solid 1px #dcdcdc;
     transition: box-shadow 0.3s, border 0.3s;
 }
 
 input[type="password"] {
     font-size: 1.25em;
-    margin: 0;
-    width: 76%;
-    height: 20%;
     font-family: Arial;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-left: 2%;
-    padding-right: 2%;
     border: solid 1px #dcdcdc;
     transition: box-shadow 0.3s, border 0.3s;
 }
