@@ -82,7 +82,7 @@ class Bank(models.Model):
     Defines in-game currency for users
     """
     user_id = models.IntegerField(unique=True, db_index=True)
-    stars = models.BigIntegerField(default=0)
+    stars = models.BigIntegerField(default=config.DEFAULT_STARS)
 
 class Score(models.Model):
     """

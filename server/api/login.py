@@ -36,11 +36,11 @@ def create_user(username, password, client_version=1, device_id=None):
     user.obfuscated_id = utility.obfuscate_id(user.id)
     user.save()
 
-    # Create bank account for user
-    bank_account = Bank.objects.create(user_id=user.obfuscated_id, stars=config.DEFAULT_STARS)
+    # Get user bank account
+    bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
 
-    # Create score for user
-    score_account = Score.objects.create(user_id=user.obfuscated_id, points=0)
+    # Get user score
+    score_account = score.get_user_score(user_id=user.obfuscated_id)
 
     # New user should not have friends or games
     friends = []
