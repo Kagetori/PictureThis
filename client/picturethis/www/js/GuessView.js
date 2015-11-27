@@ -194,6 +194,7 @@ function destroyLetters(letters) {
             var currentGame = getActiveGame();
             var currentWord = currentGame.curr_word;
             var randomLetters = stringDiff(currentWord.toUpperCase(), letters);
+            console.log("randomLetters: " + randomLetters);
             // get four unique random indexes
             var indexes = [];
             while(indexes.length < 4){
@@ -206,17 +207,21 @@ function destroyLetters(letters) {
                     }
                 } if(!found) {
                     indexes.push(randomIndex);
+                    console.log("randomIndex: " + randomIndex);
                     destroyed = destroyed + randomLetters[randomIndex];
                 }
             }
             console.log("destroyLetters: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
+            console.log("destroyed letters: " + destroyed);
+            return destroyed;
         }, null);
     } else {
         showAlert("Not enough stars!");
+        return "";
     }
-
-    return destroyed;
+    //console.log("destroyed letters: " + destroyed);
+    //return destroyed;
 }
 
 function getWordClass() {
@@ -238,8 +243,7 @@ function getWordClass() {
 
         serverCaller(api, params, HintParser, function() {
             var retrievedWordClass = window.localStorage.getItem('wordClass');
-            debugAlert("Hint 1: This word is a " + retrievedWordClass);
-            console.log("Hint 1: This word is a " + retrievedWordClass);
+            document.getElementById('word_class').innerHTML = "HINT: This word is a " + retrievedWordClass;
 
             console.log("getWordClass: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
@@ -268,9 +272,7 @@ function getWordCategory() {
 
         serverCaller(api, params, HintParser, function() {
             var retrievedWordCategory = window.localStorage.getItem('wordCategory');
-            debugAlert("Hint 2: This word is related to " + retrievedWordCategory);
-            console.log("Hint 2: This word is related to " + retrievedWordCategory);
-
+            document.getElementById('word_category').innerHTML = "HINT: This word is belongs to the category of " + retrievedWordCategory;
             console.log("getWordClass: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
         }, null);
