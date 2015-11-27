@@ -45,34 +45,44 @@
                         <br>
                     </div>
                 </div>
-            <form>
-            <div class="row">
+            </form>
                 <div class="text-center">
                     <a href="#sign up" >Create a new account</a>
                 </div>
-                <br><br><br>
-            </div>
+                <br><br>
         </div>
 
     </script>
 
     <script id="signup-tpl" type="text/template">
-        <div>        
-        <header class="navigation_bar">
-            <button onclick="backToLogin()" class="navigation_button float-left">Back</button>
-            <div style="text-align:center;"><h1 class="title">Create your account</h1></div>
-        </header>
-        </div>
-        <div style="text-align:center;" class="under_navbar">
+        <div class="container">
+            <br>
+           <button onclick="backToLogin()" class="btn  navigation_button">Back</button>
+           <h1 class="title">Create your account</h1>
+
             <form onsubmit="event.preventDefault()">
-                <br>
-                <input type="text" name="username" placeholder="Username">
-                <br><br>
-                <input type="password" name="password" placeholder="Password">
-                <br><br>
-                <input type="password" name="password_confirm" placeholder="Retype your password">
-                <br><br>
-                <button class="big_button" type="submit" onclick="newAccount()">Create Account</button>
+
+                        <br>
+                        <div class="form-group">
+                            <input type="text" class="col-xs-10 col-xs-offset-1" name="username" placeholder="Username">
+                            <br><br>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="col-xs-10 col-xs-offset-1" name="password" placeholder="Password">
+                            <br><br>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="col-xs-10 col-xs-offset-1" name="password_confirm" placeholder="Retype your password">
+                            <br><br><br><br>
+                        </div>
+
+
+                        <button class="big_button" type="submit" onclick="newAccount()">Create Account</button>
+                        <br><br><br>
+
+
             </form>
         </div>
     </script>
