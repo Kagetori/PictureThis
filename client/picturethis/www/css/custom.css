@@ -89,15 +89,17 @@ header {
     position: relative;
     font-family: Arial;
     text-transform: capitalize;
-    color: white;
-    font-size: 1.5em;
-    background-color: #29a429;
+    color: black;
+    font-size: 1.8em;
+    background-color: #FF4E24;
     text-decoration: none;
+    font-weight: bold;
     border: none;
     display: block;
     margin: auto;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    box-shadow: 5px 5px 2px #888888;
 }
 
 .navigation_button {
