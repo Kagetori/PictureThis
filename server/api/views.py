@@ -119,9 +119,10 @@ def user__update_password(request):
         return JsonResponse(e.ret_dict())
 
     user_id = _get_param(params, 'user_id', 0)
+    old_password = _get_param(params, 'old_password', None)
     new_password = _get_param(params, 'new_password', None)
 
-    return _response(login.update_password, user_id=user_id, new_password=new_password)
+    return _response(login.update_password, user_id=user_id, old_password=old_password, new_password=new_password)
 
 # BANK API
 

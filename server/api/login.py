@@ -84,7 +84,7 @@ def login(username, password, client_version=1, device_id=None):
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, friends=friends, bank_account=bank_account, score=score_account)
 
-def update_password(user_id, new_password):
+def update_password(user_id, old_password, new_password):
     """
     API Function to change a user's password
     """
@@ -96,6 +96,9 @@ def update_password(user_id, new_password):
         raise RemoteException('Username password combination not valid.')
 
     if user is None:
+        raise RemoteException('Username password combination not valid.')
+
+    if not check_password(password=old_password, encoded=user.password):
         raise RemoteException('Username password combination not valid.')
 
     salt = ''.join(random.choice(string.ascii_letters + string.digits + '!@#%^&*()_+-={}[]|,.<>?~') for _ in range(16))
