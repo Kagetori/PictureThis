@@ -47,6 +47,8 @@
         <br><br>
         <button onclick="getHint(this)">Get a hint</button>
         <div id="num_stars">#stars</div>
+        <div id="word_class"></div>
+        <div id="word_category"></div>
         <br>
 
         <div id="guess_blocks"> </div>
@@ -175,15 +177,15 @@
     function getHint(elt) {
         if (hints_used == 0) {
             hints_used++;
-            clearAllLetters();
-            destroy();
+            getWordClass();
         } else if (hints_used == 1) {
             hints_used++;
-            getWordClass();
+            getWordCategory();
         } else if (hints_used == 2) {
             hints_used++;
-            getWordCategory();
-            elt.classList.toggle("hide");
+            clearAllLetters();
+            destroy();
+            elt.classList.toggle("destroyed");
         }
     }
 
@@ -198,16 +200,6 @@
     function destroy() {
         var letters = getAllLetters();
         var toDestroy = destroyLetters(letters);
-
-        for (var i=0; i<letters.length; i++) {
-            for (var j=0; j<toDestroy.length; j++) {
-                if (letters[i] === toDestroy[j]) {
-                    document.getElementById(i).classList.toggle("destroyed");
-                    toDestroy = toDestroy.slice(0, j) + toDestroy.slice(j+1);
-                    break;
-                }
-            }
-        }
     }
 
 </script>

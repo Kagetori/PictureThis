@@ -106,6 +106,25 @@ def login__login(request):
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
+@csrf_exempt
+def login__token_login(request):
+    """
+    Call is not authenticated, since it's a login call
+    """
+    params = _params(request)
+
+    try:
+        _check_blocking(params, authenticate=False)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
+    user_id = _get_param(params, 'user_id', 0)
+    login_token = _get_param(params, 'login_token', None)
+    client_version = _get_param(params, 'client_version', 0)
+    device_id =  _get_param(params, 'device_id', None)
+
+    return _response(login.token_login, user_id=user_id, login_token=login_token, client_version=client_version, device_id=device_id)
+
 # USER API
 # NOTE: THIS API RESIDES IN LOGIN.PY for code reuse purposes.
 
@@ -119,9 +138,10 @@ def user__update_password(request):
         return JsonResponse(e.ret_dict())
 
     user_id = _get_param(params, 'user_id', 0)
+    old_password = _get_param(params, 'old_password', None)
     new_password = _get_param(params, 'new_password', None)
 
-    return _response(login.update_password, user_id=user_id, new_password=new_password)
+    return _response(login.update_password, user_id=user_id, old_password=old_password, new_password=new_password)
 
 # BANK API
 
@@ -270,8 +290,9 @@ def game__validate_guess(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
     guess = _get_param(params, 'guess', None)
+    score = _get_param(params, 'score', None)
 
-    return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess)
+    return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess, score=score)
 
 @csrf_exempt
 def game__give_up_turn(request):
@@ -354,7 +375,12 @@ def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
 
     if client_version < config.MIN_CLIENT_VERSION:
-        raise NotAuthenticatedException('Please upgrade your app.')
+        raise NotAuthenticatedException('Please upgrade your app (i.e. merge master).')
+
+    client_secret = _get_param(params, 'client_secret')
+
+    if client_secret != config.CLIENT_SECRET_KEY:
+        raise NotAuthenticatedException('Not authenticated.')
 
     if authenticate:
         auth_token = _get_param(params, 'auth_token')

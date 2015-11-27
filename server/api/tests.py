@@ -7,7 +7,7 @@ from interface.packets import GamePacket
 
 import config, login, friend, search, game, poll
 
-import base64
+import base64, time
 
 # Create your tests here.
 
@@ -230,10 +230,19 @@ class GameTests(TestCase):
 
         game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path='/var/www/picturethis/media_test/')
 
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='pear', path='/var/www/picturethis/media_test/')
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+        #Have not seen picture yet
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
-        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+        game.get_picture(user_id=user2_id, game_id=game_id, path='/var/www/picturethis/media_test/')
+
+        time.sleep(10) # seconds
+
+        game.get_game_status(user_id=user2_id, friend_id=user1_id)
+
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess='pear', path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+
+        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
         self.assertTrue(game_remote_2.active)
         self.assertEqual(game_remote_2.curr_round, 2)

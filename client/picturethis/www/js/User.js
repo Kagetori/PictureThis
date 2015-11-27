@@ -10,7 +10,7 @@ var User = function(username, password, id, friends, games, auth_token, stars, s
     this.score = score;
 };
 
-//gets the user from localstorage and returns an user object
+//gets the user from localStorage and returns an user object
 var getUser = function(){
     var retrievedUser =  window.localStorage.getItem('userObject');
     var parsedUser = JSON.parse(retrievedUser);
@@ -29,4 +29,13 @@ var logout = function() {
     setSpinnerVisibility(true);
     window.localStorage.clear();
     window.location="login.html";
+}
+
+var setLoginToken = function(loginToken) {
+    window.localStorage.removeItem('login_token');
+    window.localStorage.setItem('login_token', loginToken);
+}
+
+var getLoginToken = function() {
+    window.localStorage.getItem('login_token');
 }

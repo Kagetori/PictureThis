@@ -34,7 +34,7 @@ class FriendUser(User):
         self.is_photographer = is_photographer
 
 class LoginUser(User):
-    def __init__(self, username, user_id, auth_token, friends, bank_account, score):
+    def __init__(self, username, user_id, auth_token, login_token, friends, bank_account, score):
         """
         username
             username of user
@@ -42,6 +42,8 @@ class LoginUser(User):
             user's id
         auth_token
             user's authentication token
+        login_token
+            user's login token
         friends
             list of user's friends
         bank_account
@@ -51,6 +53,7 @@ class LoginUser(User):
         """
         User.__init__(self, username=username, user_id=user_id)
         self.auth_token = auth_token
+        self.login_token = login_token
         self.friends = friends
         self.bank_account = bank_account
         self.score = score
