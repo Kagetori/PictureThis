@@ -30,10 +30,9 @@
     <header class="navigation_bar">
         <button onclick="showMenu()" class="navigation_button float-left">Menu</button>
         <!--<button onclick="logout()" class="navigation_button float-left">Logout</button>-->
-        <button onclick="location.href = '#add friend';" class="navigation_button float-right">
-            Add Friend
-        </button>
-        <div style="text-align:center;"><h1 class="title">Friends</h1></div>
+
+        <div style="text-align:center;"><h1 class="title">Score: {{score}}</h1></div>
+        <div style="text-align:right;"><h1 class="title">Stars: {{stars}}</h1></div>
     </header>
     <br><br><br>
     <div id="friend_list_wrapper"></div>
@@ -148,6 +147,7 @@
 
 <script src="js/Game.js"></script>
 <script src="js/Bank.js"></script>
+<script src="js/ScoreBank.js"></script>
 <script src="js/Friend.js"></script>
 <script src="js/FriendListObject.js"></script>
 <script src="js/ShowAlert.js"></script>

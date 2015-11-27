@@ -14,6 +14,12 @@ function hooks(obj) {
         setBankInfo(bank_account);
     }
 
+    // Hook for Score
+    if (obj.hasOwnProperty('score_account')){
+        var score_account = obj.score_account;
+        setScoreInfo(score_account);
+    }
+
     // Hook for Friends
     if (obj.hasOwnProperty('friends')) {
         var friendList = [];
@@ -34,4 +40,5 @@ function hooks(obj) {
 
         setFriendListObjects(friendList);
     }
+
 }
