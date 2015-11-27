@@ -2,6 +2,12 @@
 
 function hooks(obj) {
 
+    // Hook for Login Token
+    if (obj.hasOwnProperty('login_token')) {
+        var login_token = obj.login_token;
+        setLoginToken(login_token);
+    }
+
     // Hook for Bank
     if (obj.hasOwnProperty('bank_account')) {
         var bank_account = obj.bank_account;
