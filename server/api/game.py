@@ -4,6 +4,8 @@ from django.utils.timesince import timesince
 
 from models import Game, User, Turn, WordPrompt
 
+import bank
+
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
 from interface.packets import GamePacket
@@ -166,6 +168,22 @@ def end_game(user_id, game_id):
     words_seen = _get_words_played(game_id)
     game.active = False
     game.save()
+
+    # Award stars to users
+    user1_stars = int(game.user1_score / config.SCORE_PER_STAR)
+    user2_stars = int(game.user2_score / config.SCORE_PER_STAR)
+
+    if game.user1_score > game.user2_score:
+        user1_stars += config.WINNER_BONUS_STAR
+    elif game.user1_score < game.user2_score:
+        user2_stars += config.WINNER_BONUS_STAR
+    else:
+        user1_stars += config.TIE_BONUS_STAR
+        user2_stars += config.TIE_BONUS_STAR
+
+    bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
+    bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
+
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen)
 
 def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/media/'):
