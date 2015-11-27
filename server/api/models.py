@@ -54,6 +54,8 @@ class Game(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     last_move_date = models.DateTimeField(auto_now=True)
     game_type = models.IntegerField(default=config.GAME_TYPE_NORMAL)
+    user1_score = models.IntegerField(default=0)
+    user2_score = models.IntegerField(default=0)
 
     class Meta:
         index_together = ('user_id1', 'user_id2', 'active')
@@ -66,6 +68,7 @@ class Turn(models.Model):
     game_id = models.IntegerField()
     word_prompt_id = models.IntegerField();
     guessed = models.BooleanField(default=False)
+    guessed_correctly = models.BooleanField(default=False)
     picture_added = models.BooleanField(default=False)
     picture_seen = models.BooleanField(default=False)
     picture_seen_date = models.DateTimeField(null=True)

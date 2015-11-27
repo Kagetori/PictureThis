@@ -270,8 +270,9 @@ def game__validate_guess(request):
     user_id = _get_param(params, 'user_id', None)
     game_id = _get_param(params, 'game_id', None)
     guess = _get_param(params, 'guess', None)
+    score = _get_param(params, 'score', None)
 
-    return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess)
+    return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess, score=score)
 
 @csrf_exempt
 def game__give_up_turn(request):
@@ -353,9 +354,6 @@ def _response(fn, **kwargs):
 def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
 
-    if client_version < config.MIN_CLIENT_VERSION:
-        raise NotAuthenticatedException('Please upgrade your app.')
-
     if authenticate:
         auth_token = _get_param(params, 'auth_token')
         user_id = _get_param(params, 'user_id')
@@ -368,3 +366,6 @@ def _check_blocking(params, authenticate=True):
 
         except User.DoesNotExist:
             raise NotAuthenticatedException('User does not exist.')
+
+    if client_version < config.MIN_CLIENT_VERSION:
+        raise NotAuthenticatedException('Please upgrade your app.')
