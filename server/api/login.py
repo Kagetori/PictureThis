@@ -88,6 +88,42 @@ def login(username, password, client_version=1, device_id=None):
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, login_token=user.login_token, friends=friends, bank_account=bank_account, score=score_account)
 
+def token_login(user_id, login_token, client_version=1, device_id=None):
+    """
+    API Function to login a user using login token
+    """
+    if user_id is 0 or login_token is None:
+        raise RemoteException('Unable to login')
+
+    user = None
+
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException('Unable to login')
+
+    if user is None:
+        raise RemoteException('Unable to login')
+
+    if user.login_token != login_token:
+        raise RemoteException('Unable to login')
+
+    # Get user bank account
+    bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
+
+    # Get user score
+    score_account = score.get_user_score(user_id=user.obfuscated_id)
+
+    # Create new auth token
+    auth_token = uuid.uuid4()
+    user.auth_token = auth_token
+    user.save()
+
+    friends = friend.get_user_friends(user_id=user.obfuscated_id).friends
+    games = game.get_user_games(user_id=user.obfuscated_id).games
+
+    return LoginUser(username=user.name, user_id=user_id, auth_token=auth_token, login_token=login_token, friends=friends, bank_account=bank_account, score=score_account)
+
 def update_password(user_id, old_password, new_password):
     """
     API Function to change a user's password

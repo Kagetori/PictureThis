@@ -106,6 +106,25 @@ def login__login(request):
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
+@csrf_exempt
+def login__token_login(request):
+    """
+    Call is not authenticated, since it's a login call
+    """
+    params = _params(request)
+
+    try:
+        _check_blocking(params, authenticate=False)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
+    user_id = _get_param(params, 'user_id', 0)
+    login_token = _get_param(params, 'login_token', None)
+    client_version = _get_param(params, 'client_version', 0)
+    device_id =  _get_param(params, 'device_id', None)
+
+    return _response(login.token_login, user_id=user_id, login_token=login_token, client_version=client_version, device_id=device_id)
+
 # USER API
 # NOTE: THIS API RESIDES IN LOGIN.PY for code reuse purposes.
 
@@ -355,6 +374,14 @@ def _response(fn, **kwargs):
 def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
 
+    if client_version < config.MIN_CLIENT_VERSION:
+        raise NotAuthenticatedException('Please upgrade your app (i.e. merge master).')
+
+    client_secret = _get_param(params, 'client_secret')
+
+    if client_secret != config.CLIENT_SECRET_KEY:
+        raise NotAuthenticatedException('Not authenticated.')
+
     if authenticate:
         auth_token = _get_param(params, 'auth_token')
         user_id = _get_param(params, 'user_id')
@@ -367,6 +394,3 @@ def _check_blocking(params, authenticate=True):
 
         except User.DoesNotExist:
             raise NotAuthenticatedException('User does not exist.')
-
-    if client_version < config.MIN_CLIENT_VERSION:
-        raise NotAuthenticatedException('Please upgrade your app.')

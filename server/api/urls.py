@@ -27,6 +27,7 @@ urlpatterns = [
     # LOGIN API
     url(r'^login/create_user', views.login__create_user, name='picturethis__login__create_user'),
     url(r'^login/login', views.login__login, name='picturethis__login__login'),
+    url(r'^login/token_login', views.login__token_login, name='picturethis__login__token_login'),
 
     # USER API
     url(r'^user/update_password', views.user__update_password, name='picturethis__user__update_password'),
