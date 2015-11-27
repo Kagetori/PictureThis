@@ -503,10 +503,11 @@ def _get_remote_game(user_id, friend_id, game_model):
             # Guessing
             elapsed_time = timezone.now() - current_turn.picture_seen_date
             current_score = _calculate_score(elapsed_time)
+            elapsed_time = elapsed_time.seconds
 
         return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round,
             words_seen=words_seen, curr_word=curr_word, is_photographer=is_photographer, is_turn=is_turn,
-            current_score=current_score, elapsed_time=elapsed_time.seconds)
+            current_score=current_score, elapsed_time=elapsed_time)
 
     except Turn.DoesNotExist:
         raise RemoteException("Turn does not exist")
