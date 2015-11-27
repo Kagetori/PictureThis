@@ -17,24 +17,25 @@
 <script id="friendlist-tpl" type="text/template">
      <div class="container">
         <br>
-        <div class="btn-group">
-            <button type="button" class="btn dropdown-toggle navigation_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Menu <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#">User</a></li>
-                <li><a href="#remove friend">Friends</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a onclick="logout()">Logout</a></li>
-            </ul>
-        </div>
+         <div class="row">
+            <div class="btn-group col-xs-2">
+                <button type="button" class="btn dropdown-toggle navigation_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">User</a></li>
+                    <li><a href="#remove friend">Friends</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
 
-         <div style="text-align:center;"><h1 class="title">Score: {{score}}</h1></div>
-         <div style="text-align:right;"><h1 class="title">Stars: {{stars}}</h1></div>
-
-        <br><br><br>
+             <div class="score text-center col-xs-4 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+             <div class="star text-right col-xs-3"><h4>Stars: {{stars}}</h4></div>
+         </div>
+        <br>
         <div id="friend_list_wrapper"></div>
-         
+
     </div>
 </script>
 

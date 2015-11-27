@@ -130,6 +130,24 @@ h1.title {
     font-weight: bold;
 }
 
+.score {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.2em;
+    color: #FF3100;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #888888;
+}
+
+.star {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.2em;
+    color: #FFD424;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #888888;
+}
+
 div.under_navbar {
     margin-top: 40px;
 }
