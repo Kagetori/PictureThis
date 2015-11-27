@@ -105,6 +105,8 @@ function parseGuess() {
     return guess;
 }
 
+var score;
+
 function getGuessImage() {
     var user = getUser();
     var user_id = user.id;
@@ -117,7 +119,7 @@ function getGuessImage() {
     serverCaller('game/get_picture', params, function(result) {
         document.getElementById('guess_img').src = result.dataURL;
 
-        var currentScore = result.current_score;
+        score = result.current_score;
     }, null, null);
 }
 
@@ -164,14 +166,13 @@ function shuffleLetters(text)
 }
 
 //score starts at 200 when user enters the guessView. Have to save score either in local storage or in server
-var score = 200;
 
-var counter = setInterval(countdown, 500);
+var counter = setInterval(countdown, 250);
 
 function countdown()
 {
     score = score - 1;
-    if (score < 50)
+    if (score < 80)
     {
         clearInterval(counter);
         return;

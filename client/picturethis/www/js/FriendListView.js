@@ -1,4 +1,4 @@
-var FriendListView = function (service) {
+var FriendListView = function (score_stars) {
 
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
@@ -8,7 +8,7 @@ var FriendListView = function (service) {
     
 //  this.initialize();
     this.render = function() {
-        this.$el.html(this.template());
+        this.$el.html(this.template(score_stars));
         return this;
     };
 
