@@ -15,8 +15,8 @@ function hooks(obj) {
     }
 
     // Hook for Score
-    if (obj.hasOwnProperty('score_account')){
-        var score_account = obj.score_account;
+    if (obj.hasOwnProperty('score')){
+        var score_account = obj.score;
         setScoreInfo(score_account);
     }
 
