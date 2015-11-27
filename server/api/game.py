@@ -230,6 +230,8 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
             game.user2_score += guesser_score
             game.user1_score += sender_score
 
+        game.save()
+
         round_num = game.curr_round
 
         filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
@@ -248,7 +250,56 @@ def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
     """
     Give up on the current turn
     """
-    return RemoteException('Not implemented!')
+    game = None
+    curr_time = timezone.now()
+
+    if user_id is None or game_id is None:
+        raise RemoteException('User ID and game ID cannot be blank.')
+
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException("User does not exist")
+
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        raise RemoteException("Game does not exist")
+
+    try:
+        current_turn = Turn.objects.get(turn_num=game.curr_round, game_id=game_id)
+    except Turn.DoesNotExist:
+        raise RemoteException("Turn does not exist")
+
+    if not current_turn.picture_seen:
+        raise RemoteException("Have not seen picture yet.")
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+    if (friend_id is None):
+        raise RemoteException('User ID and game ID combination not valid') 
+
+    is_photographer = int(user_id) == _get_curr_photographer(game)
+
+    if is_photographer:
+        raise RemoteException("Not this user's turn to guess")
+
+    current_turn.guessed = True
+    current_turn.guessed_correctly = False
+    current_turn.save()
+
+    # Don't add points since users don't get points
+
+    round_num = game.curr_round
+
+    filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
+
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    if round_num == game.max_rounds:
+        return end_game(user_id, game_id)
+    else:
+        return _start_new_round(user_id=user_id, game_id=game_id)
 
 def get_user_games(user_id):
     """
