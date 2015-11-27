@@ -43,10 +43,9 @@ def start_new_game(user_id, friend_id):
     if (_is_active_game(user_id1=user_id, user_id2=friend_id)):
         raise RemoteException("Game already exists")
 
-    game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0)
-    game.save()
+    game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0, max_rounds=config.MAX_ROUNDS)
 
-    game_id = Game.objects.get(user_id1=user_id, user_id2=friend_id, active=True).id
+    game_id = game.id
 
     return _start_new_round(user_id=user_id, game_id=game_id)
 

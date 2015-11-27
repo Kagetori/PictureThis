@@ -49,7 +49,7 @@ class Game(models.Model):
     user_id1 = models.IntegerField()
     user_id2 = models.IntegerField()
     active = models.BooleanField()
-    max_rounds = models.IntegerField(default=config.MAX_ROUNDS)
+    max_rounds = models.IntegerField()
     curr_round = models.IntegerField()
     score = models.IntegerField(default=0)
     create_date = models.DateTimeField(auto_now_add=True)
