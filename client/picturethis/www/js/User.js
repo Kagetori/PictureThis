@@ -6,8 +6,6 @@ var User = function(username, password, id, friends, games, auth_token, stars, s
     this.friends = friends;         //list of user
     this.games = games;             //list of games
     this.auth_token = auth_token;   //string
-    this.stars = stars;
-    this.score = score;
 };
 
 //gets the user from localStorage and returns an user object

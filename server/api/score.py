@@ -9,12 +9,8 @@ def get_user_score(user_id):
     """
     API Function to get user's score
     """
-    try:
-        score = Score.objects.get(user_id=user_id)
-        return RemoteScore(points=score.points)
-
-    except Score.DoesNotExist:
-        raise RemoteException('Unable to find user score')
+    score, _ = Score.objects.get_or_create(user_id=user_id)
+    return RemoteScore(points=score.points)
 
 def add_to_score(user_id, points):
     """
