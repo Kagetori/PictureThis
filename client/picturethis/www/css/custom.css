@@ -3,7 +3,7 @@ div.fullscreen {
     width: 100%;
     height: 100%;
     overflow: auto; */
-    background-color: #ffffcc;
+    background-color: #62A8E6;
     padding: 0;
 }
 
@@ -189,12 +189,12 @@ html, body {
 a {
     font-family: Arial;
     text-decoration: none;
-    color: #3385FF;
-    font-size: 1em;
+    color: #FFCD00;
+    font-size: 1.5em;
 }
 
-a:visited {
-    color: #3385FF;
+a:link {
+    color: #FFCD00;
 }
 
 ul.friends_list {
