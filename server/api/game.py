@@ -134,7 +134,7 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
-                return RemoteImage(dataURL=_encode_file_to_64(f))
+                return RemoteImage(dataURL=_encode_file_to_64(f), current_score=config.MAX_SCORE_GUESSING)
         else:
             raise RemoteException("Cannot find image")
 
@@ -220,6 +220,11 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
         # Add points to users
         elapsed_time = curr_time - current_turn.picture_seen_date
         guesser_score = _calculate_score(elapsed_time)
+
+        if score - guesser_score < 20:
+            guesser_score = score
+
+        ## OTHERWISE, we need to somehow warn user?
 
         sender_score =  config.SCORE_SENDING
 

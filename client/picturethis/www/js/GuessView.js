@@ -116,6 +116,8 @@ function getGuessImage() {
 
     serverCaller('game/get_picture', params, function(result) {
         document.getElementById('guess_img').src = result.dataURL;
+
+        var currentScore = result.current_score;
     }, null, null);
 }
 
