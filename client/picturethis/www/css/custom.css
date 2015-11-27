@@ -87,7 +87,7 @@ header {
     height: 20%;*/
     text-align: center;
     position: relative;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     text-transform: capitalize;
     color: black;
     font-size: 1.7em;
@@ -105,7 +105,7 @@ header {
 .navigation_button {
     font-size: 1.1em;
     color: black;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     background-color: #FF4E24;
     border: none;
     outline: none;
@@ -122,7 +122,7 @@ header {
 }  
 
 h1.title {
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     font-size: 1.7em;
     text-transform: capitalize;
     color: #FF3100;
@@ -144,7 +144,7 @@ div.under_navbar {
 
 input[type="text"] {
     font-size: 1.25em;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     border: solid 1px #dcdcdc;
@@ -153,7 +153,7 @@ input[type="text"] {
 
 input[type="password"] {
     font-size: 1.25em;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     border: solid 1px #dcdcdc;
@@ -175,12 +175,12 @@ html, body {
     padding: 0;
     margin: 0;
     overflow: hidden;
-    font-family: Arial
+    font-family: Helvetica, Arial, sans-serf
     font-size: 1.25em;
 }
 
 a {
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     text-decoration: none;
     color: #FFCD00;
     font-size: 1.1em;
@@ -192,7 +192,7 @@ a:link {
 
 ul.friends_list {
     background-color: #a3a375;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     clear: both;
     list-style-type: none inside;
     margin: 0;
@@ -213,7 +213,7 @@ li.friend_element {
 .guess_letter {
   border: 2px solid grey;
   padding: 0.5em 0.75em 0.5em 0.75em;
-  font-family: Arial;
+  font-family: Helvetica, Arial, sans-serf;
   background-color: #ff9932;
   color: white;
   border-radius: 5px;
@@ -240,7 +240,7 @@ li.friend_element {
   height: 1em;
   border: 2px solid grey ;
   padding: 0.5em;
-  font-family: Arial;
+  font-family: Helvetica, Arial, sans-serf;
   background-color: #ff9932;
   color: white;
   border-radius: 5px;
@@ -258,7 +258,7 @@ img.photo {
 }
 
 li.inactive_friends {
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     font-size: 1em;
     background-color: blue;
     color: white;
@@ -267,7 +267,7 @@ li.inactive_friends {
 }
 
 li.active_friends {
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     font-size: 1em;
     background-color: red;
     color: white;
@@ -277,7 +277,7 @@ li.active_friends {
 
 button.play_button {
     float: right;
-    font-family: Arial;
+    font-family: Helvetica, Arial, sans-serf;
     width: 5em;
     text-decoration: none;
     padding: 5px;
@@ -306,7 +306,7 @@ button.waiting {
 button.backspace {
   border: 2px solid grey;
   padding: 0.5em 0.75em 0.5em 0.75em;
-  font-family: Arial;
+  font-family: Helvetica, Arial, sans-serf;
   background-color: grey;
   color: white;
   border-radius: 5px;
@@ -321,7 +321,7 @@ button.backspace {
 button.clear {
   border: 2px solid grey;
   padding: 0.5em 0.75em 0.5em 0.75em;
-  font-family: Arial;
+  font-family: Helvetica, Arial, sans-serf;
   background-color: grey;
   color: white;
   border-radius: 5px;
