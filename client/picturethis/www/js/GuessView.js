@@ -214,6 +214,16 @@ function destroyLetters(letters) {
             console.log("destroyLetters: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
             console.log("destroyed letters: " + destroyed);
+
+            for (var i=0; i<letters.length; i++) {
+            for (var j=0; j<destroyed.length; j++) {
+                if (letters[i] === destroyed[j]) {
+                    document.getElementById(i).classList.toggle("destroyed");
+                    destroyed = destroyed.slice(0, j) + destroyed.slice(j+1);
+                    break;
+                }
+            }
+        }
             return destroyed;
         }, null);
     } else {
@@ -243,7 +253,7 @@ function getWordClass() {
 
         serverCaller(api, params, HintParser, function() {
             var retrievedWordClass = window.localStorage.getItem('wordClass');
-            document.getElementById('word_class').innerHTML = "HINT: This word is a " + retrievedWordClass;
+            document.getElementById('word_class').innerHTML = "HINT 1: This word is a " + retrievedWordClass;
 
             console.log("getWordClass: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
@@ -272,7 +282,7 @@ function getWordCategory() {
 
         serverCaller(api, params, HintParser, function() {
             var retrievedWordCategory = window.localStorage.getItem('wordCategory');
-            document.getElementById('word_category').innerHTML = "HINT: This word is belongs to the category of " + retrievedWordCategory;
+            document.getElementById('word_category').innerHTML = "HINT 2: This word is belongs to the category of " + retrievedWordCategory;
             console.log("getWordClass: " + numStars - 1 + " stars");
             document.getElementById('num_stars').innerHTML = numStars - 1;
         }, null);
