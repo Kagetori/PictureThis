@@ -5,8 +5,7 @@
     var service = new PictureThisService();
 
     var friends = getUser().friends;
-    var user_score;
-//    var user_score = getScore();
+    var user_score = getScore();
     var user_stars = getStars();
 
     console.log(user_score);

@@ -7,11 +7,11 @@ var getScoreInfo = function() {
 };
 
 var getScore = function() {
-    return getScoreInfo().score;
+    console.log(getScoreInfo().points);
+    return getScoreInfo().points;
 };
 
-var setBankInfo = function(score_account) {
-    console.log("Updating score.");
+var setScoreInfo = function(score_account) {
     window.localStorage.removeItem('score_bank');
     window.localStorage.setItem('score_bank',JSON.stringify(score_account));
 };
