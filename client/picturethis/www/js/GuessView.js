@@ -1,3 +1,6 @@
+
+var score = 200;
+
 var GuessView = function (service) {
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
@@ -34,6 +37,7 @@ var GuessView = function (service) {
             params['user_id'] = user_id;
             params['game_id'] = game_id;
             params['guess'] = cleanGuess;
+            params['score'] = score;
 
             var picView = function(){
                 var guessView = new GuessView();
@@ -105,8 +109,6 @@ function parseGuess() {
     return guess;
 }
 
-var score = 200;
-
 function getGuessImage() {
     var user = getUser();
     var user_id = user.id;
@@ -172,12 +174,12 @@ var counter = setInterval(countdown, 250);
 function countdown()
 {
     document.getElementById("countdown").innerHTML = "Score: " + score;
-    score = score - 1;
-    if (score < 80)
+    if (score <= 80)
     {
         clearInterval(counter);
         return;
     }
+    score = score - 1;
 }
 
 function destroyLetters(letters) {

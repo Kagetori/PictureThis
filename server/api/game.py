@@ -243,6 +243,8 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
         elapsed_time = curr_time - current_turn.picture_seen_date
         guesser_score = _calculate_score(elapsed_time)
 
+        score = int(score)
+
         if score - guesser_score < 20:
             guesser_score = score
 
