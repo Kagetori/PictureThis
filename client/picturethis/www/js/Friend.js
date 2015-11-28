@@ -57,7 +57,17 @@ function friendService(friend_id, action) {
     params['user_id'] = user_id;
     params['friend_id'] = friend_id;
 
-    serverCaller(api, params, friendParser, null, null);
+    var updateRemoveTable = function() {
+        if(action != 'add_friend') {
+            serverCaller("poll/update", params, null, function() {
+                populateRemoveTable();
+            }, null);
+        }
+    }
+
+    serverCaller(api, params, friendParser, updateRemoveTable, null);
+
+
 };
 
 //parses friend list and updates friends field for user

@@ -86,49 +86,21 @@
 
     function backToMain() {
         setSpinnerVisibility(true);
-        var addFriendView = new AddFriendView();
-        addFriendView.backToMain();
+
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
+
+        serverCaller("poll/update", params, null, function() {
+            window.location="friends.html";
+        }, null);
     }
 
     function play(friendId) {
         setSpinnerVisibility(true);
         console.log("startGame");
         playGame(friendId);
-    }
-
-    function populateRemoveTable(friends) {
-        var friendListRemoveWrapper = document.getElementById("remove_friend_wrapper");
-        if (friends.length != 0) {
-            var tableul = document.createElement('ul');
-            tableul.className = "friends_list";
-            for (i = 0; i < friends.length; i++) {
-                var tableli = document.createElement("li");
-                tableli.className = "friend_element";
-                friendUserName = friends[i].username;
-                var tabletext = document.createTextNode(friendUserName);
-                var friendId = friends[i].user_id;
-                console.log(friendUserName);
-                console.log(friendId);
-                var removebutton = document.createElement("button");
-                var removetext = document.createTextNode("Remove");
-                removebutton.setAttribute("onClick", "removeF("+friendId.toString()+");");
-                var blockbutton = document.createElement("button");
-                var blocktext = document.createTextNode("Block");
-                blockbutton.setAttribute("onClick", "blockF("+friendId.toString()+");");
-
-                removebutton.appendChild(removetext);
-                blockbutton.appendChild(blocktext);
-
-                tableli.appendChild(tabletext);
-                tableli.appendChild(removebutton);
-                tableli.appendChild(blockbutton);
-                tableul.appendChild(tableli);
-            }
-        }
-        if (friendListRemoveWrapper.hasChildNodes()) {
-            friendListRemoveWrapper.removeChild(friendListRemoveWrapper.childNodes[0]);
-        }
-        friendListRemoveWrapper.appendChild(tableul);
     }
 
     function removeF(friendId){

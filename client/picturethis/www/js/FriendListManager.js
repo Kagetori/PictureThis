@@ -29,7 +29,7 @@
         });
         router.addRoute('remove friend', function () {
             $('#main_page').html(new RemoveFriendView(service).render().$el);
-            populateRemoveTable(friends);
+            populateRemoveTable();
         });
         router.addRoute('main', function () {
             $('#main_page').html(new FriendListView(service).render().$el);
