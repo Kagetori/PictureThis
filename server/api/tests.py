@@ -424,7 +424,8 @@ class GameTests(TestCase):
                 user_id2 = login.login(username='user'+str(j), password='pw'+str(j)).user_id
                 friend.add_friend(user_id=user_id1, friend_id=user_id2)
 
-        self.file_path = '/var/www/picturethis/media_test/'
+        self.saved_file_path = config.FILE_PATH
+        config.FILE_PATH = '/var/www/picturethis/media_test/'
 
     def tearDown(self):
         # Remove friends
@@ -434,9 +435,9 @@ class GameTests(TestCase):
                 user_id2 = login.login(username='user'+str(j), password='pw'+str(j)).user_id
                 friend.remove_friend(user_id=user_id1, friend_id=user_id2)
 
-        for g in Game.objects.all():
-            g.active = False
-            g.save()
+        game._end_all_games()
+
+        config.FILE_PATH = self.saved_file_path
 
     def testStartNewGame(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
@@ -522,10 +523,10 @@ class GameTests(TestCase):
 
         photo = config.BLANK_PICTURE
 
-        self.assertRaises(RemoteException, game.send_picture, user_id=user2_id, game_id=game_remote.game_id, photo=photo, path=self.file_path)
-        self.assertRaises(RemoteException, game.send_picture, user_id=user1_id, game_id=game_remote.game_id, photo=None, path=self.file_path)
+        self.assertRaises(RemoteException, game.send_picture, user_id=user2_id, game_id=game_remote.game_id, photo=photo)
+        self.assertRaises(RemoteException, game.send_picture, user_id=user1_id, game_id=game_remote.game_id, photo=None)
 
-        game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id, photo=photo, path=self.file_path)
+        game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id, photo=photo)
 
         self.assertEqual(game_remote.curr_round, 1)
         self.assertEqual(game_remote.is_photographer, 1)
@@ -578,21 +579,21 @@ class GameTests(TestCase):
 
         photo = config.BLANK_PICTURE
 
-        game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path=self.file_path)
+        game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo)
 
         # Have not seen picture yet
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word)
 
-        game.get_picture(user_id=user2_id, game_id=game_id, path=self.file_path)
+        game.get_picture(user_id=user2_id, game_id=game_id)
 
         time.sleep(10) # seconds
 
         game.get_game_status(user_id=user2_id, friend_id=user1_id)
 
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess='pear', path=self.file_path)
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess='pear')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, score=200, guess=game_remote_1.curr_word)
 
-        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
+        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word)
 
         self.assertTrue(game_remote_2.active)
         self.assertEqual(game_remote_2.curr_round, 2)

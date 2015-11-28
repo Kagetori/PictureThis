@@ -53,7 +53,7 @@ def start_new_game(user_id, friend_id):
 
     return _start_new_round(user_id=user_id, game_id=game_id)
 
-def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
+def send_picture(user_id, game_id, photo):
     """
     Marks a picture as sent
     """
@@ -96,7 +96,7 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
         file_photo = _decode_64_to_file(photo)
 
         # save photo
-        with open(path + ('%s_%s.jpg' % (str(game_id), str(round_num))), 'wb+') as dest:
+        with open(config.FILE_PATH + ('%s_%s.jpg' % (str(game_id), str(round_num))), 'wb+') as dest:
             for chunk in file_photo.chunks():
                 dest.write(chunk)
 
@@ -105,7 +105,7 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
     except Turn.DoesNotExist:
         raise RemoteException('Invalid turn')
 
-def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
+def get_picture(user_id, game_id):
     """
     Gets a picture for the specified user_id and game_id
     """
@@ -146,7 +146,7 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
         current_score = _calculate_score(curr_time - turn.picture_seen_date)
 
-        filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
+        filename = config.FILE_PATH + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
@@ -183,6 +183,12 @@ def end_game(user_id, game_id, award_stars=True):
     game.active = False
     game.save()
 
+    # Remove picture if exists
+    filename = config.FILE_PATH + ('%s_%s.jpg' % (str(game_id), str(game.curr_round)))
+
+    if os.path.isfile(filename):
+        os.remove(filename)
+
     if award_stars:
         # Award stars to users
         user1_stars = int(game.user1_score / config.SCORE_PER_STAR)
@@ -201,7 +207,7 @@ def end_game(user_id, game_id, award_stars=True):
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen)
 
-def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/media/'):
+def validate_guess(user_id, game_id, guess, score):
     """
     Checks if guess is correct.
     """
@@ -274,7 +280,7 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
 
         round_num = game.curr_round
 
-        filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
+        filename = config.FILE_PATH + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
         if os.path.isfile(filename):
             os.remove(filename)
@@ -286,7 +292,7 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
     else:
         raise RemoteException('Guess is incorrect')
 
-def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
+def give_up_turn(user_id, game_id):
     """
     Give up on the current turn
     """
@@ -331,7 +337,7 @@ def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
 
     round_num = game.curr_round
 
-    filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
+    filename = config.FILE_PATH + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
     if os.path.isfile(filename):
         os.remove(filename)
