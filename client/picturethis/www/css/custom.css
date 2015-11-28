@@ -136,7 +136,7 @@ h1.title {
     color: #FF3100;
     text-align: center;
     font-weight: bold;
-    text-shadow: 2px 2px 2px #888888;
+    text-shadow: 2px 2px 3px #888888;
 }
 
 .star {
@@ -209,7 +209,7 @@ a:link {
 }
 
 ul.friends_list {
-    background-color: #a3a375;
+    background-color: #ffffff;
     font-family: Helvetica, Arial, sans-serf;
     clear: both;
     list-style-type: none inside;
@@ -221,7 +221,19 @@ ul.friends_list {
 }
 
 li.friend_element {
-    background-color: #ffffcc;
+    background-color: #FFFDF7;
+    font-family: Helvetica, Arial, sans-serf;
+    color: black;
+    margin: 0 0 2px 0;
+    padding: 5px 10px 5px 10px;
+    list-style: none;
+    font-size: 20px;
+}
+
+li.friend_element_inactive {
+    background-color: #A2CCF1;
+    font-family: Helvetica, Arial, sans-serf;
+    color: #363636;
     margin: 0 0 2px 0;
     padding: 5px 10px 5px 10px;
     list-style: none;
@@ -277,20 +289,25 @@ img.photo {
 
 li.inactive_friends {
     font-family: Helvetica, Arial, sans-serf;
-    font-size: 1em;
-    background-color: blue;
+    font-size: 1.6em;
+    background-color: #FF8062;
     color: white;
     text-align: center;
-    padding: 2px;
+    padding: 7px;
+    font-weight: bold;
+    list-style-type: none;
+
 }
 
 li.active_friends {
     font-family: Helvetica, Arial, sans-serf;
-    font-size: 1em;
-    background-color: red;
+    font-size: 1.6em;
+    background-color: #FF3100;
     color: white;
     text-align: center;
-    padding: 2px;
+    padding: 7px;
+    font-weight: bold;
+    list-style-type: none;
 }
 
 button.play_button {
@@ -305,20 +322,19 @@ button.play_button {
     margin-top: -2px;
 }
 
-button.snap {
-    background-color: #ff9932;
-}
-
-button.guess {
-    background-color: blue;
+button.game {
+    background-color: #FF4E24;
+    font-weight: bold;
 }
 
 button.new_game {
-    background-color: orange;
+    background-color: #FFCD00;
+    font-weight: bold;
 }
 
 button.waiting {
-    background-color: grey;
+    background-color: #A2CCF1;
+    font-weight: bold;
 }
 
 button.backspace {

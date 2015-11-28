@@ -39,12 +39,12 @@ var setFriendView = function(friendListWrapper) {
 
     if (friendList.length != 0) {
         var tableul = document.createElement('ul');
-        tableul.className = "friends_list";
+        tableul.className = "table col-xs-12";
 
         if (activeFriends.length != 0) {
             var activeHeader = document.createElement("li");
             activeHeader.className = "active_friends";
-            var activeHeaderText = document.createTextNode("Active");
+            var activeHeaderText = document.createTextNode("Active Games");
             activeHeader.appendChild(activeHeaderText);
             tableul.appendChild(activeHeader);
             for (i = 0; i < activeFriends.length; i++) {
@@ -58,15 +58,15 @@ var setFriendView = function(friendListWrapper) {
                 tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
                 var buttontext;
                 if (activeFriends[i].is_photographer == true && activeFriends[i].is_turn == true) {
-                    tablebutton.className = "play_button snap";
+                    tablebutton.className = "btn play_button game";
                     buttontext = document.createTextNode("Snap!");
                 }
                 else if (activeFriends[i].is_photographer == false && activeFriends[i].is_turn == true) {
-                    tablebutton.className = "play_button guess";
+                    tablebutton.className = "btn play_button game";
                     buttontext = document.createTextNode("Guess!");
                 }
                 else {
-                    tablebutton.className = "play_button waiting";
+                    tablebutton.className = "btn play_button waiting";
                     buttontext = document.createTextNode("Waiting...");
                 }
                 tablebutton.appendChild(buttontext);
@@ -85,11 +85,11 @@ var setFriendView = function(friendListWrapper) {
             tableul.appendChild(inactiveHeader);
             for (i = 0; i < inactiveFriends.length; i++) {
                 var tableli = document.createElement("li");
-                tableli.className = "friend_element";
+                tableli.className = "friend_element_inactive";
                 friendUserName = inactiveFriends[i].friend_username;
                 var tabletext = document.createTextNode(friendUserName);
                 var tablebutton = document.createElement("button");
-                tablebutton.className = "play_button new_game";
+                tablebutton.className = "btn play_button new_game";
 
                 var friendId = inactiveFriends[i].friend_id;
                 tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
