@@ -13,8 +13,10 @@
     console.log(getUser().username);
 
     FriendListView.prototype.template = Handlebars.compile($("#friendlist-tpl").html());
+    ChangePasswordView.prototype.template = Handlebars.compile($("#changepassword-tpl").html());
     AddFriendView.prototype.template = Handlebars.compile($("#add-friend-tpl").html());
     RemoveFriendView.prototype.template = Handlebars.compile($("#remove-friend-tpl").html());
+
 
     var score_stars = {score: user_score, stars: user_stars};
 
@@ -23,6 +25,9 @@
 
         router.addRoute('', function () {
             $('#main_page').html(new FriendListView(score_stars).render().$el);
+        });
+        router.addRoute('change password', function () {
+            $('#main_page').html(new ChangePasswordView(service).render().$el);
         });
         router.addRoute('add friend', function () {
             $('#main_page').html(new AddFriendView(service).render().$el);
