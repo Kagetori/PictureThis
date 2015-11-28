@@ -142,6 +142,9 @@ def get_picture(user_id, game_id):
     try:
         turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
 
+        if not turn.picture_added:
+            raise RemoteException('Picture not sent yet')
+
         curr_time = timezone.now()
 
         if not turn.picture_seen:
@@ -272,7 +275,7 @@ def validate_guess(user_id, game_id, guess, score):
 
         ## OTHERWISE, we need to somehow warn user?
 
-        sender_score =  config.SCORE_SENDING
+        sender_score = config.SCORE_SENDING
 
         if user_id == game.user_id1:
             game.user1_score += guesser_score

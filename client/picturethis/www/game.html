@@ -102,6 +102,8 @@
 
         <br><br>
         <button class="big_button" onclick="sendAnswer()">Guess!</button>
+        <br><br>
+        <button class="big_button" onclick="giveUpGame()">Give Up</button>
     </div>
 </script>
 
@@ -229,6 +231,11 @@
     function destroy() {
         var letters = getAllLetters();
         var toDestroy = destroyLetters(letters);
+    }
+
+    function giveUpGame() {
+        var guessView = new GuessView();
+        guessView.confirmGiveUp();
     }
 
 </script>
