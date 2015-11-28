@@ -132,10 +132,18 @@ def get_picture(user_id, game_id):
     if (friend_id is None):
         raise RemoteException('User ID and game ID combination not valid') 
 
+    is_photographer = int(user_id) == _get_curr_photographer(game)
+
+    if is_photographer:
+        raise RemoteException('Not your turn to get the picture')
+
     round_num = game.curr_round
 
     try:
         turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
+
+        if not turn.picture_added:
+            raise RemoteException('Picture not sent yet')
 
         curr_time = timezone.now()
 
@@ -262,12 +270,12 @@ def validate_guess(user_id, game_id, guess, score):
 
         score = int(score)
 
-        if score - guesser_score < 20:
+        if score - guesser_score < config.SCORE_DELTA:
             guesser_score = score
 
         ## OTHERWISE, we need to somehow warn user?
 
-        sender_score =  config.SCORE_SENDING
+        sender_score = config.SCORE_SENDING
 
         if user_id == game.user_id1:
             game.user1_score += guesser_score
@@ -488,6 +496,9 @@ def _start_new_round(user_id, game_id):
     while (new_word.word in words_seen):
         new_word = _get_random_word()
 
+    # Add the new word into the list
+    words_seen.append(new_word.word)
+
     round_num = game.curr_round + 1
 
     Turn.objects.create(turn_num=round_num, game_id=game_id, word_prompt_id=new_word.id)
@@ -498,7 +509,7 @@ def _start_new_round(user_id, game_id):
         words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 def _get_words_played(game_id):
-    turns = Turn.objects.filter(game_id=game_id).order_by('turn_num')
+    turns = Turn.objects.filter(game_id=game_id)
 
     words_played = []
 
@@ -564,7 +575,7 @@ def _get_remote_game(user_id, friend_id, game_model):
         is_turn = (is_photographer != current_turn.picture_added)
 
         if (len(words_played) > 0):
-            words_seen = words_played[:-1]
+            words_seen = words_played
             curr_word = words_played[-1]
 
         elapsed_time = None
@@ -591,7 +602,7 @@ def _calculate_score(elapsed_time):
         return config.MIN_SCORE_GUESSING
 
 def _encode_file_to_64(f):
-    return 'data:imagejpg;base64,' + base64.encodestring(f.read())
+    return 'data:image/jpeg;base64,' + base64.encodestring(f.read()).replace('\n', '')
 
 def _decode_64_to_file(dataURL):
     return SimpleUploadedFile(name='file.jpg', content=base64.decodestring(dataURL.split(',')[1]), content_type='image/jpeg')

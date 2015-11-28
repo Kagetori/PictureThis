@@ -89,7 +89,7 @@ header {
     position: relative;
     font-family: Helvetica, Arial, sans-serf;
     text-transform: capitalize;
-    color: black;
+    color: white;
     font-size: 1.7em;
     background-color: #FF4E24;
     text-decoration: none;
@@ -104,7 +104,7 @@ header {
 
 .navigation_button {
     font-size: 1.1em;
-    color: black;
+    color: white;
     font-family: Helvetica, Arial, sans-serf;
     background-color: #FF4E24;
     border: none;
@@ -112,6 +112,43 @@ header {
     margin: 3px;
     font-weight: bold;
     box-shadow: 3px 3px 2px #888888;
+}
+
+.pic_button {
+    text-align: center;
+    position: relative;
+    font-family: Helvetica, Arial, sans-serf;
+    text-transform: capitalize;
+    color: white;
+    font-size: 1.4em;
+    background-color: #FF4E24;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    display: block;
+    margin: auto;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.2em;
+    box-shadow: 4px 4px 2px #888888;
+}
+
+.colored_button {
+    text-align: center;
+    position: relative;
+    font-family: Helvetica, Arial, sans-serf;
+    text-transform: capitalize;
+    color: white;
+    font-size: 1.8em;
+    background-color: #FFCD00;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    display: block;
+    margin: auto;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    box-shadow: 5px 5px 2px #888888;
 }
 
 .navigation_bar {
@@ -129,6 +166,27 @@ h1.title {
     text-align: center;
     font-weight: bold;
     text-shadow: 2px 2px 3px #888888;
+}
+
+h1.picture_prompt {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.8em;
+    text-transform: capitalize;
+    color: #FF4E24;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #888888;
+}
+
+h1.picture_word{
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 2.4em;
+    text-transform: capitalize;
+    color: #FFCD00;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 3px 3px 3px #888888;
+    margin-top: 10px;
 }
 
 .score {
@@ -409,7 +467,7 @@ button.clear {
 img.deblur {
     -webkit-filter: blur(20px);
     -webkit-animation-name: deblurring;
-    -webkit-animation-duration: 10s;
+    -webkit-animation-duration: 30s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-fill-mode: forwards;
 }
