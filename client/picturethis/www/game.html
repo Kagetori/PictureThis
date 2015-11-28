@@ -15,17 +15,30 @@
 
 <script id="takepicture-tpl" type="text/template">
         <div class="container">
-            <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-            <div style="text-align:center;"><h1 class="title">Take a picture of this:</h1></div>
-
-            <br><br><br>
-            <label>{{word}}</label>
-            <br><br>
-            <img class="photo" id="myImage" src="" />
-            <br><br>
-            <button onclick="toTakePicture()" class="big_button">Take Picture</button>
             <br>
-            <button onclick="toWaitingView()" class="big_button">Send</button>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                </div>
+            </div>
+
+            <h1 class="picture_prompt">Take a picture of this:</h1>
+            <h1 class="picture_word">{{word}}</h1>
+            <br>
+            <img class="img-responsive center-block" id="myImage" src="" />
+            <br><br>
+            <button onclick="toTakePicture()" class="btn pic_button">Take Picture</button>
+            <br>
+            <div class="col-xs-8 col-xs-offset-2">
+                <button onclick="toWaitingView()" class="btn btn-block colored_button">Send</button>
+                <br><br>
+            </div>
+
         </div>
 </script>
 

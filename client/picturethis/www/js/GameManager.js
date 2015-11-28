@@ -20,13 +20,13 @@
     GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
 
     var score_stars = {score: user_score, stars: user_stars};
-    var word = ({word: currentWord});
+    var score_stars_word = ({score: user_score, stars: user_stars, word: currentWord});
 
     service.initialize().done(function () {
     	if (isPhotographer && isTurn){
     //		$('#main_page').html(new TakePictureView(word).render().$el); //for no routing
     			router.addRoute('', function () {
-            		$('#main_page').html(new TakePictureView(word).render().$el);
+            		$('#main_page').html(new TakePictureView(score_stars_word).render().$el);
             	});
             	router.addRoute('wait view', function () {
             		$('#main_page').html(new WaitingView(score_stars).render().$el);

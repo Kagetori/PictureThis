@@ -27,7 +27,7 @@ function populateRemoveTable() {
 
         var removeHeader = document.createElement("li");
         removeHeader.className = "remove_header";
-        var removeHeaderText = document.createTextNode("Remove/Block Friends");
+        var removeHeaderText = document.createTextNode("Block/Remove Friends");
         removeHeader.appendChild(removeHeaderText);
         tableul.appendChild(removeHeader);
 
