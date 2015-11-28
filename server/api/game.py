@@ -4,7 +4,7 @@ from django.utils.timesince import timesince
 
 from models import Game, User, Turn, WordPrompt
 
-import bank
+import bank, friend
 
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
@@ -33,15 +33,19 @@ def start_new_game(user_id, friend_id):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User 1 doesn't exist")
+        raise RemoteException('User 1 does not exist')
 
     try:
-        friend = User.objects.get(obfuscated_id=friend_id)
+        User.objects.get(obfuscated_id=friend_id)
     except User.DoesNotExist:
-        raise RemoteException("User 2 doesn't exist")
+        raise RemoteException('User 2 does not exist')
+
+    if (friend.get_friend_status(user_id1=user_id, user_id2=friend_id) != config.FRIEND_STATUS_FRIEND or
+            friend.get_friend_status(user_id1=friend_id, user_id2=user_id) != config.FRIEND_STATUS_FRIEND):
+        raise RemoteException('Unable to start a game with someone who is not a friend')
 
     if (_is_active_game(user_id1=user_id, user_id2=friend_id)):
-        raise RemoteException("Game already exists")
+        raise RemoteException('Game already exists')
 
     game = Game.objects.create(user_id1=user_id, user_id2=friend_id, active=True, curr_round=0, max_rounds=config.MAX_ROUNDS)
 
@@ -59,17 +63,17 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     game = None
 
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     if game is None or game.active is False:
-        raise RemoteException("Game is inactive")
+        raise RemoteException('Game is inactive')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
@@ -93,7 +97,7 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
         return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=game)
 
     except Turn.DoesNotExist:
-        raise RemoteException("Invalid turn")
+        raise RemoteException('Invalid turn')
 
 def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
     """
@@ -106,17 +110,17 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     game = None
 
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     if game is None or game.active is False:
-        raise RemoteException("Game is inactive")
+        raise RemoteException('Game is inactive')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
@@ -142,10 +146,10 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
             with open(filename, 'rb') as f:
                 return RemoteImage(dataURL=_encode_file_to_64(f), current_score=current_score)
         else:
-            raise RemoteException("Cannot find image")
+            raise RemoteException('Cannot find image')
 
     except Turn.DoesNotExist:
-        raise RemoteException("Invalid turn")
+        raise RemoteException('Invalid turn')
 
 def end_game(user_id, game_id, award_stars=True):
     """
@@ -156,20 +160,20 @@ def end_game(user_id, game_id, award_stars=True):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     if (game.active == False):
-        raise RemoteException("Game is already inactive")
+        raise RemoteException('Game is already inactive')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
         raise RemoteException('User ID and game ID combination not valid') 
 
-    words_seen = _get_words_played(game_id)
+    words_seen = _get_words_played(game_id=game_id)
     game.active = False
     game.save()
 
@@ -204,20 +208,20 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     try:
         current_turn = Turn.objects.get(turn_num=game.curr_round, game_id=game_id)
     except Turn.DoesNotExist:
-        raise RemoteException("Turn does not exist")
+        raise RemoteException('Turn does not exist')
 
     if not current_turn.picture_seen:
-        raise RemoteException("Have not seen picture yet.")
+        raise RemoteException('Have not seen picture yet.')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
@@ -226,7 +230,7 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
     is_photographer = int(user_id) == _get_curr_photographer(game)
 
     if is_photographer:
-        raise RemoteException("Not this user's turn to guess")
+        raise RemoteException('Not your turn to guess')
 
     current_word_id = current_turn.word_prompt_id
     try:
@@ -274,7 +278,7 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
         else:
             return _start_new_round(user_id=user_id, game_id=game_id)
     else:
-        raise RemoteException("Guess is incorrect")
+        raise RemoteException('Guess is incorrect')
 
 def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
     """
@@ -289,20 +293,20 @@ def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     try:
         current_turn = Turn.objects.get(turn_num=game.curr_round, game_id=game_id)
     except Turn.DoesNotExist:
-        raise RemoteException("Turn does not exist")
+        raise RemoteException('Turn does not exist')
 
     if not current_turn.picture_seen:
-        raise RemoteException("Have not seen picture yet.")
+        raise RemoteException('Have not seen picture yet.')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
@@ -311,7 +315,7 @@ def give_up_turn(user_id, game_id, path='/var/www/picturethis/media/'):
     is_photographer = int(user_id) == _get_curr_photographer(game)
 
     if is_photographer:
-        raise RemoteException("Not this user's turn to guess")
+        raise RemoteException('Not your turn to guess')
 
     current_turn.guessed = True
     current_turn.guessed_correctly = False
@@ -340,7 +344,7 @@ def get_user_games(user_id):
     try:
          User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     games1 = Game.objects.filter(user_id1=user_id, active=True) 
     games2 = Game.objects.filter(user_id2=user_id, active=True)
@@ -369,7 +373,7 @@ def get_game_status(user_id, friend_id):
          User.objects.get(obfuscated_id=user_id)
          User.objects.get(obfuscated_id=friend_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
 
     games1 = Game.objects.filter(user_id1=user_id, user_id2=friend_id, active=True) 
     games2 = Game.objects.filter(user_id2=user_id, user_id1=friend_id, active=True)
@@ -383,9 +387,54 @@ def get_game_status(user_id, friend_id):
         result.append(_get_remote_game(user_id=user_id, friend_id=friend_id, game_model=g))
 
     if len(result) != 1:
-        raise RemoteException("No game between the users")
+        raise RemoteException('No game between the users')
 
     return result[0]
+
+def get_new_word(user_id, game_id):
+    """
+    Get new word prompt
+    """
+    try:
+        user = User.objects.get(obfuscated_id=user_id)
+    except User.DoesNotExist:
+        raise RemoteException('User does not exist')
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        raise RemoteException('Game does not exist')
+
+    friend_id = _get_friend_id(user_model=user, game_model=game)
+
+    if friend_id is None:
+        raise RemoteException('User ID and game ID combination not valid') 
+
+    if not game.active:
+        raise RemoteException('Game is inactive')
+
+    if int(user_id) != _get_curr_photographer(game_model=game):
+        raise RemoteException('This user cannot get a new word prompt')
+
+    words_seen = _get_words_played(game_id=game_id)
+
+    new_word = _get_random_word()
+    while (new_word.word in words_seen):
+        new_word = _get_random_word()
+
+    round_num = game.curr_round
+
+    turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
+    old_word = WordPrompt.objects.get(id=turn.word_prompt_id).word
+
+    words_seen.remove(turn.word)
+
+    turn.word_prompt_id = new_word.id
+    turn.save()
+
+    words_seen.append(new_word.word)
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num,
+        words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 # Helper functions
 
@@ -397,27 +446,28 @@ def _start_new_round(user_id, game_id):
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
-        raise RemoteException("User does not exist")
+        raise RemoteException('User does not exist')
     try:
         game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        raise RemoteException("Game does not exist")
+        raise RemoteException('Game does not exist')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
-    if (friend_id is None):
+
+    if friend_id is None:
         raise RemoteException('User ID and game ID combination not valid') 
 
-    if (game.active == False):
-        raise RemoteException("Game is inactive")
+    if not game.active:
+        raise RemoteException('Game is inactive')
 
-    if (game.curr_round >= game.max_rounds):
-        raise RemoteException("Max number of rounds reached")
+    if game.curr_round >= game.max_rounds:
+        raise RemoteException('Max number of rounds reached')
 
     # Check if user is photographer of PREVIOUS round
-    if (int(user_id) == _get_curr_photographer(game_model=game)):
-        raise RemoteException("This user can't start a new round")
+    if int(user_id) == _get_curr_photographer(game_model=game):
+        raise RemoteException('This user cannot start a new round')
 
-    words_seen = _get_words_played(game_id)
+    words_seen = _get_words_played(game_id=game_id)
     
     new_word = _get_random_word()
     while (new_word.word in words_seen):
@@ -425,8 +475,7 @@ def _start_new_round(user_id, game_id):
 
     round_num = game.curr_round + 1
 
-    turn = Turn.objects.create(turn_num=round_num, game_id=game_id, word_prompt_id=new_word.id)
-    turn.save()
+    Turn.objects.create(turn_num=round_num, game_id=game_id, word_prompt_id=new_word.id)
 
     game.curr_round = round_num
     game.save()
@@ -434,7 +483,6 @@ def _start_new_round(user_id, game_id):
         words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 def _get_words_played(game_id):
-
     turns = Turn.objects.filter(game_id=game_id).order_by('turn_num')
 
     words_played = []
@@ -493,7 +541,7 @@ def _get_remote_game(user_id, friend_id, game_model):
 
     words_seen = []
     curr_word = None
-    words_played = _get_words_played(game_model.id)
+    words_played = _get_words_played(game_id=game_model.id)
 
     try:
         current_turn = Turn.objects.get(turn_num=game_model.curr_round, game_id=game_model.id)
@@ -518,7 +566,7 @@ def _get_remote_game(user_id, friend_id, game_model):
             current_score=current_score, elapsed_time=elapsed_time)
 
     except Turn.DoesNotExist:
-        raise RemoteException("Turn does not exist")
+        raise RemoteException('Turn does not exist')
 
 def _calculate_score(elapsed_time):
     milliseconds = max(0, 1000 * elapsed_time.seconds + elapsed_time.microseconds // 1000)

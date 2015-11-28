@@ -50,6 +50,7 @@ urlpatterns = [
     url(r'^game/give_up_turn', views.game__give_up_turn, name='picturethis__game__give_up_turn'),
     url(r'^game/get_user_games', views.game__get_user_games, name='picturethis__game__get_user_games'),
     url(r'^game/get_game_status', views.game__get_game_status, name='picturethis__game__get_game_status'),
+    url(r'^game/get_new_word', views.game__get_new_word, name='picturethis__game__get_new_word'),
 
     # WORD_PROMPT API
     url(r'^word_prompt/request_hint', views.word_prompt__request_hint, name='picturethis__word_prompt__request_hint'),

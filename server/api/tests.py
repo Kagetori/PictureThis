@@ -416,6 +416,26 @@ class GameTests(TestCase):
         WordPrompt.objects.create(word='grapes', word_class='noun', category='food')
         WordPrompt.objects.create(word='watermelon', word_class='noun', category='food')
 
+    def setUp(self):
+        # Add each other as friends
+        for i in range(4):
+            user_id1 = login.login(username='user'+str(i), password='pw'+str(i)).user_id
+            for j in range(i+1, 5):
+                user_id2 = login.login(username='user'+str(j), password='pw'+str(j)).user_id
+                friend.add_friend(user_id=user_id1, friend_id=user_id2)
+
+    def tearDown(self):
+        # Remove friends
+        for i in range(4):
+            user_id1 = login.login(username='user'+str(i), password='pw'+str(i)).user_id
+            for j in range(i+1, 5):
+                user_id2 = login.login(username='user'+str(j), password='pw'+str(j)).user_id
+                friend.remove_friend(user_id=user_id1, friend_id=user_id2)
+
+        for g in Game.objects.all():
+            g.active = False
+            g.save()
+
     def testStartNewGame(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
         user2_id = User.objects.get(name='user2').obfuscated_id
@@ -438,6 +458,48 @@ class GameTests(TestCase):
         self.assertRaises(RemoteException, game.start_new_game, user_id=user1_id, friend_id=user1_id)
         self.assertRaises(RemoteException, game.start_new_game, user_id=user1_id, friend_id=user2_id)
         self.assertRaises(RemoteException, game.start_new_game, user_id=user2_id, friend_id=user1_id)
+
+        # Assert game is active
+        self.assertTrue(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
+
+        # Remove friend
+        friend.remove_friend(user_id=user1_id, friend_id=user2_id)
+
+        # No active game between users now
+        self.assertFalse(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
+
+        # Add friend back
+        friend.add_friend(user_id=user1_id, friend_id=user2_id)
+
+        # Game is not reactivated
+        self.assertFalse(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
+
+        # Start a new game
+        game_remote = game.start_new_game(user_id=user1_id, friend_id=user2_id)
+
+        self.assertTrue(game_remote.active)
+        self.assertTrue(game_model.active)
+
+        self.assertEqual(game_remote.curr_round, 1)
+        self.assertEqual(game_model.curr_round, 1)
+
+        self.assertEqual(game_remote.is_photographer, 1)
+        self.assertEqual(game_remote.is_turn, 1)
+
+        # Assert game is active
+        self.assertTrue(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
+
+        # Block friend
+        friend.block_friend(user_id=user1_id, friend_id=user2_id)
+
+        # No active game between users now
+        self.assertFalse(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
+
+        # Add friend back
+        friend.add_friend(user_id=user1_id, friend_id=user2_id)
+
+        # Game is not reactivated
+        self.assertFalse(game._is_active_game(user_id1=user1_id, user_id2=user2_id))
 
     def testSendPicture(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
