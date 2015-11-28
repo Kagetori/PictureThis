@@ -324,6 +324,27 @@ button.play_button {
     margin-top: -2px;
 }
 
+button.remove_button {
+    float: right;
+    width: 2em;
+    text-decoration: none;
+    padding: 5px;
+    border: none;
+    background-color: red;
+    color: white;
+}
+
+button.block_button {
+    float: right;
+    width: 2em;
+    text-decoration: none;
+    padding: 5px;
+    border: none;
+    background-color: #FFCD00;
+    color: white;
+    margin-right: 8px;
+}
+
 button.game {
     background-color: #FF4E24;
     font-weight: bold;

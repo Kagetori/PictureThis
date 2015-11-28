@@ -37,13 +37,13 @@ function populateRemoveTable() {
             var removebutton = document.createElement("button");
             var removeSpan = document.createElement('span');
             removeSpan.className = "glyphicon glyphicon-remove";
-            removebutton.className = "btn play_button";
+            removebutton.className = "btn remove_button";
             removebutton.setAttribute("onClick", "removeF("+friendId.toString()+");");
 
             var blockbutton = document.createElement("button");
             var blockSpan = document.createElement('span');
             blockSpan.className = "glyphicon glyphicon-minus-sign";
-            blockbutton.className = "btn play_button";
+            blockbutton.className = "btn block_button";
             blockbutton.setAttribute("onClick", "blockF("+friendId.toString()+");");
 
             removebutton.appendChild(removeSpan);
