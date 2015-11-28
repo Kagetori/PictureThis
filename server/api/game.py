@@ -78,7 +78,7 @@ def send_picture(user_id, game_id, photo):
     if game is None or game.active is False:
         raise RemoteException('Game is inactive')
 
-    if _get_curr_photographer(game) != user_id:
+    if _get_curr_photographer(game) != int(user_id):
         raise RemoteException('Not your turn to send a picture')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
