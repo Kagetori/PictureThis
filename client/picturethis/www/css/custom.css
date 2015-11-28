@@ -89,7 +89,7 @@ header {
     position: relative;
     font-family: Helvetica, Arial, sans-serf;
     text-transform: capitalize;
-    color: #CCCCCC;
+    color: white;
     font-size: 1.7em;
     background-color: #FF4E24;
     text-decoration: none;
@@ -104,7 +104,7 @@ header {
 
 .navigation_button {
     font-size: 1.1em;
-    color: #CCCCCC;
+    color: white;
     font-family: Helvetica, Arial, sans-serf;
     background-color: #FF4E24;
     border: none;
