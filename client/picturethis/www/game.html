@@ -14,27 +14,38 @@
 <div class="fullscreen" id="main_page">
 
 <script id="takepicture-tpl" type="text/template">
-    <header class="navigation_bar">
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <div style="text-align:center;"><h1 class="title">Take a picture of this:</h1></div>
-    </header>
-    <div style="under_navbar" style="text-align:center;">
-        <br><br><br>
-        <label>{{word}}</label>
-        <br><br>
-        <img class="photo" id="myImage" src="" />
-        <br><br>
-        <button onclick="toTakePicture()" class="big_button">Take Picture</button>
-        <br>
-        <button onclick="toWaitingView()" class="big_button">Send</button>
-    </div>
+        <div class="container">
+            <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+            <div style="text-align:center;"><h1 class="title">Take a picture of this:</h1></div>
+
+            <br><br><br>
+            <label>{{word}}</label>
+            <br><br>
+            <img class="photo" id="myImage" src="" />
+            <br><br>
+            <button onclick="toTakePicture()" class="big_button">Take Picture</button>
+            <br>
+            <button onclick="toWaitingView()" class="big_button">Send</button>
+        </div>
 </script>
 
 <script id="waiting-tpl" type="text/template">
-    <header class="navigation_bar">
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <div style="text-align:center;"><h1 class="title">Waiting for turn</h1></div>
-    </header>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="btn-group col-xs-2">
+                <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            </div>
+
+            <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+            <div class="star text-right col-xs-3">
+                <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+            </div>
+        </div>
+        <br><br><br><br><br>
+        <h1 class="title">Waiting for turn</h1>
+        <h4 class="text-center wait_text">You can start a new game with a friend while you wait.</h4>
+    </div>
 </script>
 
 <script id="guess-tpl" type="text/template">

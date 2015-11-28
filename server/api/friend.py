@@ -34,6 +34,10 @@ def get_friend_details(user_id, friend_id):
         pass
 
     friend_status = get_friend_status(user_id1=user_id, user_id2=friend_id)
+    reverse_status = get_friend_status(user_id1=friend_id, user_id2=user_id)
+
+    if reverse_status == config.FRIEND_STATUS_BLOCKED and friend_status == config.FRIEND_STATUS_REMOVED:
+        raise RemoteException('Invalid user id.')
 
     if game_obj is None or not game_obj.active:
         return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=False)

@@ -146,6 +146,7 @@ h1.title {
     color: #FFD424;
     text-align: center;
     font-weight: bold;
+    top: 6px;
     text-shadow: 2px 2px 2px #888888;
 }
 
@@ -311,6 +312,17 @@ li.active_friends {
     list-style-type: none;
 }
 
+li.remove_header {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.3em;
+    background-color: #FF4E24;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+    list-style-type: none;
+}
+
 button.play_button {
     float: right;
     font-family: Helvetica, Arial, sans-serf;
@@ -321,6 +333,27 @@ button.play_button {
     font-size: 16px;
     color: white;
     margin-top: -2px;
+}
+
+button.remove_button {
+    float: right;
+    width: 2em;
+    text-decoration: none;
+    padding: 5px;
+    border: none;
+    background-color: red;
+    color: white;
+}
+
+button.block_button {
+    float: right;
+    width: 2em;
+    text-decoration: none;
+    padding: 5px;
+    border: none;
+    background-color: #FFCD00;
+    color: white;
+    margin-right: 8px;
 }
 
 button.game {

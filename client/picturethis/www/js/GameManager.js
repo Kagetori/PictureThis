@@ -4,17 +4,24 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
-    var retrievedGame =  window.localStorage.getItem('activeGame');
-    var parsedGame = JSON.parse(retrievedGame);
+	var user_score = getScore();
+	var user_stars = getStars();
+	console.log(user_score);
+    console.log(user_stars);
 
-    var isPhotographer = parsedGame.is_photographer;
-    var isTurn = parsedGame.is_turn;
-    var currentWord = parsedGame.curr_word; //here's the word to display
+    var game = getActiveGame();
+
+    var isPhotographer = game.is_photographer;
+    var isTurn = game.is_turn;
+    var currentWord = game.curr_word; //here's the word to display
 
     TakePictureView.prototype.template = Handlebars.compile($("#takepicture-tpl").html());
     WaitingView.prototype.template = Handlebars.compile($("#waiting-tpl").html());
     GuessView.prototype.template = Handlebars.compile($("#guess-tpl").html());
+
+    var score_stars = {score: user_score, stars: user_stars};
     var word = ({word: currentWord});
+
     service.initialize().done(function () {
     	if (isPhotographer && isTurn){
     //		$('#main_page').html(new TakePictureView(word).render().$el); //for no routing
@@ -22,13 +29,13 @@
             		$('#main_page').html(new TakePictureView(word).render().$el);
             	});
             	router.addRoute('wait view', function () {
-            		$('#main_page').html(new WaitingView(service).render().$el);
+            		$('#main_page').html(new WaitingView(score_stars).render().$el);
             	});
             	router.start();
     	} else if (!isTurn) {
-    		$('#main_page').html(new WaitingView(service).render().$el);
+    		$('#main_page').html(new WaitingView(score_stars).render().$el);
     	} else if (!isPhotographer && isTurn){
-    		$('#main_page').html(new GuessView(service).render().$el);
+    		$('#main_page').html(new GuessView(score_stars).render().$el);
     		addLetters();
             getGuessImage();
             populateGuessBlocks(currentWord);

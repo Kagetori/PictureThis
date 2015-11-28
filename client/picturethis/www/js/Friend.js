@@ -38,14 +38,28 @@ function addFriend(friend_id) {
 
 //blocks a friend
 function blockFriend(friend_id) {
-    friendService(friend_id,'block_friend');
-    showAlert("Friend blocked!");
+    function onConfirm(buttonIndex) {
+        if (buttonIndex === 1) {
+            friendService(friend_id,'block_friend');
+            showAlert("Friend blocked!");
+        } else {
+            //setSpinnerVisibility(false);
+        }
+    }
+    showNotification('Are you sure you want to block this friend?',onConfirm,'Block Friend',['Yes','No']);
 };
 
 //removes a friend
 function removeFriend(friend_id) {
-    friendService(friend_id,'remove_friend');
-    showAlert("Friend removed!");
+    function onConfirm(buttonIndex) {
+        if (buttonIndex === 1) {
+            friendService(friend_id,'remove_friend');
+            showAlert("Friend removed!");
+        } else {
+            //setSpinnerVisibility(false);
+        }
+    }
+    showNotification('Are you sure you want to remove this friend?',onConfirm,'Remove Friend',['Yes','No']);
 };
 
 //general method for doing stuff to friend. Takes friend id and an action (ex. 'add_friend')
@@ -57,7 +71,17 @@ function friendService(friend_id, action) {
     params['user_id'] = user_id;
     params['friend_id'] = friend_id;
 
-    serverCaller(api, params, friendParser, null, null);
+    var updateRemoveTable = function() {
+        if(action != 'add_friend') {
+            serverCaller("poll/update", params, null, function() {
+                populateRemoveTable();
+            }, null);
+        }
+    }
+
+    serverCaller(api, params, friendParser, updateRemoveTable, null);
+
+
 };
 
 //parses friend list and updates friends field for user
