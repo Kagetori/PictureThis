@@ -365,11 +365,15 @@ def _get_param(params, key, default=None):
         return urllib.unquote(value).decode('utf-8')
 
 def _response(fn, **kwargs):
+    json_response = None
     try:
         response = fn(**kwargs)
-        return JsonResponse(response.ret_dict())
+        json_response = JsonResponse(response.ret_dict())
     except RemoteException as e:
-        return JsonResponse(e.ret_dict())
+        json_response = JsonResponse(e.ret_dict())
+
+    json_response["Access-Control-Allow-Origin"] = "*"
+    return json_response
 
 def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)

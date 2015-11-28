@@ -74,6 +74,16 @@ def _set_friendship(user_id, friend_id, relation):
         friendship.relation = relation
     friendship.save()
 
+    # If removing or blocking friend and there is an active game, end the game
+    if relation == config.FRIEND_STATUS_BLOCKED or relation == config.FRIEND_STATUS_REMOVED:
+        existing_game = None
+        try:
+            existing_game = game.get_game_status(user_id=user_id, friend_id=friend_id)
+        except RemoteException:
+            pass
+        if existing_game is not None and existing_game.active:
+            game.end_game(user_id=user_id, game_id=existing_game.game_id, award_stars=False)
+
     # This relation is a straightforward assignment
     friendship, _ = Friend.objects.get_or_create(user_id1=user_id, user_id2=friend_id)
     friendship.relation = relation
