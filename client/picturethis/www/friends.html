@@ -13,67 +13,61 @@
 
 <body>
 <div class="fullscreen" id="main_page">
-
-<script id="friendlist-tpl" type="text/template">
-     <div class="container">
-        <br>
-         <div class="row">
-            <div class="btn-group col-xs-2">
-                <button type="button" class="btn dropdown-toggle navigation_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Menu <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">User</a></li>
-                    <li><a href="#add friend">Add Friend</a></li>
-                    <li><a href="#remove friend">Manage Friends</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a onclick="logout()">Logout</a></li>
-                </ul>
-            </div>
-
-             <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
-             <div class="star text-right col-xs-3">
-                 <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
-
-             </div>
-         </div>
-        <br>
-
-     <div id="friend_list_wrapper"></div>
-     </div>
-
-</script>
-
-<script id="add-friend-tpl" type="text/template">
-    <div class="container">
-        <br>
-        <button onclick="backToMain()" class="btn navigation_button">Back</button>
-        <br><br>
-        <h1 class="title">Search User</h1>
-        <form onsubmit="event.preventDefault()">
+    <script id="friendlist-tpl" type="text/template">
+        <div class="container">
             <br>
-            <div class="form-group">
-                <input type="text" class="form-control" name="username" id="friend_search" placeholder="Find Username">
-                <br><br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button type="button" class="btn dropdown-toggle navigation_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">User</a></li>
+                        <li><a href="#add friend">Add Friend</a></li>
+                        <li><a href="#remove friend">Manage Friends</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a onclick="logout()">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                </div>
             </div>
-            <div class="col-xs-10 col-xs-offset-1">
-                <button class="btn btn-block big_button" type="submit" onclick="findUser()" class="big_button">Search</button>
-                <br>
-            </div>
-        </form>
-    </div>
-</script>
+            <br>
+            <div id="friend_list_wrapper"></div>
+        </div>
 
-<script id="remove-friend-tpl" type="text/template">
-    <div class="container">
-        <br>
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <br>
-        <h1 class="title">Manage Friends</h1>
-        <br>
-        <div id="remove_friend_wrapper"></div>
-    </div>
-</script>
+    </script>
+    <script id="add-friend-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            <br><br>
+            <h1 class="title">Search User</h1>
+            <form onsubmit="event.preventDefault()">
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" id="friend_search" placeholder="Find Username">
+                    <br><br>
+                </div>
+                <div class="col-xs-10 col-xs-offset-1">
+                    <button class="btn btn-block big_button" type="submit" onclick="findUser()" class="big_button">Search</button>
+                    <br>
+                </div>
+            </form>
+        </div>
+    </script>
+    <script id="remove-friend-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+            <br>
+            <h1 class="title">Manage Friends</h1>
+            <br>
+            <div id="remove_friend_wrapper"></div>
+        </div>
+    </script>
 
 <script>
 

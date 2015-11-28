@@ -4,7 +4,7 @@
     /* ---------------------------------- Local Variables ---------------------------------- */
     var service = new PictureThisService();
 
-    var friends = getUser().friends;
+    //var friends = getUser().friends;
     var user_score = getScore();
     var user_stars = getStars();
 

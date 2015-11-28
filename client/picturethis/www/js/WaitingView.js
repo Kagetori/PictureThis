@@ -1,4 +1,4 @@
-var WaitingView = function (service) {
+var WaitingView = function (score_stars) {
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
         this.$el = $('<div/>');
@@ -6,7 +6,7 @@ var WaitingView = function (service) {
     };
 
     this.render = function() {
-        this.$el.html(this.template());
+        this.$el.html(this.template(score_stars));
         return this;
     };
 
