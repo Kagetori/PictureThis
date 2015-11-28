@@ -5,7 +5,7 @@ from models import User, Game, WordPrompt, Turn, Bank, Score
 from interface.exception import RemoteException
 from interface.packets import GamePacket
 
-import config, login, friend, search, game, poll, bank, score
+import config, login, friend, search, game, poll, bank, score, word_prompt
 
 import base64, time
 
@@ -63,6 +63,54 @@ class LoginTests(TestCase):
 
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
+
+            # Try logging in with login token
+
+            user_view_2 = login.token_login(user_id=user_view.user_id, login_token=user_view.login_token)
+
+            self.assertEqual(user_view_2.username, user.name)
+            self.assertEqual(user_view_2.user_id, user.obfuscated_id)
+
+            # Auth token should be different but login token should be the same
+            self.assertEqual(user_view.login_token, user_view_2.login_token)
+            self.assertNotEqual(user_view.auth_token, user_view_2.auth_token)
+
+    def testChangePassword(self):
+        # Make a few users first
+        usernames = []
+        passwords = []
+
+        for i in range(3):
+            username = 'user' + str(i)
+            password = 'pw' + str(i)
+
+            usernames.append(username)
+            passwords.append(password)
+
+            login.create_user(username=username, password=password)
+
+        # Try loggin them in
+        for i in range(3):
+            username = usernames[i]
+            password = passwords[i]
+            new_password = 'pwx' + str(i)
+
+            # Login first
+            user_view_1 = login.login(username=username, password=password)
+
+            # Change their password
+            self.assertRaises(RemoteException, login.update_password, user_id=user_view_1.user_id, old_password='asdf', new_password=new_password)
+            self.assertRaises(RemoteException, login.update_password, user_id=user_view_1.user_id, old_password=None, new_password=new_password)
+
+            login.update_password(user_id=user_view_1.user_id, old_password=password, new_password=new_password)
+
+            # Login with new pw (old pw doesnt work)
+            self.assertRaises(RemoteException, login.login, username=username, password=password)
+            user_view_2 = login.login(username=username, password=new_password)
+
+            # Login token and auth token is different
+            self.assertNotEqual(user_view_1.login_token, user_view_2.login_token)
+            self.assertNotEqual(user_view_1.auth_token, user_view_2.auth_token)
 
 class BankTests(TestCase):
     @classmethod
@@ -157,7 +205,7 @@ class FriendTests(TestCase):
             password = 'pw' + str(i)
             login.create_user(username=username, password=password)
 
-    def testFriendApi(self):
+    def testAddFriends(self):
         user0 = User.objects.get(name='user0')
         user0_id = user0.obfuscated_id
 
@@ -169,6 +217,35 @@ class FriendTests(TestCase):
 
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_FRIEND)
+
+        user0_friends = friend.get_user_friends(user_id=user0_id)
+
+        self.assertEqual(len(user0_friends.friends), 4)
+
+    def testRemoveFriends(self):
+        user0 = User.objects.get(name='user0')
+        user0_id = user0.obfuscated_id
+
+        for i in range(1, 5):
+            username = 'user' + str(i)
+            user_id = User.objects.get(name=username).obfuscated_id
+
+            friend.add_friend(user_id=user0_id, friend_id=user_id)
+
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_FRIEND)
 
         user0_friends = friend.get_user_friends(user_id=user0_id)
 
@@ -183,12 +260,86 @@ class FriendTests(TestCase):
             self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_REMOVED)
             self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
 
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_REMOVED)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_REMOVED)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_REMOVED)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_REMOVED)
+
+            # They can add each other as friends again
+            friend.add_friend(user_id=user_id, friend_id=user0_id)
+
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_FRIEND)
+
+    def testBlockFriends(self):
+        user0 = User.objects.get(name='user0')
+        user0_id = user0.obfuscated_id
+
+        for i in range(1, 5):
+            username = 'user' + str(i)
+            user_id = User.objects.get(name=username).obfuscated_id
+
+            friend.add_friend(user_id=user0_id, friend_id=user_id)
+
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_FRIEND)
+
+        user0_friends = friend.get_user_friends(user_id=user0_id)
+
+        self.assertEqual(len(user0_friends.friends), 4)
+
+        for i in range(1, 5):
+            username = 'user' + str(i)
+            user_id = User.objects.get(name=username).obfuscated_id
+
+            friend.block_friend(user_id=user0_id, friend_id=user_id)
+
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_BLOCKED)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_REMOVED)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_BLOCKED)
+            # the other user should not know that the first user exists
+            self.assertRaises(RemoteException, friend.get_friend_details, user_id=user_id, friend_id=user0_id)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_BLOCKED)
+            # second user can't search for the first user
+            self.assertRaises(RemoteException, search.find_user, user_id=user_id, username='user0')
+
+            # second user can't add first user as a friend
+            self.assertRaises(RemoteException, friend.add_friend, user_id=user_id, friend_id=user0_id)
+
+            # but if first user adds second user as a friend, they're friends again
+            friend.add_friend(user_id=user0_id, friend_id=user_id)
+
+            self.assertEqual(friend.get_friend_status(user_id1=user0_id, user_id2=user_id), config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_status(user_id1=user_id, user_id2=user0_id), config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(friend.get_friend_details(user_id=user0_id, friend_id=user_id).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(friend.get_friend_details(user_id=user_id, friend_id=user0_id).relation, config.FRIEND_STATUS_FRIEND)
+
+            self.assertEqual(search.find_user(user_id=user0_id, username=username).relation, config.FRIEND_STATUS_FRIEND)
+            self.assertEqual(search.find_user(user_id=user_id, username='user0').relation, config.FRIEND_STATUS_FRIEND)
+
     def testGetAllFriends(self):
         user0_id = User.objects.get(name='user0').obfuscated_id
         user1_id = User.objects.get(name='user1').obfuscated_id
         user2_id = User.objects.get(name='user2').obfuscated_id
         user3_id = User.objects.get(name='user3').obfuscated_id
         user4_id = User.objects.get(name='user4').obfuscated_id
+
         friend.add_friend(user_id=user0_id, friend_id=user1_id)
         friend.add_friend(user_id=user2_id, friend_id=user0_id)
         friend.add_friend(user_id=user0_id, friend_id=user3_id)
@@ -222,6 +373,34 @@ class SearchTests(TestCase):
 
         self.assertRaises(RemoteException, search.find_user, user_id=user_id, username='nonexistent')
 
+class WordPromptTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        username = 'user1'
+        password = 'pw1'
+        login.create_user(username=username, password=password)
+
+        WordPrompt.objects.create(word='apple', word_class='noun', category='food')
+
+    def testGetHint(self):
+        user_view = login.login(username='user1', password='pw1')
+
+        word_prompt_view = word_prompt.request_hint(user_id=user_view.user_id, word='apple')
+
+        self.assertEqual('apple', word_prompt_view.word)
+        self.assertEqual('noun', word_prompt_view.word_class)
+        self.assertEqual('food', word_prompt_view.word_category)
+        self.assertEqual(user_view.bank_account.stars - 1, word_prompt_view.bank_account.stars)
+
+        # Can't get word prompt for non-existant word
+        self.assertRaises(RemoteException, word_prompt.request_hint, user_id=user_view.user_id, word='banana')
+
+        # No more stars
+        bank.add_to_bank(user_id=user_view.user_id, stars=(word_prompt_view.bank_account.stars * -1))
+
+        # Can't get word prompt since no more stars
+        self.assertRaises(RemoteException, word_prompt.request_hint, user_id=user_view.user_id, word='apple')
+
 class GameTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -230,12 +409,12 @@ class GameTests(TestCase):
             password = 'pw' + str(i)
             login.create_user(username=username, password=password)
 
-        WordPrompt.objects.create(word='apple')
-        WordPrompt.objects.create(word='banana')
-        WordPrompt.objects.create(word='orange')
-        WordPrompt.objects.create(word='avocado')
-        WordPrompt.objects.create(word='grapes')
-        WordPrompt.objects.create(word='watermelon')
+        WordPrompt.objects.create(word='apple', word_class='noun', category='food')
+        WordPrompt.objects.create(word='banana', word_class='noun', category='food')
+        WordPrompt.objects.create(word='orange', word_class='noun', category='food')
+        WordPrompt.objects.create(word='avocado', word_class='noun', category='food')
+        WordPrompt.objects.create(word='grapes', word_class='noun', category='food')
+        WordPrompt.objects.create(word='watermelon', word_class='noun', category='food')
 
     def testStartNewGame(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
@@ -314,7 +493,7 @@ class GameTests(TestCase):
 
         game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path='/var/www/picturethis/media_test/')
 
-        #Have not seen picture yet
+        # Have not seen picture yet
         self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
 
         game.get_picture(user_id=user2_id, game_id=game_id, path='/var/www/picturethis/media_test/')
@@ -363,6 +542,7 @@ class PollTests(TestCase):
             username = 'user' + str(i)
             password = 'pw' + str(i)
             login.create_user(username=username, password=password)
+
     def testUpdate(self):
         user0_id = User.objects.get(name='user0').obfuscated_id
         user1_id = User.objects.get(name='user1').obfuscated_id
@@ -375,4 +555,12 @@ class PollTests(TestCase):
         friend.add_friend(user_id=user0_id, friend_id=user3_id)
         friend.add_friend(user_id=user4_id, friend_id=user0_id)
 
-        self.assertEqual(len(poll.update(user0_id).friends), 4)
+        self.assertEqual(len(poll.update(user_id=user0_id).friends), 4)
+
+        friend.remove_friend(user_id=user2_id, friend_id=user0_id)
+        friend.block_friend(user_id=user0_id, friend_id=user3_id)
+        friend.block_friend(user_id=user4_id, friend_id=user0_id)
+
+        self.assertEqual(len(poll.update(user_id=user0_id).friends), 1)
+
+        self.assertRaises(poll.update, user_id=-1)
