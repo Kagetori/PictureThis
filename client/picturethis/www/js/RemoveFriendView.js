@@ -23,7 +23,8 @@ function populateRemoveTable() {
     var friendListRemoveWrapper = document.getElementById("remove_friend_wrapper");
     if (friends.length != 0) {
         var tableul = document.createElement('ul');
-        tableul.className = "friends_list";
+        tableul.className = "table col-xs-12";
+
         for (i = 0; i < friends.length; i++) {
             var tableli = document.createElement("li");
             tableli.className = "friend_element";
@@ -32,15 +33,21 @@ function populateRemoveTable() {
             var friendId = friends[i].friend_id;
             console.log(friendUserName);
             console.log(friendId);
+
             var removebutton = document.createElement("button");
-            var removetext = document.createTextNode("Remove");
+            var removeSpan = document.createElement('span');
+            removeSpan.className = "glyphicon glyphicon-remove";
+            removebutton.className = "btn play_button";
             removebutton.setAttribute("onClick", "removeF("+friendId.toString()+");");
+
             var blockbutton = document.createElement("button");
-            var blocktext = document.createTextNode("Block");
+            var blockSpan = document.createElement('span');
+            blockSpan.className = "glyphicon glyphicon-minus-sign";
+            blockbutton.className = "btn play_button";
             blockbutton.setAttribute("onClick", "blockF("+friendId.toString()+");");
 
-            removebutton.appendChild(removetext);
-            blockbutton.appendChild(blocktext);
+            removebutton.appendChild(removeSpan);
+            blockbutton.appendChild(blockSpan);
 
             tableli.appendChild(tabletext);
             tableli.appendChild(removebutton);
