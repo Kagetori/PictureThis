@@ -126,16 +126,21 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
     try:
         turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
+
+        curr_time = timezone.now()
+
         if not turn.picture_seen:
             turn.picture_seen = True
-            turn.picture_seen_date = timezone.now()
+            turn.picture_seen_date = curr_time
             turn.save()
+
+        current_score = _calculate_score(curr_time - turn.picture_seen_date)
 
         filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
-                return RemoteImage(dataURL=_encode_file_to_64(f), current_score=config.MAX_SCORE_GUESSING)
+                return RemoteImage(dataURL=_encode_file_to_64(f), current_score=current_score)
         else:
             raise RemoteException("Cannot find image")
 
