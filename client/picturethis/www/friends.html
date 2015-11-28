@@ -45,16 +45,21 @@
 </script>
 
 <script id="add-friend-tpl" type="text/template">
-    <header class="navigation_bar">
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <div style="text-align:center;"><h1 class="title">Search User</h1></div>
-    </header>
-    <div style="text-align:center;" class="under_navbar">
+    <div class="container">
+        <br>
+        <button onclick="backToMain()" class="btn navigation_button">Back</button>
+        <br><br>
+        <h1 class="title">Search User</h1>
         <form onsubmit="event.preventDefault()">
-            <br><br><br>
-            <input type="text" name="username" id="friend_search" placeholder="Find Username">
-            <br><br><br>
-            <button type="submit" onclick="findUser()" class="big_button">Search</button>
+            <br>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" id="friend_search" placeholder="Find Username">
+                <br><br>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1">
+                <button class="btn btn-block big_button" type="submit" onclick="findUser()" class="big_button">Search</button>
+                <br>
+            </div>
         </form>
     </div>
 </script>
