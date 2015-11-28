@@ -45,27 +45,34 @@
 </script>
 
 <script id="add-friend-tpl" type="text/template">
-    <header class="navigation_bar">
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <div style="text-align:center;"><h1 class="title">Search User</h1></div>
-    </header>
-    <div style="text-align:center;" class="under_navbar">
+    <div class="container">
+        <br>
+        <button onclick="backToMain()" class="btn navigation_button">Back</button>
+        <br><br>
+        <h1 class="title">Search User</h1>
         <form onsubmit="event.preventDefault()">
-            <br><br><br>
-            <input type="text" name="username" id="friend_search" placeholder="Find Username">
-            <br><br><br>
-            <button type="submit" onclick="findUser()" class="big_button">Search</button>
+            <br>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" id="friend_search" placeholder="Find Username">
+                <br><br>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1">
+                <button class="btn btn-block big_button" type="submit" onclick="findUser()" class="big_button">Search</button>
+                <br>
+            </div>
         </form>
     </div>
 </script>
 
 <script id="remove-friend-tpl" type="text/template">
-    <header class="navigation_bar">
-    <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-    <div style="text-align:center;"><h1 class="title">Remove Friend</h1></div>
-    </header>
-    <br><br><br>
-    <div id="remove_friend_wrapper"></div>
+    <div class="container">
+        <br>
+        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
+        <br>
+        <h1 class="title">Manage Friends</h1>
+        <br><br><br>
+        <div id="remove_friend_wrapper"></div>
+    </div>
 </script>
 
 <script>
@@ -79,49 +86,21 @@
 
     function backToMain() {
         setSpinnerVisibility(true);
-        var addFriendView = new AddFriendView();
-        addFriendView.backToMain();
+
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
+
+        serverCaller("poll/update", params, null, function() {
+            window.location="friends.html";
+        }, null);
     }
 
     function play(friendId) {
         setSpinnerVisibility(true);
         console.log("startGame");
         playGame(friendId);
-    }
-
-    function populateRemoveTable(friends) {
-        var friendListRemoveWrapper = document.getElementById("remove_friend_wrapper");
-        if (friends.length != 0) {
-            var tableul = document.createElement('ul');
-            tableul.className = "friends_list";
-            for (i = 0; i < friends.length; i++) {
-                var tableli = document.createElement("li");
-                tableli.className = "friend_element";
-                friendUserName = friends[i].username;
-                var tabletext = document.createTextNode(friendUserName);
-                var friendId = friends[i].user_id;
-                console.log(friendUserName);
-                console.log(friendId);
-                var removebutton = document.createElement("button");
-                var removetext = document.createTextNode("Remove");
-                removebutton.setAttribute("onClick", "removeF("+friendId.toString()+");");
-                var blockbutton = document.createElement("button");
-                var blocktext = document.createTextNode("Block");
-                blockbutton.setAttribute("onClick", "blockF("+friendId.toString()+");");
-
-                removebutton.appendChild(removetext);
-                blockbutton.appendChild(blocktext);
-
-                tableli.appendChild(tabletext);
-                tableli.appendChild(removebutton);
-                tableli.appendChild(blockbutton);
-                tableul.appendChild(tableli);
-            }
-        }
-        if (friendListRemoveWrapper.hasChildNodes()) {
-            friendListRemoveWrapper.removeChild(friendListRemoveWrapper.childNodes[0]);
-        }
-        friendListRemoveWrapper.appendChild(tableul);
     }
 
     function removeF(friendId){
