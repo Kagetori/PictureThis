@@ -105,7 +105,7 @@ function parseGuess() {
     return guess;
 }
 
-var score;
+var score = 200;
 
 function getGuessImage() {
     var user = getUser();
