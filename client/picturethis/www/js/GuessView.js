@@ -171,13 +171,13 @@ var counter = setInterval(countdown, 250);
 
 function countdown()
 {
+    document.getElementById("countdown").innerHTML = "Score: " + score;
     score = score - 1;
     if (score < 80)
     {
         clearInterval(counter);
         return;
     }
-    document.getElementById("countdown").innerHTML="Score: "+score;
 }
 
 function destroyLetters(letters) {
