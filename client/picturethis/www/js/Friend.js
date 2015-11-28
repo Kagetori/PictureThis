@@ -38,14 +38,28 @@ function addFriend(friend_id) {
 
 //blocks a friend
 function blockFriend(friend_id) {
-    friendService(friend_id,'block_friend');
-    showAlert("Friend blocked!");
+    function onConfirm(buttonIndex) {
+        if (buttonIndex === 1) {
+            friendService(friend_id,'block_friend');
+            showAlert("Friend blocked!");
+        } else {
+            //setSpinnerVisibility(false);
+        }
+    }
+    showNotification('Are you sure you want to block this friend?',onConfirm,'Block Friend',['Yes','No']);
 };
 
 //removes a friend
 function removeFriend(friend_id) {
-    friendService(friend_id,'remove_friend');
-    showAlert("Friend removed!");
+    function onConfirm(buttonIndex) {
+        if (buttonIndex === 1) {
+            friendService(friend_id,'remove_friend');
+            showAlert("Friend removed!");
+        } else {
+            //setSpinnerVisibility(false);
+        }
+    }
+    showNotification('Are you sure you want to remove this friend?',onConfirm,'Remove Friend',['Yes','No']);
 };
 
 //general method for doing stuff to friend. Takes friend id and an action (ex. 'add_friend')
