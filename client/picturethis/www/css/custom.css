@@ -123,11 +123,12 @@ header {
 
 h1.title {
     font-family: Helvetica, Arial, sans-serf;
-    font-size: 1.7em;
+    font-size: 1.9em;
     text-transform: capitalize;
     color: #FF3100;
     text-align: center;
     font-weight: bold;
+    text-shadow: 2px 2px 3px #888888;
 }
 
 .score {
