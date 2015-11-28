@@ -1,11 +1,11 @@
 from django.test import TestCase
 
-from models import User, Game, WordPrompt, Turn
+from models import User, Game, WordPrompt, Turn, Bank, Score
 
 from interface.exception import RemoteException
 from interface.packets import GamePacket
 
-import config, login, friend, search, game, poll
+import config, login, friend, search, game, poll, bank, score
 
 import base64, time
 
@@ -64,6 +64,90 @@ class LoginTests(TestCase):
             self.assertEqual(user_view.username, user.name)
             self.assertEqual(user_view.user_id, user.obfuscated_id)
 
+class BankTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        username = 'user1'
+        password = 'pw1'
+        login.create_user(username=username, password=password)
+
+    def testGetUserBank(self):
+        user = User.objects.get(name='user1')
+        bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
+        bank_object = Bank.objects.get(user_id=user.obfuscated_id)
+
+        self.assertEqual(bank_object.stars, bank_account.stars)
+
+    def testAddingAndRemovingStars(self):
+        user = User.objects.get(name='user1')
+        old_bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
+
+        # Add some stars
+        bank_account = bank.add_to_bank(user_id=user.obfuscated_id, stars=config.DEFAULT_STARS)
+        self.assertEqual(old_bank_account.stars + config.DEFAULT_STARS, bank_account.stars)
+
+        # Remove some stars
+        bank_account = bank.add_to_bank(user_id=user.obfuscated_id, stars=(-1 * config.DEFAULT_STARS))
+        self.assertEqual(old_bank_account.stars, bank_account.stars)
+
+        bank_account = bank.add_to_bank(user_id=user.obfuscated_id, stars=(-1 * config.DEFAULT_STARS))
+        self.assertEqual(0, bank_account.stars)
+
+        # Try removing more stars
+        self.assertRaises(RemoteException, bank.add_to_bank, user_id=user.obfuscated_id, stars=-1)
+
+        bank_account = bank.add_to_bank(user_id=user.obfuscated_id, stars=0)
+        self.assertEqual(0, bank_account.stars)
+
+        bank_account = bank.add_to_bank(user_id=user.obfuscated_id, stars=1)
+        self.assertEqual(1, bank_account.stars)
+
+        bank_account = bank.decrement_bank(user_id=user.obfuscated_id)
+        self.assertEqual(0, bank_account.stars)
+
+        self.assertRaises(RemoteException, bank.decrement_bank, user_id=user.obfuscated_id)
+
+        # check still at 0
+        bank_account = bank.get_user_bank(user_id=user.obfuscated_id)
+        self.assertEqual(0, bank_account.stars)
+
+class ScoreTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        username = 'user1'
+        password = 'pw1'
+        login.create_user(username=username, password=password)
+
+    def testGetUserScore(self):
+        user = User.objects.get(name='user1')
+        score_account = score.get_user_score(user_id=user.obfuscated_id)
+        score_object = Score.objects.get(user_id=user.obfuscated_id)
+
+        self.assertEqual(score_object.points, score_account.points)
+
+    def testAddingPoints(self):
+        user = User.objects.get(name='user1')
+        old_score_account = score.get_user_score(user_id=user.obfuscated_id)
+
+        # Add some points
+        score_account = score.add_to_score(user_id=user.obfuscated_id, points=1)
+        self.assertEqual(old_score_account.points + 1, score_account.points)
+
+        score_account = score.add_to_score(user_id=user.obfuscated_id, points=4)
+        self.assertEqual(old_score_account.points + 5, score_account.points)
+
+        score_account = score.add_to_score(user_id=user.obfuscated_id, points=995)
+        self.assertEqual(old_score_account.points + 1000, score_account.points)
+
+        score_account = score.add_to_score(user_id=user.obfuscated_id, points=0)
+        self.assertEqual(old_score_account.points + 1000, score_account.points)
+
+        # Try removing points
+        self.assertRaises(RemoteException, score.add_to_score, user_id=user.obfuscated_id, points=-1)
+
+        # Check that get_user_score still works
+        score_account = score.get_user_score(user_id=user.obfuscated_id)
+        self.assertEqual(old_score_account.points + 1000, score_account.points)
 
 class FriendTests(TestCase):
     @classmethod

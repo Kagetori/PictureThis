@@ -126,23 +126,28 @@ def get_picture(user_id, game_id, path='/var/www/picturethis/media/'):
 
     try:
         turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
+
+        curr_time = timezone.now()
+
         if not turn.picture_seen:
             turn.picture_seen = True
-            turn.picture_seen_date = timezone.now()
+            turn.picture_seen_date = curr_time
             turn.save()
+
+        current_score = _calculate_score(curr_time - turn.picture_seen_date)
 
         filename = path + ('%s_%s.jpg' % (str(game_id), str(round_num)))
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
-                return RemoteImage(dataURL=_encode_file_to_64(f), current_score=config.MAX_SCORE_GUESSING)
+                return RemoteImage(dataURL=_encode_file_to_64(f), current_score=current_score)
         else:
             raise RemoteException("Cannot find image")
 
     except Turn.DoesNotExist:
         raise RemoteException("Invalid turn")
 
-def end_game(user_id, game_id):
+def end_game(user_id, game_id, award_stars=True):
     """
     Ends a pre-existing game by setting it to inactive
     """
@@ -168,20 +173,21 @@ def end_game(user_id, game_id):
     game.active = False
     game.save()
 
-    # Award stars to users
-    user1_stars = int(game.user1_score / config.SCORE_PER_STAR)
-    user2_stars = int(game.user2_score / config.SCORE_PER_STAR)
+    if award_stars:
+        # Award stars to users
+        user1_stars = int(game.user1_score / config.SCORE_PER_STAR)
+        user2_stars = int(game.user2_score / config.SCORE_PER_STAR)
 
-    if game.user1_score > game.user2_score:
-        user1_stars += config.WINNER_BONUS_STAR
-    elif game.user1_score < game.user2_score:
-        user2_stars += config.WINNER_BONUS_STAR
-    else:
-        user1_stars += config.TIE_BONUS_STAR
-        user2_stars += config.TIE_BONUS_STAR
+        if game.user1_score > game.user2_score:
+            user1_stars += config.WINNER_BONUS_STAR
+        elif game.user1_score < game.user2_score:
+            user2_stars += config.WINNER_BONUS_STAR
+        else:
+            user1_stars += config.TIE_BONUS_STAR
+            user2_stars += config.TIE_BONUS_STAR
 
-    bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
-    bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
+        bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
+        bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen)
 
@@ -237,6 +243,8 @@ def validate_guess(user_id, game_id, guess, score, path='/var/www/picturethis/me
         # Add points to users
         elapsed_time = curr_time - current_turn.picture_seen_date
         guesser_score = _calculate_score(elapsed_time)
+
+        score = int(score)
 
         if score - guesser_score < 20:
             guesser_score = score
@@ -531,4 +539,4 @@ def _end_all_games():
     games = Game.objects.filter(active=True)
 
     for game in games:
-        end_game(user_id=game.user_id1, game_id=game.id)
+        end_game(user_id=game.user_id1, game_id=game.id, award_stars=False)
