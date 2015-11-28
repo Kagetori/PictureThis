@@ -335,6 +335,20 @@ def game__get_game_status(request):
 
     return _response(game.get_game_status, user_id=user_id, friend_id=friend_id)
 
+@csrf_exempt
+def game__get_new_word(request):
+    params = _params(request)
+
+    try:
+        _check_blocking(params)
+    except NotAuthenticatedException as e:
+        return JsonResponse(e.ret_dict())
+
+    user_id = _get_param(params, 'user_id', None)
+    game_id = _get_param(params, 'game_id', None)
+
+    return _response(game.get_new_word, user_id=user_id, game_id=game_id)
+
 # WORD PROMPT API
 
 @csrf_exempt
@@ -368,12 +382,9 @@ def _response(fn, **kwargs):
     json_response = None
     try:
         response = fn(**kwargs)
-        json_response = JsonResponse(response.ret_dict())
+        return JsonResponse(response.ret_dict())
     except RemoteException as e:
-        json_response = JsonResponse(e.ret_dict())
-
-    json_response["Access-Control-Allow-Origin"] = "*"
-    return json_response
+        return JsonResponse(e.ret_dict())
 
 def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
