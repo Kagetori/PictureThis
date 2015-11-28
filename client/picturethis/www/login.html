@@ -73,11 +73,20 @@
 
 <script>
     function newAccount() {
+    if(validUsername()){
         if (confirmPassword()){
             makeAccount();
         } else {
-            window.alert("Passwords don't match");
+            showAlert("Passwords don't match");
         }
+      } else {
+        showAlert("Username is too long. Please make it under 15 characters.");
+      }
+    }
+
+    function validUsername() {
+        var username = $("[name='username']").val();
+        return (username.length <= 15);
     }
 
     function confirmPassword() {
