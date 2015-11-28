@@ -25,6 +25,12 @@ function populateRemoveTable() {
         var tableul = document.createElement('ul');
         tableul.className = "table col-xs-12";
 
+        var removeHeader = document.createElement("li");
+        removeHeader.className = "remove_header";
+        var removeHeaderText = document.createTextNode("Remove/Block Friends");
+        removeHeader.appendChild(removeHeaderText);
+        tableul.appendChild(removeHeader);
+
         for (i = 0; i < friends.length; i++) {
             var tableli = document.createElement("li");
             tableli.className = "friend_element";

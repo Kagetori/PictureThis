@@ -80,7 +80,7 @@ var setFriendView = function(friendListWrapper) {
         if (inactiveFriends.length != 0) {
             var inactiveHeader = document.createElement("li");
             inactiveHeader.className = "inactive_friends";
-            var inactiveHeaderText = document.createTextNode("Inactive");
+            var inactiveHeaderText = document.createTextNode("Inactive Games");
             inactiveHeader.appendChild(inactiveHeaderText);
             tableul.appendChild(inactiveHeader);
             for (i = 0; i < inactiveFriends.length; i++) {
