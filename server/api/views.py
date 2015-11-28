@@ -11,7 +11,6 @@ import urllib
 
 # FRIEND API
 
-@csrf_exempt
 def friend__add_friend(request):
     params = _params(request)
 
@@ -25,7 +24,6 @@ def friend__add_friend(request):
 
     return _response(friend.add_friend, user_id=user_id, friend_id=friend_id)
 
-@csrf_exempt
 def friend__remove_friend(request):
     params = _params(request)
 
@@ -39,7 +37,6 @@ def friend__remove_friend(request):
 
     return _response(friend.remove_friend, user_id=user_id, friend_id=friend_id)
 
-@csrf_exempt
 def friend__block_friend(request):
     params = _params(request)
 
@@ -53,7 +50,6 @@ def friend__block_friend(request):
 
     return _response(friend.block_friend, user_id=user_id, friend_id=friend_id)
 
-@csrf_exempt
 def friend__get_friends(request):
     params = _params(request)
 
@@ -68,7 +64,6 @@ def friend__get_friends(request):
 
 # LOGIN API
 
-@csrf_exempt
 def login__create_user(request):
     """
     Call is not authenticated, since it's a login call essentially
@@ -87,7 +82,6 @@ def login__create_user(request):
 
     return _response(login.create_user, username=username, password=password, client_version=client_version, device_id=device_id)
 
-@csrf_exempt
 def login__login(request):
     """
     Call is not authenticated, since it's a login call
@@ -106,7 +100,6 @@ def login__login(request):
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
 
-@csrf_exempt
 def login__token_login(request):
     """
     Call is not authenticated, since it's a login call
@@ -128,7 +121,6 @@ def login__token_login(request):
 # USER API
 # NOTE: THIS API RESIDES IN LOGIN.PY for code reuse purposes.
 
-@csrf_exempt
 def user__update_password(request):
     params = _params(request)
 
@@ -145,7 +137,6 @@ def user__update_password(request):
 
 # BANK API
 
-@csrf_exempt
 def bank__get_user_bank(request):
     params = _params(request)
 
@@ -158,7 +149,6 @@ def bank__get_user_bank(request):
 
     return _response(bank.get_user_bank, user_id=user_id)
 
-@csrf_exempt
 def bank__get_user_bank(request):
     params = _params(request)
 
@@ -171,7 +161,6 @@ def bank__get_user_bank(request):
 
     return _response(bank.get_user_bank, user_id=user_id)
 
-@csrf_exempt
 def bank__decrement_bank(request):
     params = _params(request)
 
@@ -186,7 +175,6 @@ def bank__decrement_bank(request):
 
 # POLL API
 
-@csrf_exempt
 def poll__update(request):
     params = _params(request)
 
@@ -201,7 +189,6 @@ def poll__update(request):
 
 # SEARCH API
 
-@csrf_exempt
 def search__find_user(request):
     params = _params(request)
 
@@ -218,7 +205,6 @@ def search__find_user(request):
 
 # GAME API
 
-@csrf_exempt
 def game__start_new_game(request):
     params = _params(request)
 
@@ -232,7 +218,6 @@ def game__start_new_game(request):
 
     return _response(game.start_new_game, user_id=user_id, friend_id=friend_id)
 
-@csrf_exempt
 def game__send_picture(request):
     params = _params(request)
 
@@ -250,7 +235,6 @@ def game__send_picture(request):
 
     return _response(game.send_picture, user_id=user_id, game_id=game_id, photo=photo)
 
-@csrf_exempt
 def game__get_picture(request):
     params = _params(request)
 
@@ -264,7 +248,6 @@ def game__get_picture(request):
 
     return _response(game.get_picture, user_id=user_id, game_id=game_id)
 
-@csrf_exempt
 def game__end_game(request):
     params = _params(request)
 
@@ -278,7 +261,6 @@ def game__end_game(request):
 
     return _response(game.end_game, user_id=user_id, game_id=game_id)
 
-@csrf_exempt
 def game__validate_guess(request):
     params = _params(request)
 
@@ -294,7 +276,6 @@ def game__validate_guess(request):
 
     return _response(game.validate_guess, user_id=user_id, game_id=game_id, guess=guess, score=score)
 
-@csrf_exempt
 def game__give_up_turn(request):
     params = _params(request)
 
@@ -308,7 +289,6 @@ def game__give_up_turn(request):
 
     return _response(game.give_up_turn, user_id=user_id, game_id=game_id)
 
-@csrf_exempt
 def game__get_user_games(request):
     params = _params(request)
 
@@ -321,7 +301,6 @@ def game__get_user_games(request):
 
     return _response(game.get_user_games, user_id=user_id)
 
-@csrf_exempt
 def game__get_game_status(request):
     params = _params(request)
 
@@ -337,7 +316,6 @@ def game__get_game_status(request):
 
 # WORD PROMPT API
 
-@csrf_exempt
 def word_prompt__request_hint(request):
     params = _params(request)
 
@@ -365,11 +343,15 @@ def _get_param(params, key, default=None):
         return urllib.unquote(value).decode('utf-8')
 
 def _response(fn, **kwargs):
+    json_response = None
     try:
         response = fn(**kwargs)
-        return JsonResponse(response.ret_dict())
+        json_response = JsonResponse(response.ret_dict())
     except RemoteException as e:
-        return JsonResponse(e.ret_dict())
+        json_response = JsonResponse(e.ret_dict())
+
+    json_response["Access-Control-Allow-Origin"] = "*"
+    return json_response
 
 def _check_blocking(params, authenticate=True):
     client_version = _get_param(params, 'client_version', default=0)
