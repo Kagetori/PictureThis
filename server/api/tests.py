@@ -424,6 +424,8 @@ class GameTests(TestCase):
                 user_id2 = login.login(username='user'+str(j), password='pw'+str(j)).user_id
                 friend.add_friend(user_id=user_id1, friend_id=user_id2)
 
+        self.file_path = '/var/www/picturethis/media_test/'
+
     def tearDown(self):
         # Remove friends
         for i in range(4):
@@ -520,7 +522,10 @@ class GameTests(TestCase):
 
         photo = config.BLANK_PICTURE
 
-        game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id, photo=photo, path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.send_picture, user_id=user2_id, game_id=game_remote.game_id, photo=photo, path=self.file_path)
+        self.assertRaises(RemoteException, game.send_picture, user_id=user1_id, game_id=game_remote.game_id, photo=None, path=self.file_path)
+
+        game_remote = game.send_picture(user_id=user1_id, game_id=game_remote.game_id, photo=photo, path=self.file_path)
 
         self.assertEqual(game_remote.curr_round, 1)
         self.assertEqual(game_remote.is_photographer, 1)
@@ -532,6 +537,26 @@ class GameTests(TestCase):
         self.assertEqual(game_remote_friend.is_photographer, 0)
         self.assertEqual(game_remote_friend.is_turn, 1)
 
+    def testGetNewWord(self):
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+        game_remote = game.start_new_game(user_id=user1_id, friend_id=user2_id)
+
+        self.assertTrue(game_remote.active)
+
+        self.assertEqual(game_remote.curr_round, 1)
+        self.assertEqual(game_remote.is_photographer, 1)
+        self.assertEqual(game_remote.is_turn, 1)
+
+        game_remote_friend = game.get_user_games(user_id=user2_id).games[0]
+
+        self.assertEqual(game_remote_friend.curr_round, 1)
+        self.assertEqual(game_remote_friend.is_photographer, 0)
+        self.assertEqual(game_remote_friend.is_turn, 0)
+
+        self.assertRaises(game.get_new_word, user_id=user2_id, game_id=game_remote.game_id)
+
+        game_remote_2 = game.get_new_word(user_id=user1_id, game_id=game_remote.game_id)
 
     def testEndGame(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
@@ -553,21 +578,21 @@ class GameTests(TestCase):
 
         photo = config.BLANK_PICTURE
 
-        game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path='/var/www/picturethis/media_test/')
+        game_remote_1 = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo, path=self.file_path)
 
         # Have not seen picture yet
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
 
-        game.get_picture(user_id=user2_id, game_id=game_id, path='/var/www/picturethis/media_test/')
+        game.get_picture(user_id=user2_id, game_id=game_id, path=self.file_path)
 
         time.sleep(10) # seconds
 
         game.get_game_status(user_id=user2_id, friend_id=user1_id)
 
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess='pear', path='/var/www/picturethis/media_test/')
-        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, score=200, guess='pear', path=self.file_path)
+        self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
 
-        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path='/var/www/picturethis/media_test/')
+        game_remote_2 = game.validate_guess(user_id=user2_id, game_id=game_id, score=200, guess=game_remote_1.curr_word, path=self.file_path)
 
         self.assertTrue(game_remote_2.active)
         self.assertEqual(game_remote_2.curr_round, 2)

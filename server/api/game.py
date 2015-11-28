@@ -60,6 +60,9 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
     if user_id is None or game_id is None:
         raise RemoteException('User ID and game ID cannot be blank.')
 
+    if photo is None:
+        raise RemoteException('You have to send a photo')
+
     try:
         user = User.objects.get(obfuscated_id=user_id)
     except User.DoesNotExist:
@@ -74,6 +77,9 @@ def send_picture(user_id, game_id, photo, path='/var/www/picturethis/media/'):
 
     if game is None or game.active is False:
         raise RemoteException('Game is inactive')
+
+    if _get_curr_photographer(game) != user_id:
+        raise RemoteException('Not your turn to send a picture')
 
     friend_id = _get_friend_id(user_model=user, game_model=game)
     if (friend_id is None):
@@ -412,6 +418,9 @@ def get_new_word(user_id, game_id):
     if not game.active:
         raise RemoteException('Game is inactive')
 
+    # Remove a star
+    bank.decrement_bank(user_id=user_id)
+
     if int(user_id) != _get_curr_photographer(game_model=game):
         raise RemoteException('This user cannot get a new word prompt')
 
@@ -426,7 +435,7 @@ def get_new_word(user_id, game_id):
     turn = Turn.objects.get(turn_num=round_num, game_id=game_id)
     old_word = WordPrompt.objects.get(id=turn.word_prompt_id).word
 
-    words_seen.remove(turn.word)
+    words_seen.remove(old_word)
 
     turn.word_prompt_id = new_word.id
     turn.save()
