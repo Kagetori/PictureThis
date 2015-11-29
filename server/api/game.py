@@ -584,7 +584,7 @@ def _get_random_word():
     Returns a random word from the database
     """
     # TODO: find a more efficent method to grab random object
-    return WordPrompt.objects.order_by('?').first() 
+    return WordPrompt.objects.filter(active=True).order_by('?').first() 
 
 def _get_friend_id(user_model, game_model):
     user_id = user_model.obfuscated_id

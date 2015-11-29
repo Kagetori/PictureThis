@@ -383,7 +383,7 @@ class WordPromptTests(TestCase):
         password = 'pw1'
         login.create_user(username=username, password=password)
 
-        WordPrompt.objects.create(word='apple', word_class='noun', category='food')
+        WordPrompt.objects.create(word='apple', word_class='noun', category='food', active=True)
 
     def testGetHint(self):
         user_view = login.login(username='user1', password='pw1')
@@ -412,12 +412,12 @@ class GameTests(TestCase):
             password = 'pw' + str(i)
             login.create_user(username=username, password=password)
 
-        WordPrompt.objects.create(word='apple', word_class='noun', category='food')
-        WordPrompt.objects.create(word='banana', word_class='noun', category='food')
-        WordPrompt.objects.create(word='orange', word_class='noun', category='food')
-        WordPrompt.objects.create(word='avocado', word_class='noun', category='food')
-        WordPrompt.objects.create(word='grapes', word_class='noun', category='food')
-        WordPrompt.objects.create(word='watermelon', word_class='noun', category='food')
+        WordPrompt.objects.create(word='apple', word_class='noun', category='food', active=True)
+        WordPrompt.objects.create(word='banana', word_class='noun', category='food', active=True)
+        WordPrompt.objects.create(word='orange', word_class='noun', category='food', active=True)
+        WordPrompt.objects.create(word='avocado', word_class='noun', category='food', active=True)
+        WordPrompt.objects.create(word='grapes', word_class='noun', category='food', active=True)
+        WordPrompt.objects.create(word='watermelon', word_class='noun', category='food', active=True)
 
     def setUp(self):
         # Add each other as friends

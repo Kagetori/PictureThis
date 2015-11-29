@@ -41,6 +41,7 @@ class WordPrompt(models.Model):
     word = models.CharField(max_length=31, unique=True)
     word_class = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
+    active = models.BooleanField(default=True)
 
 class Game(models.Model):
     """
