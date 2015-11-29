@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^game/get_new_word', views.game__get_new_word, name='picturethis__game__get_new_word'),
 
     # REMOVE THIS LATER
-    url(r'^game/end_all_games', view.game__end_all_games, name='picturethis__game__end_all_games'),
+    url(r'^game/end_all_games', views.game__end_all_games, name='picturethis__game__end_all_games'),
 
     # WORD_PROMPT API
     url(r'^word_prompt/request_hint', views.word_prompt__request_hint, name='picturethis__word_prompt__request_hint'),
