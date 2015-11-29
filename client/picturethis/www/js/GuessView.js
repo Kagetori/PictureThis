@@ -17,7 +17,7 @@ var GuessView = function (score_stars) {
     function toPictureView() {
         var currentGame = getActiveGame();
         if (currentGame.active) {
-            showAlert("Your guess is correct! Continue!");
+            showAlert("Your guess is correct! Continue!", "Congratulations!");
 
             window.location.reload();
         } else {
@@ -44,7 +44,7 @@ var GuessView = function (score_stars) {
         var cleanGuess = guess.trim().toLowerCase();
         var cleanCurrentWord = currentWord.trim().toLowerCase();
         if (cleanCurrentWord != cleanGuess) {
-            showAlert("Your guess is incorrect. Try again.");
+            showAlert("Your guess is incorrect.", "Try Again");
         } else {
             var user = getUser();
             var user_id = user.id;

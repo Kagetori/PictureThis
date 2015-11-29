@@ -1,17 +1,3 @@
-// beforeEach(function () {
-//   var store = {};
-
-//   spyOn(localStorage, 'getItem').andCallFake(function (key) {
-//     return store[key];
-//   });
-//   spyOn(localStorage, 'setItem').andCallFake(function (key, value) {
-//     return store[key] = value + '';
-//   });
-//   spyOn(localStorage, 'clear').andCallFake(function () {
-//       store = {};
-//   });
-// });
-
 describe ('parsers calling localStorage', function() {
   beforeEach( function() {
     spyOn(localStorage, 'setItem');
@@ -20,7 +6,7 @@ describe ('parsers calling localStorage', function() {
 
   describe('parsing hints', function() {
     beforeEach( function() {
-      HintParser({"word_prompt": "dog", "wordClass": "noun", "word_category": "animal"});
+      HintParser({"word_prompt": "dog", "word_class": "noun", "word_category": "animal"});
     });
 
     it ("removeItem should have been called", function () {
