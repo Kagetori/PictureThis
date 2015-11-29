@@ -20,16 +20,16 @@ var ChangePasswordView = function (service) {
         console.log(user_id);
         console.log(old_password);
         console.log(new_password);
-        var api = 'login/update_password';
+        var api = 'user/update_password';
         var params = new Array();
-        params['username_id'] = user_id;
+        params['user_id'] = user_id;
         params['old_password'] = old_password;
         params['new_password'] = new_password;
         var passwordUpdated = function(){
             showAlert('Your password has been changed successfully.', 'Password changed')
             backToMain();
         }
-        serverCaller(api, params, UserParser, passwordUpdated, null);
+        serverCaller(api, params, null, passwordUpdated, null);
     }
 
     this.initialize();
