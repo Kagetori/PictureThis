@@ -84,7 +84,7 @@ def login__create_user(request):
     password = _get_param(params, 'password')
     device_id =  _get_param(params, 'device_id')
 
-    return _response(login.create_user, username=username, password=password, client_version=client_version, device_id=device_id)
+    return _response(login.create_user, username=username, password=password, device_id=device_id)
 
 @csrf_exempt
 def login__login(request):
@@ -102,7 +102,7 @@ def login__login(request):
     password = _get_param(params, 'password')
     device_id =  _get_param(params, 'device_id')
 
-    return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
+    return _response(login.login, username=username, password=password, device_id=device_id)
 
 @csrf_exempt
 def login__token_login(request):
@@ -120,7 +120,7 @@ def login__token_login(request):
     login_token = _get_param(params, 'login_token')
     device_id =  _get_param(params, 'device_id')
 
-    return _response(login.token_login, user_id=user_id, login_token=login_token, client_version=client_version, device_id=device_id)
+    return _response(login.token_login, user_id=user_id, login_token=login_token, device_id=device_id)
 
 # USER API
 # NOTE: THIS API RESIDES IN LOGIN.PY for code reuse purposes.
