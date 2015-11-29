@@ -656,6 +656,9 @@ class GameTests(TestCase):
         user1_score = score.get_user_score(user_id=user1_id).points
         user2_score = score.get_user_score(user_id=user2_id).points
 
+        user1_game_score = 0
+        user2_game_score = 0
+
         user1_stars = bank.get_user_bank(user_id=user1_id).stars
         user2_stars = bank.get_user_bank(user_id=user2_id).stars
 
@@ -676,6 +679,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user2_id, friend_id=user1_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -686,6 +690,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         self.assertRaises(RemoteException, game.send_picture, user_id=user2_id, game_id=game_id, photo=photo)
         self.assertRaises(RemoteException, game.send_picture, user_id=user1_id, game_id=game_id, photo=None)
@@ -699,6 +704,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user1_id, friend_id=user2_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -709,6 +715,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user2_id, friend_id=user1_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -719,6 +726,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         # User 1 can't guess anyway
         self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote.curr_word, score=config.MAX_SCORE_GUESSING)
@@ -742,6 +750,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user2_id, friend_id=user1_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -752,6 +761,7 @@ class GameTests(TestCase):
         self.assertAlmostEqual(config.MAX_SCORE_GUESSING, game_remote.current_score, delta=10) # likely less than 1s has passed
         self.assertAlmostEqual(0, game_remote.elapsed_time, delta=1)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         time.sleep(10) # seconds
 
@@ -764,6 +774,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user2_id, friend_id=user1_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -774,6 +785,7 @@ class GameTests(TestCase):
         self.assertEqual(config.MIN_SCORE_GUESSING, game_remote.current_score)
         self.assertAlmostEqual(10, game_remote.elapsed_time, delta=1)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         # User 1 can't guess anyway
         self.assertRaises(RemoteException, game.validate_guess, user_id=user1_id, game_id=game_id, guess=game_remote.curr_word, score=config.MIN_SCORE_GUESSING)
@@ -781,8 +793,8 @@ class GameTests(TestCase):
         self.assertRaises(RemoteException, game.validate_guess, user_id=user2_id, game_id=game_id, guess='bird', score=config.MIN_SCORE_GUESSING)
         game_remote = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote.curr_word, score=config.MIN_SCORE_GUESSING)
 
-        user1_score += config.SCORE_SENDING
-        user2_score += config.MIN_SCORE_GUESSING
+        user1_game_score += config.SCORE_SENDING
+        user2_game_score += config.MIN_SCORE_GUESSING
 
         words_seen.append(game_remote.curr_word)
 
@@ -794,6 +806,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(2, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user1_id, friend_id=user2_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -804,6 +817,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(2, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
 
         game_remote = game.get_game_status(user_id=user2_id, friend_id=user1_id)
         self.assertEqual(game_id, game_remote.game_id)
@@ -814,6 +828,7 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(2, game_remote.curr_round)
+        self.assertEqual(user2_game_score, game_remote.user_score)
 
         # User 2 sends a picture
         game.send_picture(user_id=user2_id, game_id=game_id, photo=photo)
@@ -826,15 +841,17 @@ class GameTests(TestCase):
         game_remote = game.validate_guess(user_id=user1_id, game_id=game_id, guess=game_remote.curr_word, score=config.MIN_SCORE_GUESSING)
 
         # Calculate points manually
-        user1_score += config.MIN_SCORE_GUESSING
-        user2_score += config.SCORE_SENDING
+        user1_game_score += config.MIN_SCORE_GUESSING
+        user2_game_score += config.SCORE_SENDING
 
         # Game should be over at this point
         self.assertFalse(game_remote.active)
+        self.assertEqual(user1_game_score, game_remote.user_score)
+        self.assertEqual(user2_game_score, game_remote.friend_score)
 
         # Calculate stars that each user should've gotten
-        user1_game_stars = int(user1_score / config.SCORE_PER_STAR)
-        user2_game_stars = int(user2_score / config.SCORE_PER_STAR)
+        user1_game_stars = int(user1_game_score / config.SCORE_PER_STAR)
+        user2_game_stars = int(user2_game_score / config.SCORE_PER_STAR)
 
         # Since users tied, they both get bonus stars
         user1_game_stars += config.TIE_BONUS_STAR
@@ -842,6 +859,10 @@ class GameTests(TestCase):
         
         user1_stars += user1_game_stars
         user2_stars += user2_game_stars
+
+        # The actual score of users 1 and 2
+        user1_score += user1_game_score
+        user2_score += user2_game_score
 
         # check stars correct
         self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)
@@ -857,6 +878,9 @@ class GameTests(TestCase):
 
         user1_score = score.get_user_score(user_id=user1_id).points
         user2_score = score.get_user_score(user_id=user2_id).points
+
+        user1_game_score = 0
+        user2_game_score = 0
 
         user1_stars = bank.get_user_bank(user_id=user1_id).stars
         user2_stars = bank.get_user_bank(user_id=user2_id).stars
@@ -878,6 +902,8 @@ class GameTests(TestCase):
         self.assertIsNone(game_remote.current_score)
         self.assertIsNone(game_remote.elapsed_time)
         self.assertEqual(1, game_remote.curr_round)
+        self.assertEqual(user1_game_score, game_remote.user_score)
+
         # User 2 will see the picture and User 2 will try to guess after 10 seconds or so, scoring lowest points
         photo_remote = game.get_picture(user_id=user2_id, game_id=game_id)
 
@@ -889,8 +915,8 @@ class GameTests(TestCase):
         # Client passes invalid score; the server will just use the actual score instead
         game_remote = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote.curr_word, score=config.MAX_SCORE_GUESSING)
 
-        user1_score += config.SCORE_SENDING
-        user2_score += config.MIN_SCORE_GUESSING
+        user1_game_score += config.SCORE_SENDING
+        user2_game_score += config.MIN_SCORE_GUESSING
 
         words_seen.append(game_remote.curr_word)
 
@@ -909,14 +935,18 @@ class GameTests(TestCase):
         self.assertFalse(game_remote.active)
 
         # Calculate stars that each user should've gotten
-        user1_game_stars = int(user1_score / config.SCORE_PER_STAR)
-        user2_game_stars = int(user2_score / config.SCORE_PER_STAR)
+        user1_game_stars = int(user1_game_score / config.SCORE_PER_STAR)
+        user2_game_stars = int(user2_game_score / config.SCORE_PER_STAR)
 
         # User 2 won
         user2_game_stars += config.WINNER_BONUS_STAR
         
         user1_stars += user1_game_stars
         user2_stars += user2_game_stars
+
+        # The actual score of users 1 and 2
+        user1_score += user1_game_score
+        user2_score += user2_game_score
 
         # check stars correct
         self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)

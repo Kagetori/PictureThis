@@ -217,7 +217,18 @@ def end_game(user_id, game_id, award_stars=True):
         score.add_to_score(user_id=game.user_id1, points=game.user1_score)
         score.add_to_score(user_id=game.user_id2, points=game.user2_score)
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, bank_account=bank.get_user_bank(user_id=user_id))
+    friend_score = 0
+    user_score = 0
+
+    if game.user_id1 == user_id:
+        user_score = game.user1_score
+        friend_score = game.user2_score
+    else:
+        user_score = game.user2_score
+        friend_score = game.user1_score
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, user_score=user_score, friend_score=friend_score,
+        curr_round=game.curr_round, words_seen=words_seen, bank_account=bank.get_user_bank(user_id=user_id))
 
 def validate_guess(user_id, game_id, guess, score):
     """
@@ -389,7 +400,7 @@ def get_user_games(user_id):
 
 def get_game_status(user_id, friend_id):
     """
-    Returns the active game
+    Returns the most recent game
     """
     if user_id is 0 or friend_id is 0:
         raise RemoteException('User ID and Friend ID cannot be blank')
@@ -399,21 +410,29 @@ def get_game_status(user_id, friend_id):
     except User.DoesNotExist:
         raise RemoteException('User does not exist')
 
-    games1 = Game.objects.filter(user_id1=user_id, user_id2=friend_id, active=True) 
-    games2 = Game.objects.filter(user_id2=user_id, user_id1=friend_id, active=True)
+    games1 = Game.objects.filter(user_id1=user_id, user_id2=friend_id).order_by('-id')
+    games2 = Game.objects.filter(user_id2=user_id, user_id1=friend_id).order_by('-id')
 
-    result = []
+    most_recent_game = None
 
-    for g in games1:
-        result.append(_get_remote_game(user_id=user_id, friend_id=friend_id, game_model=g))
+    if len(games1) > 0:
+        game_1 = games1[0]
+        if len(games2) > 0:
+            game_2 = games2[0]
+            # Both are not empty, choose bigger id
+            if game_1.id > game_2.id:
+                most_recent_game = game_1
+            else:
+                most_recent_game = game_2
+        else:
+            most_recent_game = game_1
+    elif len(games2) > 0:
+        most_recent_game = games2[0]
 
-    for g in games2:
-        result.append(_get_remote_game(user_id=user_id, friend_id=friend_id, game_model=g))
-
-    if len(result) != 1:
+    if most_recent_game is None:
         raise RemoteException('No game between the users')
 
-    return result[0]
+    return _get_remote_game(user_id=user_id, friend_id=friend_id, game_model=most_recent_game)
 
 def get_new_word(user_id, game_id):
     """
@@ -460,7 +479,17 @@ def get_new_word(user_id, game_id):
 
     words_seen.append(new_word.word)
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num,
+    friend_score = 0
+    user_score = 0
+
+    if game.user_id1 == user_id:
+        user_score = game.user1_score
+        friend_score = game.user2_score
+    else:
+        user_score = game.user2_score
+        friend_score = game.user1_score
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, user_score=user_score, friend_score=friend_score,
         words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True, bank_account=bank.get_user_bank(user_id=user_id))
 
 # Helper functions
@@ -509,7 +538,18 @@ def _start_new_round(user_id, game_id):
 
     game.curr_round = round_num
     game.save()
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num,
+
+    friend_score = 0
+    user_score = 0
+
+    if game.user_id1 == user_id:
+        user_score = game.user1_score
+        friend_score = game.user2_score
+    else:
+        user_score = game.user2_score
+        friend_score = game.user1_score
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num, user_score=user_score, friend_score=friend_score,
         words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
 
 def _get_words_played(game_id):
@@ -567,36 +607,51 @@ def _get_remote_game(user_id, friend_id, game_model):
     curr_round = game_model.curr_round
     game_id = game_model.id
     active = game_model.active
-    is_photographer = (_get_curr_photographer(game_model) == int(user_id))
 
     words_seen = []
     curr_word = None
     words_played = _get_words_played(game_id=game_model.id)
 
-    try:
-        current_turn = Turn.objects.get(turn_num=game_model.curr_round, game_id=game_model.id)
-
-        is_turn = (is_photographer != current_turn.picture_added)
-
-        if (len(words_played) > 0):
-            words_seen = words_played
+    if (len(words_played) > 0):
+        words_seen = words_played
+        if active:
             curr_word = words_played[-1]
 
-        elapsed_time = None
-        current_score = None
+    is_photographer = None
+    is_turn = None
+    elapsed_time = None
+    current_score = None
 
-        if is_turn and not is_photographer and current_turn.picture_seen:
-            # Guessing
-            elapsed_time = timezone.now() - current_turn.picture_seen_date
-            current_score = _calculate_score(elapsed_time)
-            elapsed_time = elapsed_time.seconds
+    friend_score = 0
+    user_score = 0
 
-        return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round,
-            words_seen=words_seen, curr_word=curr_word, is_photographer=is_photographer, is_turn=is_turn,
-            current_score=current_score, elapsed_time=elapsed_time)
+    if game_model.user_id1 == user_id:
+        user_score = game_model.user1_score
+        friend_score = game_model.user2_score
+    else:
+        user_score = game_model.user2_score
+        friend_score = game_model.user1_score
 
-    except Turn.DoesNotExist:
-        raise RemoteException('Turn does not exist')
+    if active:
+        try:
+            current_turn = Turn.objects.get(turn_num=game_model.curr_round, game_id=game_model.id)
+
+            is_photographer = (_get_curr_photographer(game_model) == int(user_id))
+
+            is_turn = (is_photographer != current_turn.picture_added)
+
+            if is_turn and not is_photographer and current_turn.picture_seen:
+                # Guessing
+                elapsed_time = timezone.now() - current_turn.picture_seen_date
+                current_score = _calculate_score(elapsed_time)
+                elapsed_time = elapsed_time.seconds
+
+        except Turn.DoesNotExist:
+            raise RemoteException('Turn does not exist')
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=active, curr_round=curr_round, user_score=user_score,
+        friend_score=friend_score, words_seen=words_seen, curr_word=curr_word, is_photographer=is_photographer, is_turn=is_turn,
+        current_score=current_score, elapsed_time=elapsed_time)
 
 def _calculate_score(elapsed_time):
     milliseconds = max(0, 1000 * elapsed_time.seconds + elapsed_time.microseconds // 1000)
