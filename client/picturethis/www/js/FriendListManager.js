@@ -43,8 +43,11 @@
         router.start();
 
         var friendListWrapper = document.getElementById("friend_list_wrapper");
+        var starCount = document.getElementById("star_count");
+        var pointCount = document.getElementById("point_count");
 
         setFriendView(friendListWrapper);
+        updateScoreAndStar(starCount, pointCount);
 
         var user = getUser();
         var userId = user.id;
@@ -54,9 +57,9 @@
         setInterval(function() {
             serverCaller("poll/update", params, null, function() {
                 setFriendView(friendListWrapper)
-
+                updateScoreAndStar(starCount, pointCount);
             }, null);
-        }, 15000);
+        }, 10000);
     });
 
         /* --------------------------------- Event Registration -------------------------------- */

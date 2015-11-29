@@ -28,7 +28,7 @@ var GuessView = function (score_stars) {
                 if(buttonIndex === 1) {
                     startNewGame(friend_id);
                 } else {
-                    window.location="friends.html";
+                    backToMain();
                 }
             };
 
@@ -88,8 +88,7 @@ var GuessView = function (score_stars) {
         var nextTurn = function(){
             window.location.reload();
         };
-            serverCaller(api, params, GameParser, nextTurn, null);
-
+        serverCaller(api, params, GameParser, nextTurn, null);
     }
 
     this.initialize();
@@ -252,14 +251,14 @@ function destroyLetters(letters) {
             console.log("destroyed letters: " + destroyed);
 
             for (var i=0; i<letters.length; i++) {
-            for (var j=0; j<destroyed.length; j++) {
-                if (letters[i] === destroyed[j]) {
-                    document.getElementById(i).classList.toggle("destroyed");
-                    destroyed = destroyed.slice(0, j) + destroyed.slice(j+1);
-                    break;
+                for (var j=0; j<destroyed.length; j++) {
+                    if (letters[i] === destroyed[j]) {
+                        document.getElementById(i).classList.toggle("destroyed");
+                        destroyed = destroyed.slice(0, j) + destroyed.slice(j+1);
+                        break;
+                    }
                 }
             }
-        }
             return destroyed;
         }, null);
     } else {

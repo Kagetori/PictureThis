@@ -31,6 +31,14 @@ function serverCaller(api, params, parser, callback, exceptionHandler) {
 
     xmlhttp.open('POST', serverURL + api, true);
 
+    var formData = new FormData();
+
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            formData.append(key, params[key]);
+        }
+    }
+
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
@@ -65,6 +73,9 @@ function serverCaller(api, params, parser, callback, exceptionHandler) {
 
                     setSpinnerVisibility(false);
                 }
+            } else if (xmlhttp.status == 0) {
+                console.log('Error 0 again');
+                serverCaller(api, params, parser, callback, exceptionHandler);
             } else {
                 showAlert("Server call failed. Please try again. Error " + xmlhttp.status, '');
                 setSpinnerVisibility(false);
@@ -73,14 +84,6 @@ function serverCaller(api, params, parser, callback, exceptionHandler) {
             // wait for the call to complete
         }
     };
-
-    var formData = new FormData();
-
-    for (var key in params) {
-        if (params.hasOwnProperty(key)) {
-            formData.append(key, params[key]);
-        }
-    }
 
     xmlhttp.send(formData);
 }

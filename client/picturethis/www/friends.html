@@ -29,9 +29,9 @@
                         <li><a onclick="logout()">Logout</a></li>
                     </ul>
                 </div>
-                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: <span id="point_count">{{score}}</span></h4></div>
                 <div class="star text-right col-xs-3">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"><span id="star_count">{{stars}}</span></span>
                 </div>
             </div>
             <br>

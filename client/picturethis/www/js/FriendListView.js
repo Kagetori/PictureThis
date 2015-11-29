@@ -15,6 +15,11 @@ var FriendListView = function (score_stars) {
     this.initialize();
 }
 
+var updateScoreAndStar = function(starView, pointView) {
+    starView.innerHTML = getStars();
+    pointView.innerHTML = getScore();
+}
+
 // returns parsed friendListObjects
 var setFriendView = function(friendListWrapper) {
 
