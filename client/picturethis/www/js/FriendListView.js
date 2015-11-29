@@ -79,8 +79,13 @@ var setFriendView = function(friendListWrapper) {
                 }
                 tablebutton.appendChild(buttontext);
 
+                var tableScore = document.createElement("span");
+                tableScore.className = "friend_vs_score";
+                tableScore.appendChild(document.createTextNode(activeFriends[i].user_score + "-" + activeFriends[i].friend_score));
+
                 tableli.appendChild(tabletext);
                 tableli.appendChild(tablebutton);
+                tableli.appendChild(tableScore);
                 tableul.appendChild(tableli);
             }
         }
@@ -103,8 +108,14 @@ var setFriendView = function(friendListWrapper) {
                 tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
                 var buttontext = document.createTextNode("Start!");
                 tablebutton.appendChild(buttontext);
+
+                var tableScore = document.createElement("span");
+                tableScore.className = "friend_vs_score";
+                tableScore.appendChild(document.createTextNode(recentFriends[i].user_score + "-" + recentFriends[i].friend_score));
+
                 tableli.appendChild(tabletext);
                 tableli.appendChild(tablebutton);
+                tableli.appendChild(tableScore);
                 tableul.appendChild(tableli);
             }
         }
@@ -112,7 +123,7 @@ var setFriendView = function(friendListWrapper) {
         if (inactiveFriends.length != 0) {
             var inactiveHeader = document.createElement("li");
             inactiveHeader.className = "inactive_friends";
-            var inactiveHeaderText = document.createTextNode("Other Friends");
+            var inactiveHeaderText = document.createTextNode("New Friends");
             inactiveHeader.appendChild(inactiveHeaderText);
             tableul.appendChild(inactiveHeader);
             for (i = 0; i < inactiveFriends.length; i++) {
