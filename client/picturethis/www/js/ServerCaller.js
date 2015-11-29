@@ -14,7 +14,7 @@ function serverCaller(api, params, parser, callback, exceptionHandler) {
 
     // This is the Client Version so the server can reject
     // calls from old clients
-    params['client_version'] = 3;
+    params['client_version'] = 4;
 
     params['client_secret'] = "k8AwYC90MkUK2wsFZF36oCxe+cg+bIfMmHPWbFhLgObzGclWXKQhL/4vTCSOfzScV9QE0J6RYkxNmfMIhyi0mEfN+9o4AN8KCtfX3HJ8QpegztKFhit/d+O2d43xIe2r";
 
