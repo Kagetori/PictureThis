@@ -71,6 +71,11 @@ def _set_friendship(user_id, friend_id, relation):
     if friendship.relation == config.FRIEND_STATUS_BLOCKED:
         raise RemoteException('Invalid user id.')
 
+    # If too many friends deny request
+    if relation == config.FRIEND_STATUS_FRIEND:
+        if _get_num_friends(user_id=user_id) >= config.FRIEND_LIMIT or _get_num_friends(user_id=friend_id) >= config.FRIEND_LIMIT:
+            raise RemoteException('Too many friends')
+
     # Otherwise, do as normal for the reverse relation
     if relation == config.FRIEND_STATUS_BLOCKED:
         friendship.relation = config.FRIEND_STATUS_REMOVED
@@ -94,3 +99,7 @@ def _set_friendship(user_id, friend_id, relation):
     friendship.save()
 
     return SuccessPacket()
+
+def _get_num_friends(user_id):
+    friends = Friend.objects.filter(user_id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
+    return len(friends)

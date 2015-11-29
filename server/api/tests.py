@@ -847,6 +847,85 @@ class GameTests(TestCase):
         self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)
         self.assertEqual(user2_stars, bank.get_user_bank(user_id=user2_id).stars)
 
+        # check scores correct
+        self.assertEqual(user1_score, score.get_user_score(user_id=user1_id).points)
+        self.assertEqual(user2_score, score.get_user_score(user_id=user2_id).points)
+
+    def testGameFlow2(self):
+        user1_id = User.objects.get(name='user1').obfuscated_id
+        user2_id = User.objects.get(name='user2').obfuscated_id
+
+        user1_score = score.get_user_score(user_id=user1_id).points
+        user2_score = score.get_user_score(user_id=user2_id).points
+
+        user1_stars = bank.get_user_bank(user_id=user1_id).stars
+        user2_stars = bank.get_user_bank(user_id=user2_id).stars
+
+        words_seen = []
+        photo = config.BLANK_PICTURE
+
+        game_remote = game.start_new_game(user_id=user1_id, friend_id=user2_id)
+        game_id = game_remote.game_id
+
+        words_seen.append(game_remote.curr_word)
+
+        game_remote = game.send_picture(user_id=user1_id, game_id=game_id, photo=photo)
+        self.assertEqual(game_id, game_remote.game_id)
+        self.assertEqual(user2_id, game_remote.friend_id)
+        self.assertTrue(game_remote.is_photographer)
+        self.assertFalse(game_remote.is_turn)
+        self.assertEqual(set(words_seen), set(game_remote.words_seen))
+        self.assertIsNone(game_remote.current_score)
+        self.assertIsNone(game_remote.elapsed_time)
+        self.assertEqual(1, game_remote.curr_round)
+        # User 2 will see the picture and User 2 will try to guess after 10 seconds or so, scoring lowest points
+        photo_remote = game.get_picture(user_id=user2_id, game_id=game_id)
+
+        self.assertEqual(config.MAX_SCORE_GUESSING, photo_remote.current_score)
+        self.assertEqual(photo, photo_remote.dataURL)
+
+        time.sleep(10) # seconds
+
+        # Client passes invalid score; the server will just use the actual score instead
+        game_remote = game.validate_guess(user_id=user2_id, game_id=game_id, guess=game_remote.curr_word, score=config.MAX_SCORE_GUESSING)
+
+        user1_score += config.SCORE_SENDING
+        user2_score += config.MIN_SCORE_GUESSING
+
+        words_seen.append(game_remote.curr_word)
+
+        # User 2 sends a picture
+        game.send_picture(user_id=user2_id, game_id=game_id, photo=photo)
+
+        # User 1 should get the picture and do a correct guess after 10 seconds
+        game.get_picture(user_id=user1_id, game_id=game_id)
+
+        time.sleep(10) # seconds
+
+        # Give up
+        game_remote = game.give_up_turn(user_id=user1_id, game_id=game_id)
+
+        # Game should be over at this point
+        self.assertFalse(game_remote.active)
+
+        # Calculate stars that each user should've gotten
+        user1_game_stars = int(user1_score / config.SCORE_PER_STAR)
+        user2_game_stars = int(user2_score / config.SCORE_PER_STAR)
+
+        # User 2 won
+        user2_game_stars += config.WINNER_BONUS_STAR
+        
+        user1_stars += user1_game_stars
+        user2_stars += user2_game_stars
+
+        # check stars correct
+        self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)
+        self.assertEqual(user2_stars, bank.get_user_bank(user_id=user2_id).stars)
+
+        # check scores correct
+        self.assertEqual(user1_score, score.get_user_score(user_id=user1_id).points)
+        self.assertEqual(user2_score, score.get_user_score(user_id=user2_id).points)
+
     def testGetUserGames(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
         user2_id = User.objects.get(name='user2').obfuscated_id

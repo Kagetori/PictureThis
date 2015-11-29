@@ -36,6 +36,7 @@
     		$('#main_page').html(new WaitingView(score_stars).render().$el);
     	} else if (!isPhotographer && isTurn){
     		$('#main_page').html(new GuessView(score_stars).render().$el);
+    		startCountdown();
     		addLetters();
             getGuessImage();
             populateGuessBlocks(currentWord);

@@ -51,6 +51,7 @@ function serverCaller(api, params, parser, callback, exceptionHandler) {
                         }
 
                         if (json_response.hasOwnProperty('force_logout') && json_response.force_logout && !isLoginCall) {
+                            logout();
                             return;
                         }
 

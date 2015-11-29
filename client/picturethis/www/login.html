@@ -12,6 +12,23 @@
 
 <body>
 <div class="fullscreen" id="main_page">
+    <script id="autologin-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1">
+                    <br /><br /><br /><br />
+                    <img src="img/logo-large.png" class="img-responsive center-block">
+                    <br /><br /><br /><br />
+                    <div style="width: 100%; text-align: center;">
+                        <div class="spinner-loader" style="display: inline-block;">Loading…</div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </script>
+
     <script id="login-tpl" type="text/template">
         <div class="container">
             <br>
@@ -42,8 +59,8 @@
             </div>
             <br><br>
         </div>
-
     </script>
+
     <script id="signup-tpl" type="text/template">
         <div class="container">
             <br>
@@ -113,7 +130,6 @@
     }
 
     function backToLogin() {
-        setSpinnerVisibility(true);
         var signUpView = new SignUpView();
         signUpView.backToLogin();
     }
@@ -125,6 +141,7 @@
 <script src="lib/router.js"></script>
 <script src="js/services/memory/PictureThisService.js"></script>
 <script src="js/spinner.js"></script>
+<script src="js/AutoLoginView.js"></script>
 <script src="js/LoginView.js"></script>
 <script src="js/SignUpView.js"></script>
 

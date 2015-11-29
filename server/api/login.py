@@ -15,7 +15,7 @@ import uuid
 
 # Login api
 
-def create_user(username, password, client_version=1, device_id=None):
+def create_user(username, password, device_id=None):
     """
     API Function to create a user
     """
@@ -48,7 +48,7 @@ def create_user(username, password, client_version=1, device_id=None):
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=user.get_auth_token(), login_token=user.login_token, friends=friends, bank_account=bank_account, score=score_account)
 
-def login(username, password, client_version=1, device_id=None):
+def login(username, password, device_id=None):
     """
     API Function to login a user using password
     """
@@ -88,7 +88,7 @@ def login(username, password, client_version=1, device_id=None):
 
     return LoginUser(username=username, user_id=user.obfuscated_id, auth_token=auth_token, login_token=user.login_token, friends=friends, bank_account=bank_account, score=score_account)
 
-def token_login(user_id, login_token, client_version=1, device_id=None):
+def token_login(user_id, login_token, device_id=None):
     """
     API Function to login a user using login token
     """

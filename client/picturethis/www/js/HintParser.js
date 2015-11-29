@@ -1,4 +1,4 @@
-var HintParser = function(obj) {
+function HintParser(obj) {
     debugAlert("Called HintParser!");
 
     var wordClass = obj.word_class;

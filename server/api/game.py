@@ -4,11 +4,11 @@ from django.utils.timesince import timesince
 
 from models import Game, User, Turn, WordPrompt
 
-import bank, friend
+import bank, friend, score
 
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
-from interface.packets import GamePacket
+from interface.packets import GamePacket, SuccessPacket
 from interface.image import Image as RemoteImage
 
 import base64
@@ -22,7 +22,7 @@ def start_new_game(user_id, friend_id):
     """
     Create a new Game
     """
-    if user_id is None or friend_id is None:
+    if user_id is 0 or friend_id is 0:
         raise RemoteException('User ID and friend ID cannot be blank.')
 
     if user_id == friend_id:
@@ -57,7 +57,7 @@ def send_picture(user_id, game_id, photo):
     """
     Marks a picture as sent
     """
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     if photo is None:
@@ -110,7 +110,7 @@ def get_picture(user_id, game_id):
     Gets a picture for the specified user_id and game_id
     """
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -169,7 +169,7 @@ def end_game(user_id, game_id, award_stars=True):
     """
     Ends a pre-existing game by setting it to inactive
     """
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
     try:
         user = User.objects.get(obfuscated_id=user_id)
@@ -213,7 +213,11 @@ def end_game(user_id, game_id, award_stars=True):
         bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
         bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen)
+        # Award points to users also
+        score.add_to_score(user_id=game.user_id1, points=game.user1_score)
+        score.add_to_score(user_id=game.user_id2, points=game.user2_score)
+
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, bank_account=bank.get_user_bank(user_id=user_id))
 
 def validate_guess(user_id, game_id, guess, score):
     """
@@ -222,7 +226,7 @@ def validate_guess(user_id, game_id, guess, score):
     game = None
     curr_time = timezone.now()
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -307,7 +311,7 @@ def give_up_turn(user_id, game_id):
     game = None
     curr_time = timezone.now()
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -359,7 +363,7 @@ def get_user_games(user_id):
     """
     Returns all the user's active games
     """
-    if user_id is None:
+    if user_id is 0:
         raise RemoteException('User ID cannot be blank')
     try:
          User.objects.get(obfuscated_id=user_id)
@@ -387,7 +391,7 @@ def get_game_status(user_id, friend_id):
     """
     Returns the active game
     """
-    if user_id is None or friend_id is None:
+    if user_id is 0 or friend_id is 0:
         raise RemoteException('User ID and Friend ID cannot be blank')
     try:
          User.objects.get(obfuscated_id=user_id)
@@ -457,7 +461,7 @@ def get_new_word(user_id, game_id):
     words_seen.append(new_word.word)
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num,
-        words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
+        words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True, bank_account=bank.get_user_bank(user_id=user_id))
 
 # Helper functions
 
@@ -614,3 +618,5 @@ def _end_all_games():
 
     for game in games:
         end_game(user_id=game.user_id1, game_id=game.id, award_stars=False)
+
+    return SuccessPacket('Success!')

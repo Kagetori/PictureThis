@@ -36,8 +36,7 @@ var SignUpView = function (service) {
     }
 
     this.backToLogin = function() {
-        window.location.reload();
-        window.location="login.html";
+        router.load('#log in');
     }
 
     this.initialize();

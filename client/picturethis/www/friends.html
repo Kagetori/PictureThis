@@ -22,7 +22,7 @@
                         Menu <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">User</a></li>
+                        <li><a href="#change password">User</a></li>
                         <li><a href="#add friend">Add Friend</a></li>
                         <li><a href="#remove friend">Manage Friends</a></li>
                         <li role="separator" class="divider"></li>
@@ -69,6 +69,36 @@
         </div>
     </script>
 
+    <script id="changepassword-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            <h1 class="title">Change your password</h1>
+
+            <form onsubmit="event.preventDefault()">
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="old_password" placeholder="Old Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="new_password" placeholder="New Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="new_password_confirm" placeholder="Retype your new password">
+                    <br><br>
+                </div>
+                <div class="col-xs-10 col-xs-offset-1">
+                    <button class="btn btn-block big_button" type="submit" onclick="changePassword()">Change Password</button>
+                    <br><br><br>
+                </div>
+
+            </form>
+        </div>
+    </script>
+
 <script>
 
     function findUser() {
@@ -104,6 +134,44 @@
     function blockF(friendId){
         blockFriend(friendId);
     }
+
+    function changePassword(friendId){
+        if(validUsername()){
+            if(confirmNewPassword){
+                changeUserPassword();
+            } else {
+                showAlert("Passwords don't match");
+            }
+        } else {
+            showAlert("Username inputted does not match your Username. Please try again.");
+        }
+    }
+
+    function validUsername() {
+        var username = getUser().username;
+        var input_username = $("[name='username']").val();
+        return (username == input_username);
+    }
+
+    function confirmNewPassword() {
+        var new_password = $("[name='new_password']").val();
+        var new_password_confirm = $("[name='new_password_confirm']").val();
+        return (new_password === new_password_confirm);
+    }
+
+    function changeUserPassword() {
+        setSpinnerVisibility(true);
+        var user_id = getUser().id;
+        var new_password = $("[name='new_password']").val();
+        var old_password = $("[name='old_password']").val();
+        var changePasswordView = new ChangePasswordView();
+        changePasswordView.updatePassword(user_id, old_password, new_password);
+    }
+
+
+
+
+
 </script>
 
 <script src="cordova.js"></script>
@@ -115,6 +183,7 @@
 <script src="js/FriendListView.js"></script>
 <script src="js/RemoveFriendView.js"></script>
 <script src="js/AddFriendView.js"></script>
+<script src="js/ChangePasswordView.js"></script>
 
 <script src="js/User.js"></script>
 <script src="js/Game.js"></script>

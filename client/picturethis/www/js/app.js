@@ -8,13 +8,18 @@ LoginView.prototype.template = Handlebars.compile($("#login-tpl").html());
 
 SignUpView.prototype.template = Handlebars.compile($("#signup-tpl").html());
 
+AutoLoginView.prototype.template = Handlebars.compile($("#autologin-tpl").html());
+
 service.initialize().done(function () {
 //    renderLoginView();
 	router.addRoute('', function() {
-		$('#main_page').html(new LoginView(service).render().$el);
+		$('#main_page').html(new AutoLoginView(service).render().$el);
 	});
 	router.addRoute('sign up', function () {
 		$('#main_page').html(new SignUpView(service).render().$el);
+	});
+	router.addRoute('log in', function () {
+		$('#main_page').html(new LoginView(service).render().$el);
 	});
 
 	router.start();
