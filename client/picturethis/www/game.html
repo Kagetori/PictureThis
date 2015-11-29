@@ -80,10 +80,17 @@
     <h1 class="timer" id="countdown"></h1>
         <img src="" id="guess_img" alt="an image to be guessed" class="img-responsive center-block deblur">
         <br>
-        <button class="btn hint_button" onclick="getHint(this)">Get a hint!</button>
+       <div class="row">
+           <div class="col-xs-6 col-xs-offset-3">
+               <button class="btn btn-block hint_button" onclick="getHint(this)">Get a hint!</button>
+               <br>
+           </div>
+       </div>
+       <div class="row">
         <div class="text-center" id="word_class"></div>
         <div class="text-center" id="word_category"></div>
-        <br>
+       </div>
+       <br>
         <div class="text-center">
             <div class="btn-group">
                 <div id="guess_blocks"></div>
@@ -117,9 +124,15 @@
         </div>
 
         <br><br>
-        <button class="btn colored_button" onclick="sendAnswer()">Guess!</button>
-        <br>
-        <button class="btn give_up" onclick="giveUpGame()">Give Up</button>
+       <div class="col-xs-10 col-xs-offset-1">
+           <button class="btn btn-block colored_button" onclick="sendAnswer()">Guess!</button>
+           <br>
+       </div>
+
+       <div class="col-xs-6 col-xs-offset-3">
+            <button class="btn btn-block give_up" onclick="giveUpGame()">Give Up</button>
+           <br><br><br>
+       </div>
    </div>
 </script>
 

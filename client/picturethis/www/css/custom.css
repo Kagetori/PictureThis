@@ -328,8 +328,8 @@ li.friend_element_inactive {
 }
 
 .guess_letter {
-  width: 2.4em;
-  height: 2.4em;
+  width: 2.6em;
+  height: 2.6em;
   border: 2px solid grey;
   padding: 0.2em;
   font-family: Helvetica, Arial, sans-serf;
@@ -346,39 +346,20 @@ li.friend_element_inactive {
   text-decoration:none;
 }
 
-.first_letter {
-  width: 2.4em;
-  height: 2.4em;
-  border: 2px solid grey;
-  padding: 0.2em;
-  font-family: Helvetica, Arial, sans-serf;
-  background-color: #FF8062;
-  color: white;
-  border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
-  display: inline;
-  margin-left: 26px;
-  margin-right: -1px;
-  margin-bottom: 2px;
-  text-align:center;
-  text-decoration:none;
-}
-
 .guess_box {
   width: 2.4em;
   height: 2.4em;
   border: 2px solid grey ;
-  padding: 0.2em;
+  padding: 0.5em;
   font-family: Helvetica, Arial, sans-serf;
   background-color: #FF8062;
   color: white;
   border-radius: 5px;
   font-size: 1em;
   font-weight: bold;
+  text-align:center;
   /*display: inline-block;*/
   margin-left: 3px;
-  padding-left: 20px;
   margin-bottom: 8px;
   box-shadow: 2px 2px 2px #888888;
 }
@@ -502,7 +483,7 @@ button.waiting {
 
 button.delete {
   width: 4.8em;
-  height: 2.4em;
+  height: 2.6em;
   padding: 0.3em;
   font-family: Helvetica, Arial, sans-serf;
   background-color: grey;
