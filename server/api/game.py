@@ -213,7 +213,7 @@ def end_game(user_id, game_id, award_stars=True):
         bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
         bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
 
-    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen)
+    return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, bank_account=bank.get_user_bank(user_id=user_id))
 
 def validate_guess(user_id, game_id, guess, score):
     """
@@ -457,7 +457,7 @@ def get_new_word(user_id, game_id):
     words_seen.append(new_word.word)
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=True, curr_round=round_num,
-        words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True)
+        words_seen=words_seen, curr_word=new_word.word, is_photographer=True, is_turn=True, bank_account=bank.get_user_bank(user_id=user_id))
 
 # Helper functions
 
