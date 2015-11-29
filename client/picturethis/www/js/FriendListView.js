@@ -26,20 +26,23 @@ var setFriendView = function(friendListWrapper) {
     var friendList = getFriendListObjects();
 
     var activeFriends = [];
+    var recentFriends = [];
     var inactiveFriends = [];
 
     if (friendList.length != 0) {
         for (i=0; i<friendList.length; i++) {
-            if (friendList[i].active_game==false) {
-                inactiveFriends.push(friendList[i]);
-            }
-            else {
+            if (friendList[i].active_game) {
                 activeFriends.push(friendList[i]);
+            } else if (friendList[i].recent_game) {
+                recentFriends.push(friendList[i]);
+            } else {
+                inactiveFriends.push(friendList[i]);
             }
         }
     }
 
     console.log("active: " + activeFriends.length);
+    console.log("recent: " + recentFriends.length);
     console.log("inactive: " + inactiveFriends.length);
 
     if (friendList.length != 0) {
@@ -82,10 +85,34 @@ var setFriendView = function(friendListWrapper) {
             }
         }
 
+        if (recentFriends.length != 0) {
+            var recentHeader = document.createElement("li");
+            recentHeader.className = "inactive_friends";
+            var recentHeaderText = document.createTextNode("Recent Games");
+            recentHeader.appendChild(recentHeaderText);
+            tableul.appendChild(recentHeader);
+            for (i = 0; i < recentFriends.length; i++) {
+                var tableli = document.createElement("li");
+                tableli.className = "friend_element_inactive";
+                friendUserName = recentFriends[i].friend_username;
+                var tabletext = document.createTextNode(friendUserName);
+                var tablebutton = document.createElement("button");
+                tablebutton.className = "btn play_button new_game";
+
+                var friendId = recentFriends[i].friend_id;
+                tablebutton.setAttribute("onClick", "play("+friendId.toString()+");");
+                var buttontext = document.createTextNode("Start!");
+                tablebutton.appendChild(buttontext);
+                tableli.appendChild(tabletext);
+                tableli.appendChild(tablebutton);
+                tableul.appendChild(tableli);
+            }
+        }
+
         if (inactiveFriends.length != 0) {
             var inactiveHeader = document.createElement("li");
             inactiveHeader.className = "inactive_friends";
-            var inactiveHeaderText = document.createTextNode("Inactive Games");
+            var inactiveHeaderText = document.createTextNode("Other Friends");
             inactiveHeader.appendChild(inactiveHeaderText);
             tableul.appendChild(inactiveHeader);
             for (i = 0; i < inactiveFriends.length; i++) {
