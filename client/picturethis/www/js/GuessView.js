@@ -32,7 +32,7 @@ var GuessView = function (score_stars) {
                 }
             };
 
-            showNotification('your guess is correct! Would you like to start a new game?',onConfirm,'Game Finished',['Yes','No']);
+            showNotification('Your guess is correct! Would you like to start a new game?',onConfirm,'Game Finished',['Yes','No']);
         }
     }
 
