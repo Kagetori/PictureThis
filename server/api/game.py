@@ -22,7 +22,7 @@ def start_new_game(user_id, friend_id):
     """
     Create a new Game
     """
-    if user_id is None or friend_id is None:
+    if user_id is 0 or friend_id is 0:
         raise RemoteException('User ID and friend ID cannot be blank.')
 
     if user_id == friend_id:
@@ -57,7 +57,7 @@ def send_picture(user_id, game_id, photo):
     """
     Marks a picture as sent
     """
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     if photo is None:
@@ -110,7 +110,7 @@ def get_picture(user_id, game_id):
     Gets a picture for the specified user_id and game_id
     """
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -169,7 +169,7 @@ def end_game(user_id, game_id, award_stars=True):
     """
     Ends a pre-existing game by setting it to inactive
     """
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
     try:
         user = User.objects.get(obfuscated_id=user_id)
@@ -222,7 +222,7 @@ def validate_guess(user_id, game_id, guess, score):
     game = None
     curr_time = timezone.now()
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -307,7 +307,7 @@ def give_up_turn(user_id, game_id):
     game = None
     curr_time = timezone.now()
 
-    if user_id is None or game_id is None:
+    if user_id is 0 or game_id is 0:
         raise RemoteException('User ID and game ID cannot be blank.')
 
     try:
@@ -359,7 +359,7 @@ def get_user_games(user_id):
     """
     Returns all the user's active games
     """
-    if user_id is None:
+    if user_id is 0:
         raise RemoteException('User ID cannot be blank')
     try:
          User.objects.get(obfuscated_id=user_id)
@@ -387,7 +387,7 @@ def get_game_status(user_id, friend_id):
     """
     Returns the active game
     """
-    if user_id is None or friend_id is None:
+    if user_id is 0 or friend_id is 0:
         raise RemoteException('User ID and Friend ID cannot be blank')
     try:
          User.objects.get(obfuscated_id=user_id)
