@@ -8,7 +8,7 @@ import bank, friend, score
 
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
-from interface.packets import GamePacket
+from interface.packets import GamePacket, SuccessPacket
 from interface.image import Image as RemoteImage
 
 import base64
@@ -619,4 +619,4 @@ def _end_all_games():
     for game in games:
         end_game(user_id=game.user_id1, game_id=game.id, award_stars=False)
 
-    raise RemoteException('Success!')
+    return SuccessPacket('Success!')

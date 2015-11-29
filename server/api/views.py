@@ -82,7 +82,6 @@ def login__create_user(request):
 
     username = _get_param(params, 'username')
     password = _get_param(params, 'password')
-    client_version = _get_param(params, 'client_version', int, 0)
     device_id =  _get_param(params, 'device_id')
 
     return _response(login.create_user, username=username, password=password, client_version=client_version, device_id=device_id)
@@ -101,7 +100,6 @@ def login__login(request):
 
     username = _get_param(params, 'username')
     password = _get_param(params, 'password')
-    client_version = _get_param(params, 'client_version', int, 0)
     device_id =  _get_param(params, 'device_id')
 
     return _response(login.login, username=username, password=password, client_version=client_version, device_id=device_id)
@@ -120,7 +118,6 @@ def login__token_login(request):
 
     user_id = _get_param(params, 'user_id', int, 0)
     login_token = _get_param(params, 'login_token')
-    client_version = _get_param(params, 'client_version', int, 0)
     device_id =  _get_param(params, 'device_id')
 
     return _response(login.token_login, user_id=user_id, login_token=login_token, client_version=client_version, device_id=device_id)

@@ -21,22 +21,13 @@ var LoginView = function (service) {
         params['username'] = username;
         params['password'] = password;
 
-        var login = function() {
-            var loginView = new LoginView();
-            loginView.LoginFriendView(username);
-        };
-        serverCaller(api, params, UserParser, login, null);
-    };
-
-    this.LoginFriendView = function(username) {
-        var user = getUser();
-        if (user.username == username) {
+        serverCaller(api, params, UserParser, function() {
             window.location="friends.html";
-        } else {
+        }, function() {
             showAlert("Login failed, username and/or password don't match.");
             setSpinnerVisibility(false);
-        }
-    }
+        });
+    };
 
     this.initialize();
 }

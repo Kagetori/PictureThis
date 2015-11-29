@@ -35,5 +35,5 @@ var setLoginToken = function(loginToken) {
 }
 
 var getLoginToken = function() {
-    window.localStorage.getItem('login_token');
+    return window.localStorage.getItem('login_token');
 }
