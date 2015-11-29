@@ -199,7 +199,11 @@ function shuffleLetters(text)
 
 //score starts at 200 when user enters the guessView. Have to save score either in local storage or in server
 
-var counter = setInterval(countdown, 250);
+console.log(getActiveGame());
+
+//if (!getActiveGame().is_photographer && getActiveGame().isTurn) {
+    var counter = setInterval(countdown, 250);
+//}
 
 function countdown()
 {
