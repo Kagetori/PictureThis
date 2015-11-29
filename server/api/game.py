@@ -618,3 +618,5 @@ def _end_all_games():
 
     for game in games:
         end_game(user_id=game.user_id1, game_id=game.id, award_stars=False)
+
+    raise RemoteException('Success!')

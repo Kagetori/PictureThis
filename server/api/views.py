@@ -349,6 +349,11 @@ def game__get_new_word(request):
 
     return _response(game.get_new_word, user_id=user_id, game_id=game_id)
 
+# REMOVE LATER
+@csrf_exempt
+def game__end_all_games(request):
+    return _response(game._end_all_games)
+
 # WORD PROMPT API
 
 @csrf_exempt
