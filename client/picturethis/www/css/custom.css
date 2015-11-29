@@ -331,27 +331,38 @@ li.friend_element_inactive {
   width: 2.4em;
   height: 2.4em;
   border: 2px solid grey;
-  padding: 0.5em 0.75em 0.5em 0.75em;
+  padding: 0.2em;
   font-family: Helvetica, Arial, sans-serf;
   background-color: #FF8062;
   color: white;
   border-radius: 5px;
   font-size: 1em;
+  font-weight: bold;
   display: inline;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: -1px;
+  margin-right: -1px;
+  margin-bottom: 2px;
   text-align:center;
   text-decoration:none;
 }
 
-.hide_letter {
-    /*display:none;*/
-    visibility: hidden;
-}
-
-.destroyed {
-  /*display: none;*/
-  visibility: hidden;
+.first_letter {
+  width: 2.4em;
+  height: 2.4em;
+  border: 2px solid grey;
+  padding: 0.2em;
+  font-family: Helvetica, Arial, sans-serf;
+  background-color: #FF8062;
+  color: white;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  display: inline;
+  margin-left: 26px;
+  margin-right: -1px;
+  margin-bottom: 2px;
+  text-align:center;
+  text-decoration:none;
 }
 
 .guess_box {
@@ -364,9 +375,22 @@ li.friend_element_inactive {
   color: white;
   border-radius: 5px;
   font-size: 1em;
-  display: inline-block;
-  margin-left: 4px;
+  font-weight: bold;
+  /*display: inline-block;*/
+  margin-left: 3px;
+  padding-left: 20px;
+  margin-bottom: 8px;
   box-shadow: 2px 2px 2px #888888;
+}
+
+.hide_letter {
+    /*display:none;*/
+    visibility: hidden;
+}
+
+.destroyed {
+  /*display: none;*/
+  visibility: hidden;
 }
 
 img.photo {
@@ -443,6 +467,24 @@ button.block_button {
     margin-right: 8px;
 }
 
+button.give_up {
+    text-align: center;
+    position: relative;
+    font-family: Helvetica, Arial, sans-serf;
+    text-transform: capitalize;
+    color: white;
+    font-size: 1.1em;
+    background-color: #FF4E24;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    display: block;
+    margin: auto;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    box-shadow: 2px 2px 2px #888888;
+}
+
 button.game {
     background-color: #FF4E24;
     font-weight: bold;
@@ -458,31 +500,16 @@ button.waiting {
     font-weight: bold;
 }
 
-button.backspace {
-  border: 2px solid grey;
-  padding: 0.5em 0.75em 0.5em 0.75em;
+button.delete {
+  width: 4.8em;
+  height: 2.4em;
+  padding: 0.3em;
   font-family: Helvetica, Arial, sans-serf;
   background-color: grey;
   color: white;
   border-radius: 5px;
-  font-size: 1em;
   display: inline;
-  margin-left: auto;
-  margin-right: auto;
-  text-align:center;
-  text-decoration:none;
-}
-
-button.clear {
-  border: 2px solid grey;
-  padding: 0.5em 0.75em 0.5em 0.75em;
-  font-family: Helvetica, Arial, sans-serf;
-  background-color: grey;
-  color: white;
-  border-radius: 5px;
-  font-size: 1em;
-  display: inline;
-  margin-left: auto;
+  margin-left: 4px;
   margin-right: auto;
   text-align:center;
   text-decoration:none;

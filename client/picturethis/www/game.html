@@ -82,32 +82,38 @@
         <div class="text-center" id="word_class"></div>
         <div class="text-center" id="word_category"></div>
         <br>
-
-        <div class="row "id="guess_blocks"></div>
-
-        <div class="row">
-            <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
-            <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
-            <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
-            <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
-            <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
-            <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
-            <button class="btn backspace" onclick="deleteLastLetter()">[<-]</button>
+        <div class="text-center">
+            <div class="btn-group">
+                <div id="guess_blocks"></div>
+            </div>
         </div>
-        <div class="row">
-            <button class="guess_letter" id="6" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="7" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="8" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="9" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="10" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="11" onclick="boxClick(this)"></button>
-            <button class="clear" onclick="clearAllLetters()">[X]</button>
+        <div class="text-center">
+            <div class="btn-group">
+                <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
+                <button class="btn delete" onclick="deleteLastLetter()">[<-]</button>
+            </div>
+        </div>
+       <div class="text-center">
+           <div class="btn-group">
+                <button class="btn guess_letter" id="6" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="7" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="8" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="9" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="10" onclick="boxClick(this)"></button>
+                <button class="btn guess_letter" id="11" onclick="boxClick(this)"></button>
+                <button class="btn delete" onclick="clearAllLetters()">[X]</button>
+           </div>
         </div>
 
         <br><br>
-        <button class="big_button" onclick="sendAnswer()">Guess!</button>
-        <br><br>
-        <button class="big_button" onclick="giveUpGame()">Give Up</button>
+        <button class="btn colored_button" onclick="sendAnswer()">Guess!</button>
+        <br>
+        <button class="btn give_up" onclick="giveUpGame()">Give Up</button>
    </div>
 </script>
 
