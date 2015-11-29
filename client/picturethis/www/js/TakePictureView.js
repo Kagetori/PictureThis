@@ -31,6 +31,24 @@ var TakePictureView = function (score_stars_word) {
 
         serverCaller(api, params, GameParser, callback, null);
     };
+
+    this.changeWord = function(callback) {
+        var game = getActiveGame();
+        var user_id = game.user_id;
+        var game_id = game.game_id;
+        var params = new Array();
+
+        var api = 'game/get_new_word';
+        params['user_id'] = user_id;
+        params['game_id'] = game_id;
+
+        var newWord = function() {
+            window.location.reload();
+        }
+
+        serverCaller(api, params, GameParser, newWord, null);
+
+    }
 }
 
 function takePicture() {

@@ -30,6 +30,8 @@
             <h1 class="picture_prompt">Take a picture of this:</h1>
             <h1 class="picture_word">{{word}}</h1>
             <br>
+            <button onclick="changeWordPrompt()" class="btn btn-block pic_button">Change Word</button>
+            <br>
             <img class="img-responsive center-block" id="myImage" src="" />
             <br><br>
             <div class="col-xs-6 col-xs-offset-3">
@@ -236,6 +238,11 @@
     function giveUpGame() {
         var guessView = new GuessView();
         guessView.confirmGiveUp();
+    }
+
+    function changeWordPrompt() {
+        var takePictureView = new TakePictureView();
+        takePictureView.changeWord();
     }
 
 </script>
