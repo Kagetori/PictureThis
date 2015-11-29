@@ -105,13 +105,28 @@ function addLetters() {
     var totalLetters = 12;
     var currentGame = getActiveGame();
     var currentWord = currentGame.curr_word;
-    var extraLetters = randomLetters(totalLetters-currentWord.length);
-    var wordScramble = shuffleLetters(currentWord + extraLetters);
+    if (currentWord.toLowerCase() == "totem") {
+        var riggedLetters = "tpoeetmolwjq";
+        for (i = 0; i < totalLetters; i++) {
+            var letter = riggedLetters.charAt(i);
+            document.getElementById(i).innerHTML = letter.toUpperCase();
+        }
+    } else if (currentWord.toLowerCase() == "dinosaur") {
+        var riggedLetters = "rsutidroanex";
+        for (i = 0; i < totalLetters; i++) {
+            var letter = riggedLetters.charAt(i);
+            document.getElementById(i).innerHTML = letter.toUpperCase();
+        }
+    } else {
+        var extraLetters = randomLetters(totalLetters-currentWord.length);
+        var wordScramble = shuffleLetters(currentWord + extraLetters);
 
-    for(i = 0; i < totalLetters; i++) {
-        var letter = wordScramble.charAt(i);
-        document.getElementById(i).innerHTML = letter.toUpperCase();
+        for(i = 0; i < totalLetters; i++) {
+            var letter = wordScramble.charAt(i);
+            document.getElementById(i).innerHTML = letter.toUpperCase();
     }
+    }
+
 }
 
 //returns guess as a string
