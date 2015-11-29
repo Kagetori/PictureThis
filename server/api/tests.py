@@ -847,6 +847,10 @@ class GameTests(TestCase):
         self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)
         self.assertEqual(user2_stars, bank.get_user_bank(user_id=user2_id).stars)
 
+        # check scores correct
+        self.assertEqual(user1_score, score.get_user_score(user_id=user1_id).points)
+        self.assertEqual(user2_score, score.get_user_score(user_id=user2_id).points)
+
     def testGameFlow2(self):
         user1_id = User.objects.get(name='user1').obfuscated_id
         user2_id = User.objects.get(name='user2').obfuscated_id
@@ -917,6 +921,10 @@ class GameTests(TestCase):
         # check stars correct
         self.assertEqual(user1_stars, bank.get_user_bank(user_id=user1_id).stars)
         self.assertEqual(user2_stars, bank.get_user_bank(user_id=user2_id).stars)
+
+        # check scores correct
+        self.assertEqual(user1_score, score.get_user_score(user_id=user1_id).points)
+        self.assertEqual(user2_score, score.get_user_score(user_id=user2_id).points)
 
     def testGetUserGames(self):
         user1_id = User.objects.get(name='user1').obfuscated_id

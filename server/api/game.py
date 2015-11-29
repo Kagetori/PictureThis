@@ -4,7 +4,7 @@ from django.utils.timesince import timesince
 
 from models import Game, User, Turn, WordPrompt
 
-import bank, friend
+import bank, friend, score
 
 from interface.exception import RemoteException
 from interface.game import Game as RemoteGame
@@ -212,6 +212,10 @@ def end_game(user_id, game_id, award_stars=True):
 
         bank.add_to_bank(user_id=game.user_id1, stars=user1_stars)
         bank.add_to_bank(user_id=game.user_id2, stars=user2_stars)
+
+        # Award points to users also
+        score.add_to_score(user_id=game.user_id1, points=game.user1_score)
+        score.add_to_score(user_id=game.user_id2, points=game.user2_score)
 
     return RemoteGame(game_id=game_id, user_id=user_id, friend_id=friend_id, active=False, curr_round=game.curr_round, words_seen=words_seen, bank_account=bank.get_user_bank(user_id=user_id))
 
