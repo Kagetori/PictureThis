@@ -26,11 +26,13 @@
                     <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
                 </div>
             </div>
-            <h1 class="prompt">Take a picture of this:</h1>
+            <h1 class="picture_prompt">Take a picture of this:</h1>
             <h1 class="picture_word">{{word}}</h1>
             <br>
-            <button onclick="changeWordPrompt()" class="btn btn-block pic_button">Change Word</button>
-            <br>
+            <div class="col-xs-6 col-xs-offset-3">
+                <button onclick="changeWordPrompt()" class="btn btn-block hint_button" id="change_word">Change Word</button>
+            </div>
+            <br><br>
             <img class="img-responsive center-block" id="myImage" src="" />
             <br><br>
             <div class="col-xs-6 col-xs-offset-3">
@@ -167,6 +169,7 @@
 
     function toTakePicture() {
         takePicture();
+        document.getElementById("change_word").classList.toggle('hide');
     }
 
     function boxClick(elt) {

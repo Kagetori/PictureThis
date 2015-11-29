@@ -196,6 +196,16 @@ h1.prompt {
     text-shadow: 1px 1px 3px #888888;
 }
 
+h1.picture_prompt {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.8em;
+    text-transform: capitalize;
+    color: #FF4E24;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #888888;
+}
+
 h1.picture_word{
     font-family: Helvetica, Arial, sans-serf;
     font-size: 2.4em;
