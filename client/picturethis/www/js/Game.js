@@ -48,7 +48,7 @@ function hasOngoingGame(friendId, callback) {
         window.localStorage.removeItem('activeGame');
         window.localStorage.setItem('activeGame',JSON.stringify(game));
 
-        callback(true);
+        callback(obj.active);
     };
 
     serverCaller(api, params, checkParser, null, function() {
