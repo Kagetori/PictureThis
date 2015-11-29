@@ -151,6 +151,24 @@ header {
     box-shadow: 5px 5px 2px #888888;
 }
 
+.hint_button {
+    text-align: center;
+    position: relative;
+    font-family: Helvetica, Arial, sans-serf;
+    text-transform: capitalize;
+    color: white;
+    font-size: 1.2em;
+    background-color: #FFCD00;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    display: block;
+    margin: auto;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    box-shadow: 2px 2px 2px #888888;
+}
+
 .navigation_bar {
     font-size: 1.25em;
     display: block;
@@ -168,12 +186,12 @@ h1.title {
     text-shadow: 2px 2px 3px #888888;
 }
 
-h1.picture_prompt {
+h1.prompt {
     font-family: Helvetica, Arial, sans-serf;
     font-size: 1.8em;
     text-transform: capitalize;
     color: #FF4E24;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     text-shadow: 1px 1px 3px #888888;
 }
@@ -187,6 +205,15 @@ h1.picture_word{
     font-weight: bold;
     text-shadow: 3px 3px 3px #888888;
     margin-top: 10px;
+}
+
+h1.timer {
+    font-family: Helvetica, Arial, sans-serf;
+    font-size: 1.2em;
+    color: #FF4E24;
+    text-align: left;
+    font-weight: bold;
+    /*text-shadow: 1px 1px 3px #888888; */
 }
 
 .score {
@@ -301,10 +328,12 @@ li.friend_element_inactive {
 }
 
 .guess_letter {
+  width: 2.4em;
+  height: 2.4em;
   border: 2px solid grey;
   padding: 0.5em 0.75em 0.5em 0.75em;
   font-family: Helvetica, Arial, sans-serf;
-  background-color: #ff9932;
+  background-color: #FF8062;
   color: white;
   border-radius: 5px;
   font-size: 1em;
@@ -315,7 +344,7 @@ li.friend_element_inactive {
   text-decoration:none;
 }
 
-.hide {
+.hide_letter {
     /*display:none;*/
     visibility: hidden;
 }
@@ -326,17 +355,18 @@ li.friend_element_inactive {
 }
 
 .guess_box {
-  width: 1em; 
-  height: 1em;
+  width: 2.4em;
+  height: 2.4em;
   border: 2px solid grey ;
-  padding: 0.5em;
+  padding: 0.2em;
   font-family: Helvetica, Arial, sans-serf;
-  background-color: #ff9932;
+  background-color: #FF8062;
   color: white;
   border-radius: 5px;
   font-size: 1em;
   display: inline-block;
-  margin: 2px;
+  margin-left: 4px;
+  box-shadow: 2px 2px 2px #888888;
 }
 
 img.photo {
@@ -356,7 +386,6 @@ li.inactive_friends {
     padding: 7px;
     font-weight: bold;
     list-style-type: none;
-
 }
 
 li.active_friends {

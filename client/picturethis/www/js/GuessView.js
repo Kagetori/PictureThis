@@ -1,7 +1,7 @@
 
 var score = 200;
 
-var GuessView = function (service) {
+var GuessView = function (score_stars) {
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
         console.log("Initialized GuessView");
@@ -10,7 +10,7 @@ var GuessView = function (service) {
     };
 
     this.render = function() {
-        this.$el.html(this.template());
+        this.$el.html(this.template(score_stars));
         return this;
     };
 
@@ -161,11 +161,11 @@ function populateGuessBlocks(word) {
 
     if (word.length != 0) {
         var tableul = document.createElement('ul');
-        tableul.className = "blocks_list";
+        tableul.className = "blocks_list col-xs-12";
 
         for (i=0; i<word.length; i++) {
             var block = document.createElement("li");
-            block.className = "guess_box";
+            block.className = "btn guess_box";
             block.id = "G" + String(i+1);
             tableul.appendChild(block);
         }
@@ -203,7 +203,7 @@ var counter = setInterval(countdown, 250);
 
 function countdown()
 {
-    document.getElementById("countdown").innerHTML = "Score: " + score;
+    document.getElementById("countdown").innerHTML = "Points for the round: " + score;
     if (score <= 80)
     {
         clearInterval(counter);

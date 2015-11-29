@@ -26,8 +26,7 @@
                     <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
                 </div>
             </div>
-
-            <h1 class="picture_prompt">Take a picture of this:</h1>
+            <h1 class="prompt">Take a picture of this:</h1>
             <h1 class="picture_word">{{word}}</h1>
             <br>
             <img class="img-responsive center-block" id="myImage" src="" />
@@ -51,7 +50,6 @@
             <div class="btn-group col-xs-2">
                 <button onclick="backToMain()" class="btn navigation_button">Back</button>
             </div>
-
             <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
             <div class="star text-right col-xs-3">
                 <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
@@ -64,33 +62,39 @@
 </script>
 
 <script id="guess-tpl" type="text/template">
-    <header class="navigation_bar">
-        <button onclick="backToMain()" class="navigation_button float-left">Back</button>
-        <div style="text-align:center;"><h1 class="title">Guess what this is</h1></div>
-    </header>
-    <br><br><br>
-    <span id="countdown"></span>
-    <div style="text-align:center;" class="under_navbar">
+   <div class="container">
+       <br>
+       <div class="row">
+           <div class="btn-group col-xs-2">
+               <button onclick="backToMain()" class="btn navigation_button">Back</button>
+           </div>
+           <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+           <div class="star text-right col-xs-3">
+               <span class="glyphicon glyphicon-star" aria-hidden="true" id="num_stars">#stars</span>
+           </div>
+       </div>
+       <h1 class="prompt">Guess what this is:</h1>
+
+    <h1 class="timer" id="countdown"></h1>
+        <img src="" id="guess_img" alt="an image to be guessed" class="img-responsive center-block deblur">
         <br>
-        <img src="" id="guess_img" alt="an image to be guessed" class="photo deblur">
-        <br><br>
-        <button onclick="getHint(this)">Get a hint</button>
-        <div id="num_stars">#stars</div>
-        <div id="word_class"></div>
-        <div id="word_category"></div>
+        <button class="btn hint_button" onclick="getHint(this)">Get a hint!</button>
+        <div class="text-center" id="word_class"></div>
+        <div class="text-center" id="word_category"></div>
         <br>
 
-        <div id="guess_blocks"> </div>
-        <p>
-            <button class="guess_letter" id="0" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="1" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="2" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="3" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="4" onclick="boxClick(this)"></button>
-            <button class="guess_letter" id="5" onclick="boxClick(this)"></button>
-            <button class="backspace" onclick="deleteLastLetter()">[<-]</button>
-        </p>
-        <p>
+        <div class="row "id="guess_blocks"></div>
+
+        <div class="row">
+            <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
+            <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
+            <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
+            <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
+            <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
+            <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
+            <button class="btn backspace" onclick="deleteLastLetter()">[<-]</button>
+        </div>
+        <div class="row">
             <button class="guess_letter" id="6" onclick="boxClick(this)"></button>
             <button class="guess_letter" id="7" onclick="boxClick(this)"></button>
             <button class="guess_letter" id="8" onclick="boxClick(this)"></button>
@@ -98,13 +102,13 @@
             <button class="guess_letter" id="10" onclick="boxClick(this)"></button>
             <button class="guess_letter" id="11" onclick="boxClick(this)"></button>
             <button class="clear" onclick="clearAllLetters()">[X]</button>
-        </p>
+        </div>
 
         <br><br>
         <button class="big_button" onclick="sendAnswer()">Guess!</button>
         <br><br>
         <button class="big_button" onclick="giveUpGame()">Give Up</button>
-    </div>
+   </div>
 </script>
 
 <script>
@@ -146,7 +150,7 @@
         var gid = getFirstBlankId();
         if (gid !== "full") {
             document.getElementById(gid).innerHTML = letter;
-            elt.classList.toggle('hide');
+            elt.classList.toggle('hide_letter');
             input.push(elt.id);
         }
     }
@@ -165,14 +169,14 @@
             }
             lastLetterId = "G" + (i-1);
             document.getElementById(lastLetterId).innerHTML = "";
-            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            document.getElementById(input[input.length-1]).classList.toggle("hide_letter");
             input.pop();
         }
         else if (gid !== null) {
             var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
             var lastLetterId = "G" + lastLetterNum;
             document.getElementById(lastLetterId).innerHTML = "";
-            document.getElementById(input[input.length-1]).classList.toggle("hide");
+            document.getElementById(input[input.length-1]).classList.toggle("hide_letter");
             input.pop();
         } 
     }
@@ -183,9 +187,9 @@
             document.getElementById("G" + i).innerHTML = "";
             i++;
         }
-        var hidden = document.querySelectorAll(".hide");
+        var hidden = document.querySelectorAll(".hide_letter");
         for (var i = hidden.length-1; i >= 0; i--) {
-            hidden[i].classList.toggle("hide");
+            hidden[i].classList.toggle("hide_letter");
         }
         input = [];
     }
@@ -216,7 +220,7 @@
             hints_used++;
             clearAllLetters();
             destroy();
-            elt.classList.toggle("destroyed");
+            elt.setAttribute("disabled","disabled");
         }
     }
 
