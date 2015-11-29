@@ -44,7 +44,7 @@ var GuessView = function (score_stars) {
         var cleanGuess = guess.trim().toLowerCase();
         var cleanCurrentWord = currentWord.trim().toLowerCase();
         if (cleanCurrentWord != cleanGuess) {
-            showAlert("Your guess is incorrect. Try again.", "Oops");
+            showAlert("Your guess is incorrect.", "Try Again");
         } else {
             var user = getUser();
             var user_id = user.id;
