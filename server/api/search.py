@@ -25,11 +25,4 @@ def find_user(user_id, username):
     except User.DoesNotExist:
         raise RemoteException('User does not exist.')
 
-    friend_status = friend.get_friend_status(user_id1=user.obfuscated_id, user_id2=found_user.obfuscated_id)
-    reverse_friend_status = friend.get_friend_status(user_id1=found_user.obfuscated_id, user_id2=user.obfuscated_id)
-
-    if reverse_friend_status == config.FRIEND_STATUS_BLOCKED:
-        # the found user has blocked the original user, so we might as well say that they don't exist
-        raise RemoteException('User does not exist.')
-
-    return FriendUser(username=username, user_id=found_user.obfuscated_id, relation=friend_status)
+    return friend.get_friend_details(user_id=user_id, friend_id=found_user.obfuscated_id)

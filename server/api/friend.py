@@ -37,12 +37,16 @@ def get_friend_details(user_id, friend_id):
     reverse_status = get_friend_status(user_id1=friend_id, user_id2=user_id)
 
     if reverse_status == config.FRIEND_STATUS_BLOCKED and friend_status == config.FRIEND_STATUS_REMOVED:
-        raise RemoteException('Invalid user id.')
+        raise RemoteException('Cannot find user.')
 
-    if game_obj is None or not game_obj.active:
+    if game_obj is None:
         return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=False)
+    elif game_obj.active:
+        return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=True,
+            is_turn=game_obj.is_turn, is_photographer=game_obj.is_photographer, user_score=game_obj.user_score, friend_score=game_obj.friend_score)
     else:
-        return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=True, is_turn=game_obj.is_turn, is_photographer=game_obj.is_photographer)
+        return FriendUser(user_id=friend_id, username=friend_user.name, relation=friend_status, has_active_game=False,
+            user_score=game_obj.user_score, friend_score=game_obj.friend_score)
 
 def get_user_friends(user_id):
     friends = Friend.objects.filter(user_id1=user_id, relation=config.FRIEND_STATUS_FRIEND)
