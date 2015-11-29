@@ -33,7 +33,18 @@ function hooks(obj) {
             var is_turn = object.is_turn;
             var is_photographer = object.is_photographer;
 
-            var friendListObject = new FriendListObject(friend_username, friend_id, active_game, is_turn, is_photographer);
+            var user_score = null;
+            var friend_score = null;
+
+            if (object.hasOwnProperty('user_score')) {
+                user_score = object.user_score;
+            }
+
+            if (object.hasOwnProperty('friend_score')) {
+                friend_score = object.friend_score;
+            }
+
+            var friendListObject = new FriendListObject(friend_username, friend_id, active_game, is_turn, is_photographer, user_score, friend_score);
 
             friendList.push(friendListObject);
         }
