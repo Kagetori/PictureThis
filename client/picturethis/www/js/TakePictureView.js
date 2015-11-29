@@ -1,4 +1,4 @@
-var TakePictureView = function (word) {
+var TakePictureView = function (score_stars_word) {
 
     this.initialize = function () {
         // Define a div wrapper for the view (used to attach events)
@@ -8,7 +8,7 @@ var TakePictureView = function (word) {
     
 //  this.initialize();
     this.render = function() {
-        this.$el.html(this.template(word));
+        this.$el.html(this.template(score_stars_word));
         return this;
     };
 

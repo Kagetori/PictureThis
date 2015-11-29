@@ -67,6 +67,36 @@ var GuessView = function (service) {
             showNotification('Would you like to start a new game?',onConfirm,'Game Finished!',['Yes','No']);
         }
     }
+
+    this.confirmGiveUp = function() {
+        function onConfirm(buttonIndex) {
+            if(buttonIndex === 1) {
+                var guessView = new GuessView();
+                guessView.giveUp();
+            } else {
+                window.location.reload();
+            }
+        };
+        showNotification('Are you sure you want to give up?',onConfirm,'Give up',['Yes','No']);
+    }
+
+    this.giveUp = function() {
+        var user = getUser();
+        var currentGame = getActiveGame();
+        var user_id = user.id;
+        var game_id = currentGame.game_id;
+        var api = 'game/give_up_turn';
+        var params = new Array();
+        params['user_id'] = user_id;
+        params['game_id'] = game_id;
+
+        var nextTurn = function(){
+            window.location.reload();
+        };
+            serverCaller(api, params, GameParser, nextTurn, null);
+
+    }
+
     this.initialize();
 }
 
