@@ -59,7 +59,7 @@
                 setFriendView(friendListWrapper)
                 updateScoreAndStar(starCount, pointCount);
             }, null);
-        }, 10000);
+        }, 5000);
     });
 
         /* --------------------------------- Event Registration -------------------------------- */
