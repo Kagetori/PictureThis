@@ -139,7 +139,10 @@ INSERT INTO `api_wordprompt` VALUES
 	(97, 'pickles', 'noun', 'food', 1),
 	(98, 'fries', 'noun', 'food', 1),
 	(99, 'USA', 'noun', 'place', 1),
-	(100, 'bed', 'noun', 'furniture', 1);
+	(100, 'bed', 'noun', 'furniture', 1),
+    (101, 'bicycle', 'noun', 'transport', 1),
+    (102, 'mouse', 'noun', 'animal', 0),
+    (103, 'student', 'noun', 'people', 0);
 /*!40000 ALTER TABLE `api_wordprompt` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
