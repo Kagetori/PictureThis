@@ -79,13 +79,9 @@ var setFriendView = function(friendListWrapper) {
                 }
                 tablebutton.appendChild(buttontext);
 
-                var tableScore = document.createElement("span");
-                tableScore.className = "friend_vs_score";
-                tableScore.appendChild(document.createTextNode(activeFriends[i].user_score + "-" + activeFriends[i].friend_score));
 
                 tableli.appendChild(tabletext);
                 tableli.appendChild(tablebutton);
-                tableli.appendChild(tableScore);
                 tableul.appendChild(tableli);
             }
         }
@@ -109,13 +105,9 @@ var setFriendView = function(friendListWrapper) {
                 var buttontext = document.createTextNode("Start!");
                 tablebutton.appendChild(buttontext);
 
-                var tableScore = document.createElement("span");
-                tableScore.className = "friend_vs_score";
-                tableScore.appendChild(document.createTextNode(recentFriends[i].user_score + "-" + recentFriends[i].friend_score));
 
                 tableli.appendChild(tabletext);
                 tableli.appendChild(tablebutton);
-                tableli.appendChild(tableScore);
                 tableul.appendChild(tableli);
             }
         }

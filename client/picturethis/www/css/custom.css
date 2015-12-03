@@ -424,17 +424,6 @@ li.remove_header {
     list-style-type: none;
 }
 
-span.friend_vs_score {
-    float: right;
-    font-family: Helvetica, Arial, sans-serf;
-    text-decoration: none;
-    padding: 5px;
-    border: none;
-    font-size: 14px;
-    color: black;
-    margin-right: 5px;
-}
-
 button.play_button {
     float: right;
     font-family: Helvetica, Arial, sans-serf;
