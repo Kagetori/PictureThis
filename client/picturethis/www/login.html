@@ -159,6 +159,17 @@
 
 <script src="js/app.js"></script>
 
+<script>
+document.addEventListener("deviceready", onDeviceReady1, false);
+
+function onDeviceReady1(){
+    document.addEventListener("backbutton", function(e){
+       e.preventDefault();
+       navigator.app.exitApp();
+    }, false);
+}
+</script>
+
 </div>
 
 <div id="spinner_wrapper" style="visibility: hidden;"><table class="spinner_table"><tr><td class="spinner_cell">
