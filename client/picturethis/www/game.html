@@ -9,18 +9,15 @@
     <link href="css/bootstrap-theme.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
 <div class="fullscreen" id="main_page">
-
-<script id="takepicture-tpl" type="text/template">
+    <script id="takepicture-tpl" type="text/template">
         <div class="container">
             <br>
             <div class="row">
                 <div class="btn-group col-xs-2">
                     <button onclick="backToMain()" class="btn navigation_button">Back</button>
                 </div>
-
                 <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
                 <div class="star text-right col-xs-3">
                     <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
@@ -37,106 +34,103 @@
             <br><br>
             <div class="col-xs-6 col-xs-offset-3">
                 <button onclick="toTakePicture()" class="btn btn-block pic_button">Take Picture</button>
-            <br>
+                <br>
             </div>
             <div class="col-xs-8 col-xs-offset-2">
                 <button onclick="toWaitingView()" class="btn btn-block colored_button">Send</button>
                 <br><br>
             </div>
-
         </div>
-</script>
+    </script>
 
-<script id="waiting-tpl" type="text/template">
-    <div class="container">
-        <br>
-        <div class="row">
-            <div class="btn-group col-xs-2">
-                <button onclick="backToMain()" class="btn navigation_button">Back</button>
+    <script id="waiting-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                </div>
             </div>
-            <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
-            <div class="star text-right col-xs-3">
-                <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+            <br><br><br><br><br>
+            <h1 class="title">Waiting for turn</h1>
+            <h4 class="text-center wait_text">You can start a new game with a friend while you wait.</h4>
+        </div>
+    </script>
+
+    <script id="guess-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" id="num_stars">#stars</span>
+                </div>
+            </div>
+            <h1 class="prompt">Guess what this is:</h1>
+
+            <h1 class="timer" id="countdown"></h1>
+            <img src="" id="guess_img" alt="an image to be guessed" class="img-responsive center-block deblur">
+            <br>
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <button class="btn btn-block hint_button" onclick="getHint(this)">Get a hint!</button>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-center" id="word_class"></div>
+                <div class="text-center" id="word_category"></div>
+            </div>
+            <br>
+            <div class="text-center">
+                <div class="btn-group">
+                    <div id="guess_blocks"></div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="btn-group">
+                    <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
+                    <button class="btn delete" onclick="deleteLastLetter()">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="btn-group">
+                    <button class="btn guess_letter" id="6" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="7" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="8" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="9" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="10" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="11" onclick="boxClick(this)"></button>
+                    <button class="btn delete" onclick="clearAllLetters()">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <br><br>
+            <div class="col-xs-10 col-xs-offset-1">
+                <button class="btn btn-block colored_button" onclick="sendAnswer()">Guess!</button>
+                <br>
+            </div>
+            <div class="col-xs-6 col-xs-offset-3">
+                <button class="btn btn-block give_up" onclick="giveUpGame()">Give Up</button>
+                <br><br><br>
             </div>
         </div>
-        <br><br><br><br><br>
-        <h1 class="title">Waiting for turn</h1>
-        <h4 class="text-center wait_text">You can start a new game with a friend while you wait.</h4>
-    </div>
-</script>
-
-<script id="guess-tpl" type="text/template">
-   <div class="container">
-       <br>
-       <div class="row">
-           <div class="btn-group col-xs-2">
-               <button onclick="backToMain()" class="btn navigation_button">Back</button>
-           </div>
-           <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
-           <div class="star text-right col-xs-3">
-               <span class="glyphicon glyphicon-star" aria-hidden="true" id="num_stars">#stars</span>
-           </div>
-       </div>
-       <h1 class="prompt">Guess what this is:</h1>
-
-    <h1 class="timer" id="countdown"></h1>
-        <img src="" id="guess_img" alt="an image to be guessed" class="img-responsive center-block deblur">
-        <br>
-       <div class="row">
-           <div class="col-xs-6 col-xs-offset-3">
-               <button class="btn btn-block hint_button" onclick="getHint(this)">Get a hint!</button>
-               <br>
-           </div>
-       </div>
-       <div class="row">
-        <div class="text-center" id="word_class"></div>
-        <div class="text-center" id="word_category"></div>
-       </div>
-       <br>
-        <div class="text-center">
-            <div class="btn-group">
-                <div id="guess_blocks"></div>
-            </div>
-        </div>
-        <div class="text-center">
-            <div class="btn-group">
-                <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
-                <button class="btn delete" onclick="deleteLastLetter()">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                </button>
-            </div>
-        </div>
-       <div class="text-center">
-           <div class="btn-group">
-                <button class="btn guess_letter" id="6" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="7" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="8" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="9" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="10" onclick="boxClick(this)"></button>
-                <button class="btn guess_letter" id="11" onclick="boxClick(this)"></button>
-                <button class="btn delete" onclick="clearAllLetters()">
-                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-                </button>
-           </div>
-        </div>
-
-        <br><br>
-       <div class="col-xs-10 col-xs-offset-1">
-           <button class="btn btn-block colored_button" onclick="sendAnswer()">Guess!</button>
-           <br>
-       </div>
-
-       <div class="col-xs-6 col-xs-offset-3">
-            <button class="btn btn-block give_up" onclick="giveUpGame()">Give Up</button>
-           <br><br><br>
-       </div>
-   </div>
-</script>
+    </script>
 
 <script>
     var input = [];
