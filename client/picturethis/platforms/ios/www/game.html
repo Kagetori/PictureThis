@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="fullscreen" id="main_page">
+    <script id="takepicture-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                </div>
+            </div>
+            <h1 class="picture_prompt">Take a picture of this:</h1>
+            <h1 class="picture_word">{{word}}</h1>
+            <br>
+            <div class="col-xs-6 col-xs-offset-3">
+                <button onclick="changeWordPrompt()" class="btn btn-block hint_button" id="change_word">Change Word</button>
+            </div>
+            <br><br>
+            <img class="img-responsive center-block" id="myImage" src="" />
+            <br><br>
+            <div class="col-xs-6 col-xs-offset-3">
+                <button onclick="toTakePicture()" class="btn btn-block pic_button">Take Picture</button>
+                <br>
+            </div>
+            <div class="col-xs-8 col-xs-offset-2">
+                <button onclick="toWaitingView()" class="btn btn-block colored_button">Send</button>
+                <br><br>
+            </div>
+        </div>
+    </script>
+
+    <script id="waiting-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">{{stars}}</span>
+                </div>
+            </div>
+            <br><br><br><br><br>
+            <h1 class="title">Waiting for turn</h1>
+            <h4 class="text-center wait_text">You can start a new game with a friend while you wait.</h4>
+        </div>
+    </script>
+
+    <script id="guess-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button onclick="backToMain()" class="btn navigation_button">Back</button>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: {{score}}</h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" id="num_stars">#stars</span>
+                </div>
+            </div>
+            <h1 class="prompt">Guess what this is:</h1>
+
+            <h1 class="timer" id="countdown"></h1>
+            <img src="" id="guess_img" alt="an image to be guessed" class="img-responsive center-block deblur">
+            <br>
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <button class="btn btn-block hint_button" onclick="getHint(this)">Get a hint!</button>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-center" id="word_class"></div>
+                <div class="text-center" id="word_category"></div>
+            </div>
+            <br>
+            <div class="text-center">
+                <div class="btn-group">
+                    <div id="guess_blocks"></div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="btn-group">
+                    <button class="btn guess_letter" id="0" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="1" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="2" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="3" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="4" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="5" onclick="boxClick(this)"></button>
+                    <button class="btn delete" onclick="deleteLastLetter()">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="btn-group">
+                    <button class="btn guess_letter" id="6" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="7" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="8" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="9" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="10" onclick="boxClick(this)"></button>
+                    <button class="btn guess_letter" id="11" onclick="boxClick(this)"></button>
+                    <button class="btn delete" onclick="clearAllLetters()">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <br><br>
+            <div class="col-xs-10 col-xs-offset-1">
+                <button class="btn btn-block colored_button" onclick="sendAnswer()">Guess!</button>
+                <br>
+            </div>
+            <div class="col-xs-6 col-xs-offset-3">
+                <button class="btn btn-block give_up" onclick="giveUpGame()">Give Up</button>
+                <br><br><br>
+            </div>
+        </div>
+    </script>
+
+<script>
+    var input = [];
+    var hints_used = 0;
+
+    function backToMain() {
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
+
+        serverCaller("poll/update", params, null, function() {
+            window.location="friends.html";
+        }, null);
+    }
+
+    function toWaitingView() {
+        var takePictureView = new TakePictureView();
+        takePictureView.sendPicture(function() {
+            window.location.href = '#wait view';
+        });
+    }
+
+    function sendAnswer() {
+        //var guess = $("[name='guess']").val();
+        var guessView = new GuessView();
+        guessView.sendGuess();
+        //document.getElementById("guess").value = "";
+    }
+
+    function toTakePicture() {
+        takePicture();
+        document.getElementById("change_word").classList.toggle('hide');
+    }
+
+    function boxClick(elt) {
+        var letter = elt.innerHTML;
+        //find id of first unoccupied guess box
+        var gid = getFirstBlankId();
+        if (gid !== "full") {
+            document.getElementById(gid).innerHTML = letter;
+            elt.classList.toggle('hide_letter');
+            input.push(elt.id);
+        }
+    }
+
+    function deleteLastLetter(){
+        var gid = getFirstBlankId();
+        if (gid == "G1") { // first block is blank
+            //do nothing
+        }
+        else if (gid === "full") { // no blank blocks
+            var i = 1;
+            var lastLetterId = "G" + i;
+            while (document.getElementById(lastLetterId) !== null) {
+                i++;
+                lastLetterId = "G" + i;
+            }
+            lastLetterId = "G" + (i-1);
+            document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide_letter");
+            input.pop();
+        }
+        else if (gid !== null) {
+            var lastLetterNum = parseInt(gid.substring(1,2)) - 1;
+            var lastLetterId = "G" + lastLetterNum;
+            document.getElementById(lastLetterId).innerHTML = "";
+            document.getElementById(input[input.length-1]).classList.toggle("hide_letter");
+            input.pop();
+        } 
+    }
+
+    function clearAllLetters(){
+        var i = 1;
+        while (document.getElementById("G" + i) !== null) {
+            document.getElementById("G" + i).innerHTML = "";
+            i++;
+        }
+        var hidden = document.querySelectorAll(".hide_letter");
+        for (var i = hidden.length-1; i >= 0; i--) {
+            hidden[i].classList.toggle("hide_letter");
+        }
+        input = [];
+    }
+
+    //returns element id of first blank guess box
+    function getFirstBlankId() {
+        var i = 1;
+        var id = "G" + i;
+        while (document.getElementById(id).innerHTML !== "") {
+            id = "G" + i;
+            if (document.getElementById(id) === null) {
+                return "full";
+            } else {
+                i++;
+            }
+        }
+        return id;
+    }
+
+    function getHint(elt) {
+        if (hints_used == 0) {
+            hints_used++;
+            getWordClass();
+        } else if (hints_used == 1) {
+            hints_used++;
+            getWordCategory();
+        } else if (hints_used == 2) {
+            hints_used++;
+            clearAllLetters();
+            destroy();
+            elt.setAttribute("disabled","disabled");
+        }
+    }
+
+    function getAllLetters() {
+        letters = "";
+        for (var i=0; i<12; i++) {
+            letters = letters + document.getElementById(i).innerHTML;
+        }
+        return letters;
+    }
+
+    function destroy() {
+        var letters = getAllLetters();
+        var toDestroy = destroyLetters(letters);
+    }
+
+    function giveUpGame() {
+        var guessView = new GuessView();
+        guessView.confirmGiveUp();
+    }
+
+    function changeWordPrompt() {
+        var takePictureView = new TakePictureView();
+        takePictureView.changeWord();
+    }
+
+</script>
+
+<script src="cordova.js"></script>
+<script src="lib/handlebars.js"></script>
+<script src="lib/jquery.js"></script>
+<script src="lib/router.js"></script>
+<script src="js/services/memory/PictureThisService.js"></script>
+<script src="js/spinner.js"></script>
+<script src="js/TakePictureView.js"></script>
+<script src="js/WaitingView.js"></script>
+<script src="js/GuessView.js"></script>
+
+<script src="js/User.js"></script>
+<script src="js/Game.js"></script>
+<script src="js/Friend.js"></script>
+<script src="js/FriendListObject.js"></script>
+<script src="js/Bank.js"></script>
+<script src="js/ScoreBank.js"></script>
+<script src="js/ShowAlert.js"></script>
+<script src="js/Hooks.js"></script>
+<script src="js/ServerCaller.js"></script>
+<script src="js/UserParser.js"></script>
+<script src="js/GamesParser.js"></script>
+<script src="js/HintParser.js"></script>
+
+<script src="js/GameManager.js"></script>
+
+<script>
+document.addEventListener("deviceready", onDeviceReady1, false);
+
+function onDeviceReady1(){
+    document.addEventListener("backbutton", function(e){
+       e.preventDefault();
+       backToMain();
+    }, false);
+}
+</script>
+
+</div>
+
+<div id="spinner_wrapper" style="visibility: hidden;"><table class="spinner_table"><tr><td class="spinner_cell">
+<div class="spinner-loader">Loading…</div>
+</td></tr></table></div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.js"></script>
+
+</body>
+</html>

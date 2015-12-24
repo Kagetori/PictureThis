@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link href="http://css-spinners.com/css/spinner/spinner.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link href="css/friends.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="fullscreen" id="main_page">
+    <script id="friendlist-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="btn-group col-xs-2">
+                    <button type="button" class="btn dropdown-toggle navigation_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu <span class="glyphicon glyphicon-menu-down"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#change password">Change Password</a></li>
+                        <li><a href="#add friend">Add Friend</a></li>
+                        <li><a href="#remove friend">Manage Friends</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a onclick="logout()">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="score text-center col-xs-5 col-xs-offset-2"><h4>Score: <span id="point_count">{{score}}</span></h4></div>
+                <div class="star text-right col-xs-3">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"><span id="star_count">{{stars}}</span></span>
+                </div>
+            </div>
+            <br>
+            <div id="friend_list_wrapper"></div>
+        </div>
+    </script>
+
+    <script id="add-friend-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            <br><br>
+            <h1 class="title">Search User</h1>
+            <form onsubmit="event.preventDefault()">
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" id="friend_search" placeholder="Find Username">
+                    <br><br>
+                </div>
+                <div class="col-xs-10 col-xs-offset-1">
+                    <button class="btn btn-block big_button" type="submit" onclick="findUser()" class="big_button">Search</button>
+                    <br>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script id="remove-friend-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            <br>
+            <h1 class="title">Manage Friends</h1>
+            <br>
+            <div id="remove_friend_wrapper"></div>
+        </div>
+    </script>
+
+    <script id="changepassword-tpl" type="text/template">
+        <div class="container">
+            <br>
+            <button onclick="backToMain()" class="btn navigation_button">Back</button>
+            <h1 class="title">Change your password</h1>
+
+            <form onsubmit="event.preventDefault()">
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="old_password" placeholder="Old Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="new_password" placeholder="New Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="new_password_confirm" placeholder="Retype your new password">
+                    <br><br>
+                </div>
+                <div class="col-xs-10 col-xs-offset-1">
+                    <button class="btn btn-block big_button" type="submit" onclick="changePassword()">Change Password</button>
+                    <br><br><br>
+                </div>
+            </form>
+        </div>
+    </script>
+
+<script>
+
+    function findUser() {
+        setSpinnerVisibility(true);
+        var username = $("[name='username']").val();
+
+        findFriend(username);
+    }
+
+    function backToMain() {
+        setSpinnerVisibility(true);
+
+        var user = getUser();
+        var userId = user.id;
+        var params = new Array();
+        params['user_id'] = userId;
+
+        serverCaller("poll/update", params, null, function() {
+            window.location="friends.html";
+        }, null);
+    }
+
+    function play(friendId) {
+        setSpinnerVisibility(true);
+        console.log("startGame");
+        playGame(friendId);
+    }
+
+    function removeF(friendId){
+        removeFriend(friendId);
+    }
+
+    function blockF(friendId){
+        blockFriend(friendId);
+    }
+
+    function changePassword(friendId){
+        if(validUsername()){
+            if(confirmNewPassword){
+                changeUserPassword();
+            } else {
+                showAlert("Passwords don't match");
+            }
+        } else {
+            showAlert("Username inputted does not match your Username. Please try again.");
+        }
+    }
+
+    function validUsername() {
+        var username = getUser().username;
+        var input_username = $("[name='username']").val();
+        return (username == input_username);
+    }
+
+    function confirmNewPassword() {
+        var new_password = $("[name='new_password']").val();
+        var new_password_confirm = $("[name='new_password_confirm']").val();
+        return (new_password === new_password_confirm);
+    }
+
+    function changeUserPassword() {
+        setSpinnerVisibility(true);
+        var user_id = getUser().id;
+        var new_password = $("[name='new_password']").val();
+        var old_password = $("[name='old_password']").val();
+        var changePasswordView = new ChangePasswordView();
+        changePasswordView.updatePassword(user_id, old_password, new_password);
+    }
+
+
+
+
+
+</script>
+
+<script src="cordova.js"></script>
+<script src="lib/handlebars.js"></script>
+<script src="lib/jquery.js"></script>
+<script src="lib/router.js"></script>
+<script src="js/services/memory/PictureThisService.js"></script>
+<script src="js/spinner.js"></script>
+<script src="js/FriendListView.js"></script>
+<script src="js/RemoveFriendView.js"></script>
+<script src="js/AddFriendView.js"></script>
+<script src="js/ChangePasswordView.js"></script>
+
+<script src="js/User.js"></script>
+<script src="js/Game.js"></script>
+<script src="js/Bank.js"></script>
+<script src="js/ScoreBank.js"></script>
+<script src="js/Friend.js"></script>
+<script src="js/FriendListObject.js"></script>
+<script src="js/ShowAlert.js"></script>
+<script src="js/Hooks.js"></script>
+<script src="js/ServerCaller.js"></script>
+<script src="js/UserParser.js"></script>
+<script src="js/GamesParser.js"></script>
+
+<script src="js/FriendListManager.js"></script>
+
+<script>
+document.addEventListener("deviceready", onDeviceReady1, false);
+
+function onDeviceReady1(){
+    document.addEventListener("backbutton", function(e){
+       e.preventDefault();
+       navigator.app.exitApp();
+    }, false);
+}
+</script>
+
+</div>
+
+<div id="spinner_wrapper" style="visibility: hidden;"><table class="spinner_table"><tr><td class="spinner_cell">
+<div class="spinner-loader">Loading…</div>
+</td></tr></table></div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.js"></script>
+
+</body>
+</html>
